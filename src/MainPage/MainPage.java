@@ -1,14 +1,11 @@
 package MainPage;
 
-import View.GameView;
+import Controller.GameFrameController;
 
-/**
- * Created by Tommy on 09.05.2014.
- */
 public class MainPage
 {
     public static void main(String[] args)
     {
-        new GameView();
+        new GameFrameController();
     }
 }

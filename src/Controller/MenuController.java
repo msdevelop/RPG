@@ -1,8 +1,10 @@
 package Controller;
 
-import View.GameFrame;
-import View.MenuPanel;
+import View.*;
+import View.MenuItem;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -32,7 +34,6 @@ public class MenuController implements MouseListener
     @Override
     public void mousePressed(MouseEvent e)
     {
-
     }
 
     @Override
@@ -44,12 +45,14 @@ public class MenuController implements MouseListener
     @Override
     public void mouseEntered(MouseEvent e)
     {
-
+        MenuItem x = (MenuItem) e.getComponent();
+        x.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
     @Override
     public void mouseExited(MouseEvent e)
     {
-
+        MenuItem x = (MenuItem) e.getComponent();
+        x.setBorder(null);
     }
 }

@@ -3,11 +3,11 @@ package Model;
 /**
  * Created by msmichi on 19.05.2014.
  */
-public class Koordinate
+public class KoordinateModel
 {
     int x, y;
 
-    public Koordinate(int newX, int newY)
+    public KoordinateModel(int newX, int newY)
     {
         x = newX;
         y = newY;

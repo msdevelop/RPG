@@ -8,12 +8,12 @@ import java.util.List;
 public class DetailKartenModel
 {
     private String name;
-    private List<Koordinate> koordinateList;
+    private List<KoordinateModel> koordinateModelList;
 
-    public DetailKartenModel(String kartenName, List<Koordinate> liste)
+    public DetailKartenModel(String kartenName, List<KoordinateModel> liste)
     {
         name = kartenName;
-        koordinateList = liste;
+        koordinateModelList = liste;
     }
 
     public void setName(String kartenName)
@@ -21,9 +21,9 @@ public class DetailKartenModel
         name = kartenName;
     }
 
-    public void setKoordinateList(List<Koordinate> liste)
+    public void setKoordinateModelList(List<KoordinateModel> liste)
     {
-        koordinateList = liste;
+        koordinateModelList = liste;
     }
 
     public String getName()
@@ -31,8 +31,8 @@ public class DetailKartenModel
         return name;
     }
 
-    public List<Koordinate> getKoordinateList()
+    public List<KoordinateModel> getKoordinateModelList()
     {
-        return koordinateList;
+        return koordinateModelList;
     }
 }

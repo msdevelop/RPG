@@ -3,28 +3,12 @@ package Data;
 import java.io.File;
 import java.util.LinkedList;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
-import Model.Koordinate;
+import Model.KoordinateModel;
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
 import Model.DetailKartenModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -38,7 +22,7 @@ public class DataManager
     private Document doc;
     private NodeList nodeKartenListe;
     private List<DetailKartenModel> detailKartenModelList;
-    private List<Koordinate> koordinateList = new LinkedList<Koordinate>();
+    private List<KoordinateModel> koordinateModelList = new LinkedList<KoordinateModel>();
 
     public DataManager()
     {
@@ -96,12 +80,12 @@ public class DataManager
                     Node yNode = nodeMap.item(1);
                     x = Integer.parseInt(xNode.getNodeValue());
                     y = Integer.parseInt(yNode.getNodeValue());
-                    koordinateList.add(new Koordinate(x, y));
+                    koordinateModelList.add(new KoordinateModel(x, y));
 
                 }
             }
         }
-        detailKartenModelList.add(new DetailKartenModel(kartenName, koordinateList));
+        detailKartenModelList.add(new DetailKartenModel(kartenName, koordinateModelList));
     }
 }
 

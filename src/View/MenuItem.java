@@ -6,11 +6,11 @@ import javax.swing.*;
 
 public class MenuItem extends JPanel
 {
-    public MenuItem(int paramX, int paramY, MenuController paramMenuController, String paramName)
+    public MenuItem(int paramXPos, int paramYPos, MenuController paramMenuController, String paramName)
     {
         this.setName(paramName);
         this.setOpaque(false);
-        this.setBounds(paramX, paramY, 169, 47);
+        this.setBounds(paramXPos, paramYPos, 169, 47);
         this.addMouseListener(paramMenuController);
     }
 }

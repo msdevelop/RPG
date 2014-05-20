@@ -13,9 +13,9 @@ public class MenuController implements MouseListener
     private GameFrame gameFrame;
     private MenuPanel menuPanel;
 
-    public MenuController(GameFrame paramFrame)
+    public MenuController(GameFrame paramGameFrame)
     {
-        this.gameFrame = paramFrame;
+        this.gameFrame = paramGameFrame;
         this.menuPanel = new MenuPanel(this);
         this.gameFrame.getContentPane().add(this.menuPanel);
     }
@@ -45,15 +45,15 @@ public class MenuController implements MouseListener
     @Override
     public void mouseEntered(MouseEvent e)
     {
-        MenuItem x = (MenuItem) e.getComponent();
-        x.setBorder(BorderFactory.createLineBorder(Color.black));
+        MenuItem tmpItem = (MenuItem) e.getComponent();
+        tmpItem.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
     }
 
     @Override
     public void mouseExited(MouseEvent e)
     {
-        MenuItem x = (MenuItem) e.getComponent();
-        x.setBorder(null);
+        MenuItem tmpItem = (MenuItem) e.getComponent();
+        tmpItem.setBorder(null);
     }
 
     public MenuPanel getMenuPanel()

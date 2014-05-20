@@ -37,11 +37,5 @@ public class GameFrameController implements ActionListener
     {
         if(e.getActionCommand().equals("beenden"))
             System.exit(0);
-
-/**TEST*/
-        else if(e.getActionCommand().equals("switchMap"))
-            this.mapController.getMapDetail().setMissionSelected(true);
-/***/
-
     }
 }

@@ -7,10 +7,10 @@ public class DetailKartenModel
     private String name;
     private List<KoordinateModel> koordinateModelList;
 
-    public DetailKartenModel(String kartenName, List<KoordinateModel> liste)
+    public DetailKartenModel(String paramKartenName, List<KoordinateModel> paramListe)
     {
-        name = kartenName;
-        koordinateModelList = liste;
+        name = paramKartenName;
+        koordinateModelList = paramListe;
     }
 
     public void setName(String kartenName)

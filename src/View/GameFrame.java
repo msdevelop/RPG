@@ -44,15 +44,6 @@ public class GameFrame extends JFrame
 
         JMenuItem itemSteuerung = new JMenuItem("Steuerung");
         menuHilfe.add(itemSteuerung);
-
-/**TEST*/
-        JMenuItem itemKarte = new JMenuItem("#Karte");
-        menuHilfe.add(itemKarte);
-        itemKarte.addActionListener(this.gameFrameController);
-        itemKarte.setActionCommand("switchMap");
-/***/
-
-
     }
 
     public GameFrameController getGameFrameController()

@@ -17,7 +17,7 @@ public class MapOverview extends JPanel
 
         try
         {
-            this.mapImage = ImageIO.read(new File("img//map//overviewMap.png"));
+            this.mapImage = ImageIO.read(new File("data//img//map//overviewMap.png"));
         }
         catch(IOException e)
         {}

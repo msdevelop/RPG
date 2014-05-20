@@ -22,7 +22,7 @@ public class MenuPanel extends JPanel
 
         try
         {
-            menuBg = ImageIO.read(new File("img//menu//menuBg.png"));
+            menuBg = ImageIO.read(new File("data//img//menu//menuBg.png"));
         }
         catch(IOException e)
         {}

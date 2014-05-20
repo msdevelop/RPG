@@ -2,7 +2,7 @@ package MainPage;
 
 import Controller.GameFrameController;
 
-public class MainPage
+public class RPGMainPage
 {
     public static void main(String[] args)
     {

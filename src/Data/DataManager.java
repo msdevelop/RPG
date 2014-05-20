@@ -1,11 +1,14 @@
 package Data;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import Model.KoordinateModel;
 import org.w3c.dom.*;
@@ -16,13 +19,24 @@ import org.w3c.dom.Node;
 public class DataManager
 {
     private DocumentBuilder docBuilder;
+    private DocumentBuilderFactory docFactory;
     private Document doc;
     private NodeList nodeKartenListe;
+    private Node root;
     private List<DetailKartenModel> detailKartenModelList;
     private List<KoordinateModel> koordinateModelList = new LinkedList<KoordinateModel>();
 
     public DataManager()
     {
+        docFactory = DocumentBuilderFactory.newInstance();
+
+        try
+        {
+            docBuilder = docFactory.newDocumentBuilder();
+        }
+        catch(ParserConfigurationException pce)
+        {}
+
         LoadData();
     }
 
@@ -35,17 +49,17 @@ public class DataManager
     {
         try
         {
-            File XmlFile = new File("DetailKarten.xml");
-            doc = docBuilder.parse(XmlFile);
+            File xmlFile = new File("data//xml//DetailKarten.xml");
+            doc = docBuilder.parse(xmlFile);
+            root = doc.getDocumentElement();
             //nodeKartenListe = doc.getElementsByTagName("name");
         }
         catch(Exception e)
-        {
-        }
+        {}
 
-        if(doc.hasChildNodes())
+        if(root.hasChildNodes())
         {
-            nodeKartenListe = doc.getChildNodes();
+            nodeKartenListe = root.getChildNodes();
         }
 
         Node karte = null;

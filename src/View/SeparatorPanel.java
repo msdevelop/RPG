@@ -16,7 +16,7 @@ public class SeparatorPanel extends JPanel
         this.setBounds(801, 0, 20, 1057);
         try
         {
-            this.separatorImage = ImageIO.read(new File("img//map//separator.png"));
+            this.separatorImage = ImageIO.read(new File("data//img//map//separator.png"));
         }
         catch(IOException e)
         {}

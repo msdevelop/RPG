@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <list>
 	<map>
-		<name>karte1</name>
+		<name>gareth</name>
 		<url>data//img//map//detailMap.png</url>
 		<position>
 			<koordinate>
-				<xPos></xPos>
-				<yPos></yPos>
+				<xPos>476</xPos>
+				<yPos>472</yPos>
 			</koordinate>
 			<koordinate>
 				<xPos></xPos>

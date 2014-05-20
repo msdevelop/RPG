@@ -13,9 +13,6 @@ import Model.DetailKartenModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-/**
- * Created by msmichi on 19.05.2014.
- */
 public class DataManager
 {
     private DocumentBuilder docBuilder;

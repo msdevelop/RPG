@@ -15,6 +15,7 @@ public class MenuPanel extends JPanel
     public MenuPanel(MenuController paramMenuController)
     {
         this.setLayout(null);
+        this.setBounds(0, 0, 1920, 1080);
         this.add(new MenuItem(875, 502, paramMenuController, "neuesSpiel"));
         this.add(new MenuItem(875, 561, paramMenuController, "spielLaden"));
         this.add(new MenuItem(875, 620, paramMenuController, "beenden"));
@@ -24,16 +25,14 @@ public class MenuPanel extends JPanel
             menuBg = ImageIO.read(new File("img//menu//menuBg.png"));
         }
         catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        {}
 
         setVisible(true);
     }
 
     public void paintComponent(Graphics menuView)
     {
-        super.paintComponents(menuView);
+        super.paintComponent(menuView);
         menuView.drawImage(menuBg, 0, 0, this);
     }
 }

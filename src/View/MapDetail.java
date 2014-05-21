@@ -18,8 +18,8 @@ public class MapDetail extends JPanel
 
         try
         {
-            this.detailMap = ImageIO.read(new File("data//img//map//detailMap.png"));
-            this.placeholderDetail = ImageIO.read(new File("data//img//map//placeholderDetail.png"));
+            this.detailMap = ImageIO.read(new File("data//img//map//detail//detailMap.png"));
+            this.placeholderDetail = ImageIO.read(new File("data//img//map//detail//placeholderDetail.png"));
         }
         catch(IOException e)
         {}

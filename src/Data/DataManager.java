@@ -23,10 +23,10 @@ public class DataManager
     private Document doc;
     private NodeList nodeKartenListe;
     private Node root;
-    private List<DetailKartenModel> detailKartenModelList;
+    public List<DetailKartenModel> detailKartenModelList = new LinkedList<DetailKartenModel>();
     private List<KoordinateModel> koordinateModelList = new LinkedList<KoordinateModel>();
 
-    public DataManager()
+    public DataManager(String mapName)
     {
         docFactory = DocumentBuilderFactory.newInstance();
 
@@ -35,14 +35,15 @@ public class DataManager
             docBuilder = docFactory.newDocumentBuilder();
         }
         catch(ParserConfigurationException pce)
-        {}
+        {
+        }
 
-        LoadData();
+        LoadData(mapName);
     }
 
-    public void LoadData()
+    public void LoadData(String mapName)
     {
-
+        getDetailKarte(mapName);
     }
 
     public void getDetailKarte(String kartenName)
@@ -52,22 +53,27 @@ public class DataManager
             File xmlFile = new File("data//xml//DetailKarten.xml");
             doc = docBuilder.parse(xmlFile);
             root = doc.getDocumentElement();
-            //nodeKartenListe = doc.getElementsByTagName("name");
         }
         catch(Exception e)
-        {}
+        {
+        }
 
+        //get Liste aller Karten
         if(root.hasChildNodes())
         {
             nodeKartenListe = root.getChildNodes();
         }
 
         Node karte = null;
+        Element rootElement = null;
 
+        //suche passende Karte nach Kartennamen
         for(int i = 0; i < nodeKartenListe.getLength(); i++)
         {
-            Element tmp = (Element) nodeKartenListe.item(i);
-            String name = tmp.getElementsByTagName("name").item(0).getFirstChild().getNodeValue();
+            int asd = nodeKartenListe.getLength();
+            rootElement = (Element) nodeKartenListe.item(i);
+            String name = rootElement.getElementsByTagName("name").item(0).getFirstChild().getNodeValue();
+            System.out.println("name: " + name);
             if(name.equals(kartenName))
             {
                 karte = nodeKartenListe.item(i);
@@ -77,26 +83,47 @@ public class DataManager
 
 
         int x, y;
-
+        String url = null;
+        //get
         if(karte.hasChildNodes())
         {
-            NodeList koordinateNodeList = karte.getChildNodes();
-            for(int i = 0; i < koordinateNodeList.getLength(); i++)
-            {
-                if(koordinateNodeList.item(i).hasAttributes())
+            //NodeList kartenChildNodeList = karte.getChildNodes();
+            url = rootElement.getElementsByTagName("url").item(0).getFirstChild().getNodeValue();
+            System.out.println("url: " + url);
+           // if(kartenChildNodeList.item(i).hasChildNodes())
+            //{
+                //NodeList koordinatenNodeList = kartenChildNodeList.item(2).getChildNodes();
+                NodeList kartenChildNodeList = rootElement.getElementsByTagName("position").item(0).getChildNodes();
+                for(int i = 0; i < kartenChildNodeList.getLength(); i++)
                 {
-                    NamedNodeMap nodeMap = koordinateNodeList.item(i).getAttributes();
+                    NodeList temp = kartenChildNodeList.item(i).getChildNodes();
+                    //NamedNodeMap nodeMap = kartenChildNodeList.item(i).getAttributes();
 
-                    Node xNode = nodeMap.item(0);
-                    Node yNode = nodeMap.item(1);
-                    x = Integer.parseInt(xNode.getNodeValue());
-                    y = Integer.parseInt(yNode.getNodeValue());
+
+                    Node xNode = temp.item(0);
+                    Node yNode = temp.item(1);
+                    x = Integer.parseInt(xNode.getFirstChild().getNodeValue());
+                    y = Integer.parseInt(yNode.getFirstChild().getNodeValue());
+
+                    System.out.println("x: " + x);
+                    System.out.println("y: " + y);
                     koordinateModelList.add(new KoordinateModel(x, y));
-
                 }
-            }
+
+           // }
+           /* else
+            {
+                if(kartenChildNodeList.item(i).getNodeName().equals("url"))
+                {
+                    url = rootElement.getElementsByTagName("name").item(0).getFirstChild().getNodeValue();
+                    System.out.println("url: " + url);
+                }
+
+            }*/
         }
-        detailKartenModelList.add(new DetailKartenModel(kartenName, koordinateModelList));
+        DetailKartenModel m = new DetailKartenModel(kartenName, url, koordinateModelList);
+        System.out.println("OK");
+        detailKartenModelList.add(m);
     }
 }
 

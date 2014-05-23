@@ -19,7 +19,7 @@ public class MapController implements MouseListener
     public MapController()
     {
         this.mapOverview = new MapOverview(this);
-        this.mapDetail = new MapDetail();
+        this.mapDetail = new MapDetail("gareth");
         this.separatorPanel = new SeparatorPanel();
     }
 

@@ -1,5 +1,8 @@
 package View;
 
+import Data.DataManager;
+import Model.DetailKartenModel;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -10,19 +13,25 @@ public class MapDetail extends JPanel
 {
     private Image detailMap, placeholderDetail;
     private boolean isMissionSelected = false;
+    private DataManager dataManager;
 
-    public MapDetail()
+    public MapDetail(String mapName)
     {
+        dataManager = new DataManager(mapName);
+
         this.setLayout(null);
         this.setBounds(821, 0, 1099, 1057);
 
         try
         {
-            this.detailMap = ImageIO.read(new File("data//img//map//detail//detailMap.png"));
+            DetailKartenModel karte = dataManager.detailKartenModelList.get(0);
+            //this.detailMap = ImageIO.read(new File("data//img//map//detail//detailMap.png"));
+            this.detailMap = ImageIO.read(new File(karte.getUrl()));
             this.placeholderDetail = ImageIO.read(new File("data//img//map//detail//placeholderDetail.png"));
         }
         catch(IOException e)
-        {}
+        {
+        }
 
         this.setVisible(true);
     }

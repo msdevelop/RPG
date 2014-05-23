@@ -5,31 +5,43 @@ import java.util.List;
 public class DetailKartenModel
 {
     private String name;
-    private List<KoordinateModel> koordinateModelList;
+    private String url;
+    private List<KoordinatenModel> koordinatenModelList;
 
-    public DetailKartenModel(String paramKartenName, List<KoordinateModel> paramListe)
+    public DetailKartenModel(String paramKartenName, String paramUrl, List<KoordinatenModel> paramListe)
     {
-        name = paramKartenName;
-        koordinateModelList = paramListe;
+        this.name = paramKartenName;
+        this.url = paramUrl;
+        this.koordinatenModelList = paramListe;
     }
 
-    public void setName(String kartenName)
+    public void setName(String paramKartenName)
     {
-        name = kartenName;
+        this.name = paramKartenName;
     }
 
-    public void setKoordinateModelList(List<KoordinateModel> liste)
+    public void setKoordinatenModelList(List<KoordinatenModel> paramListe)
     {
-        koordinateModelList = liste;
+        this.koordinatenModelList = paramListe;
     }
 
     public String getName()
     {
-        return name;
+        return this.name;
     }
 
-    public List<KoordinateModel> getKoordinateModelList()
+    public List<KoordinatenModel> getKoordinatenModelList()
     {
-        return koordinateModelList;
+        return this.koordinatenModelList;
+    }
+
+    public void setUrl(String paramUrl)
+    {
+        this.url = paramUrl;
+    }
+
+    public String getUrl()
+    {
+        return this.url;
     }
 }

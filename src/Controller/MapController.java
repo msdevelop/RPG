@@ -15,11 +15,13 @@ public class MapController implements MouseListener
     private MapOverview mapOverview;
     private MapDetail mapDetail;
     private SeparatorPanel separatorPanel;
+    private GameFrameController gameFrameController;
 
-    public MapController()
+    public MapController(GameFrameController paramGameFrameController)
     {
+        this.gameFrameController = paramGameFrameController;
         this.mapOverview = new MapOverview(this);
-        this.mapDetail = new MapDetail();
+        this.mapDetail = new MapDetail(this);
         this.separatorPanel = new SeparatorPanel();
     }
 
@@ -38,11 +40,16 @@ public class MapController implements MouseListener
         return this.separatorPanel;
     }
 
+    public GameFrameController getGameFrameController()
+    {
+        return this.gameFrameController;
+    }
+
     @Override
     public void mouseClicked(MouseEvent e)
     {
         if(e.getComponent().getName().equals("gareth"))
-            this.mapDetail.setMissionSelected(true);
+            this.mapDetail.selectMission("gareth");
     }
 
     @Override

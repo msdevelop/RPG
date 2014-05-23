@@ -1,5 +1,7 @@
 package View;
 
+import Controller.MapController;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -9,10 +11,14 @@ import java.io.IOException;
 public class MapDetail extends JPanel
 {
     private Image detailMap, placeholderDetail;
+    private String url;
     private boolean isMissionSelected = false;
+    private MapController mapController;
 
-    public MapDetail()
+    public MapDetail(MapController paramMapController)
     {
+        this.mapController = paramMapController;
+
         this.setLayout(null);
         this.setBounds(821, 0, 1099, 1057);
 
@@ -34,6 +40,12 @@ public class MapDetail extends JPanel
             detailMap.drawImage(this.detailMap, 0, 0, this);
         else
             detailMap.drawImage(this.placeholderDetail, 0, 0, this);
+    }
+
+    public void selectMission(String paramMapName)
+    {
+        this.url = this.mapController.getGameFrameController().getDataManager().getDetailKarte(paramMapName).getUrl();
+        this.setMissionSelected(true);
     }
 
     public void setMissionSelected(boolean paramBool)

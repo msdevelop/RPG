@@ -1,6 +1,7 @@
 package View;
 
 import Controller.MenuController;
+import View.SelectionItem.MenuSelectionItem;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,9 +17,9 @@ public class MenuPanel extends JPanel
     {
         this.setLayout(null);
         this.setBounds(0, 0, 1920, 1080);
-        this.add(new MenuItem(875, 502, paramMenuController, "neuesSpiel"));
-        this.add(new MenuItem(875, 561, paramMenuController, "spielLaden"));
-        this.add(new MenuItem(875, 620, paramMenuController, "beenden"));
+        this.add(new MenuSelectionItem(780, 457, paramMenuController, "neuesSpiel"));
+        this.add(new MenuSelectionItem(788, 543, paramMenuController, "spielLaden"));
+        this.add(new MenuSelectionItem(788, 630, paramMenuController, "beenden"));
 
         try
         {

@@ -3,6 +3,7 @@ package View;
 import Controller.MapController;
 import Model.DetailKartenModel;
 import Model.KoordinatenModel;
+import View.SelectionItem.DetailSelectionItem;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

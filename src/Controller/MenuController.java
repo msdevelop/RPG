@@ -1,10 +1,8 @@
 package Controller;
 
 import View.*;
-import View.MenuItem;
+import View.SelectionItem.MenuSelectionItem;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -32,6 +30,20 @@ public class MenuController implements MouseListener
     }
 
     @Override
+    public void mouseEntered(MouseEvent e)
+    {
+        MenuSelectionItem tmpItem = (MenuSelectionItem) e.getComponent();
+        tmpItem.setInMouseFocus(true);
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e)
+    {
+        MenuSelectionItem tmpItem = (MenuSelectionItem) e.getComponent();
+        tmpItem.setInMouseFocus(false);
+    }
+
+    @Override
     public void mousePressed(MouseEvent e)
     {
     }
@@ -40,20 +52,6 @@ public class MenuController implements MouseListener
     public void mouseReleased(MouseEvent e)
     {
 
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e)
-    {
-        MenuItem tmpItem = (MenuItem) e.getComponent();
-        tmpItem.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e)
-    {
-        MenuItem tmpItem = (MenuItem) e.getComponent();
-        tmpItem.setBorder(null);
     }
 
     public MenuPanel getMenuPanel()

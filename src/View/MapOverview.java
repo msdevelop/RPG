@@ -1,6 +1,7 @@
 package View;
 
 import Controller.MapController;
+import View.SelectionItem.OverviewSelectionItem;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

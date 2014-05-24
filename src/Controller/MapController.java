@@ -1,6 +1,8 @@
 package Controller;
 
 import View.*;
+import View.SelectionItem.DetailSelectionItem;
+import View.SelectionItem.OverviewSelectionItem;
 
 import javax.swing.*;
 import java.awt.*;

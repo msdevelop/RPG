@@ -1,9 +1,6 @@
 package Controller;
 
-import View.MapDetail;
-import View.MapOverview;
-import View.SelectionItem;
-import View.SeparatorPanel;
+import View.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,8 +45,10 @@ public class MapController implements MouseListener
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        if(e.getComponent().getName().equals("gareth"))
-            this.mapDetail.selectMission("gareth");
+        if(e.getComponent().getName().equals("overviewGareth"))
+            this.mapDetail.selectMission("detailGareth");
+        else if(e.getComponent().getName().equals("detailGareth"))
+            System.out.println("Success!");
     }
 
     @Override
@@ -67,15 +66,30 @@ public class MapController implements MouseListener
     @Override
     public void mouseEntered(MouseEvent e)
     {
-        SelectionItem tmpItem = (SelectionItem) e.getComponent();
-        tmpItem.setBorder(BorderFactory.createLineBorder(Color.blue, 2, true));
+        if(e.getComponent().getName().startsWith("overview"))
+        {
+            OverviewSelectionItem tmpOverviewItem = (OverviewSelectionItem) e.getComponent();
+            tmpOverviewItem.setBorder(BorderFactory.createLineBorder(Color.blue, 2, true));
+        }
+        else if(e.getComponent().getName().startsWith("detail"))
+        {
+            DetailSelectionItem tmpDetailItem = (DetailSelectionItem) e.getComponent();
+            tmpDetailItem.setBorder(BorderFactory.createLineBorder(Color.blue, 2, true));
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e)
     {
-        SelectionItem tmpItem = (SelectionItem) e.getComponent();
-        tmpItem.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
-
+        if(e.getComponent().getName().startsWith("overview"))
+        {
+            OverviewSelectionItem tmpItem = (OverviewSelectionItem) e.getComponent();
+            tmpItem.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
+        }
+        else if(e.getComponent().getName().startsWith("detail"))
+        {
+            DetailSelectionItem tmpDetailItem = (DetailSelectionItem) e.getComponent();
+            tmpDetailItem.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
+        }
     }
 }

@@ -5,9 +5,9 @@ import Controller.MapController;
 import javax.swing.*;
 import java.awt.*;
 
-public class SelectionItem extends JPanel
+public class OverviewSelectionItem extends JPanel
 {
-    public SelectionItem(String paramName, int paramXPos, int paramYPos, MapController paramMapController)
+    public OverviewSelectionItem(String paramName, int paramXPos, int paramYPos, MapController paramMapController)
     {
         this.setName(paramName);
         this.setOpaque(false);

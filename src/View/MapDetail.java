@@ -1,12 +1,15 @@
 package View;
 
 import Controller.MapController;
+import Model.DetailKartenModel;
+import Model.KoordinatenModel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class MapDetail extends JPanel
 {
@@ -14,6 +17,7 @@ public class MapDetail extends JPanel
     private String url;
     private boolean isMissionSelected = false;
     private MapController mapController;
+    private List<KoordinatenModel> koordinatenModelList;
 
     public MapDetail(MapController paramMapController)
     {
@@ -44,7 +48,18 @@ public class MapDetail extends JPanel
 
     public void selectMission(String paramMapName)
     {
-        this.url = this.mapController.getGameFrameController().getDataManager().getDetailKarte(paramMapName).getUrl();
+        DetailKartenModel currentDetailMap = this.mapController.getGameFrameController().getDataManager().getDetailKarte(paramMapName);
+        this.url = currentDetailMap.getUrl();
+        this.koordinatenModelList = currentDetailMap.getKoordinatenModelList();
+
+        for(int i = 0; i < koordinatenModelList.size(); i++)
+        {
+            KoordinatenModel currentModel = koordinatenModelList.get(i);
+            int xPos = currentModel.getxPosition();
+            int yPos = currentModel.getyPosition();
+            this.add(new DetailSelectionItem(paramMapName, xPos, yPos, this.mapController));
+        }
+
         this.setMissionSelected(true);
     }
 

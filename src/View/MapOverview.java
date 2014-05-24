@@ -27,7 +27,7 @@ public class MapOverview extends JPanel
         catch(IOException e)
         {}
 
-        this.add(new SelectionItem("gareth", 350, 460, this.mapController));
+        this.add(new OverviewSelectionItem("overviewGareth", 350, 460, this.mapController));
     }
 
     public void paintComponent(Graphics map)

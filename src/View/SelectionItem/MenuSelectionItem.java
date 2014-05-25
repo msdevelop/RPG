@@ -18,7 +18,7 @@ public class MenuSelectionItem extends JPanel
         this.setLayout(null);
         this.setName(paramName);
         this.setOpaque(false);
-        this.setBounds(paramXPos, paramYPos, 346, 88);
+        this.setBounds(paramXPos, paramYPos, 345, 88);
         this.addMouseListener(paramMenuController);
         try
         {

@@ -17,7 +17,7 @@ public class MenuPanel extends JPanel
     {
         this.setLayout(null);
         this.setBounds(0, 0, 1920, 1080);
-        this.add(new MenuSelectionItem(780, 457, paramMenuController, "neuesSpiel"));
+        this.add(new MenuSelectionItem(792, 457, paramMenuController, "neuesSpiel"));
         this.add(new MenuSelectionItem(788, 543, paramMenuController, "spielLaden"));
         this.add(new MenuSelectionItem(788, 630, paramMenuController, "beenden"));
 

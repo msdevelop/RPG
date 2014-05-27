@@ -28,16 +28,16 @@ public class MapOverview extends JPanel
         catch(IOException e)
         {}
 
-        this.add(new OverviewSelectionItem("overviewGareth", 340, 477, this.mapController));
-        this.add(new OverviewSelectionItem("overviewGerasim", 420, 258, this.mapController));
+        this.add(new OverviewSelectionItem("overview_gareth", 340, 477, this.mapController));
+        this.add(new OverviewSelectionItem("overview_gerasim", 420, 258, this.mapController));
 
-        //no images, will load gareth
-        this.add(new OverviewSelectionItem("overviewZyklopen", 159, 671, this.mapController));
-        this.add(new OverviewSelectionItem("overviewPerricum", 448, 509, this.mapController));
-        this.add(new OverviewSelectionItem("overviewBeilung", 540, 305, this.mapController));
-        this.add(new OverviewSelectionItem("overviewOrkland", 192, 324, this.mapController));
-        this.add(new OverviewSelectionItem("overviewHavena", 188, 504, this.mapController));
-        this.add(new OverviewSelectionItem("overviewKhom", 328, 661, this.mapController));
+        //no images, will display "error"
+        this.add(new OverviewSelectionItem("overview_zyklopen", 159, 671, this.mapController));
+        this.add(new OverviewSelectionItem("overview_perricum", 448, 509, this.mapController));
+        this.add(new OverviewSelectionItem("overview_beilung", 540, 305, this.mapController));
+        this.add(new OverviewSelectionItem("overview_orkland", 192, 324, this.mapController));
+        this.add(new OverviewSelectionItem("overview_havena", 188, 504, this.mapController));
+        this.add(new OverviewSelectionItem("overview_khom", 328, 661, this.mapController));
     }
 
     public void paintComponent(Graphics map)

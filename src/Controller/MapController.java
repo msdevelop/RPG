@@ -42,7 +42,7 @@ public class MapController implements MouseListener
     {
         if(e.getComponent().getName().startsWith("overview"))
         {
-            this.mapDetail.selectMission("detail" + e.getComponent().getName().substring(8));
+            this.mapDetail.selectMission("detail_" + e.getComponent().getName().substring(9));
             this.mapOverview.disableView();
         }
         else if(e.getComponent().getName().startsWith("detail"))

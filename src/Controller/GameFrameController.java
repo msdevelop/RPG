@@ -19,6 +19,7 @@ public class GameFrameController implements ActionListener
         this.gameFrame = new GameFrame(this);
         this.menuController = new MenuController(this.gameFrame);
         this.gameFrame.setVisible(true);
+        this.gameFrame.requestFocus();
     }
 
     public void startGame()
@@ -27,7 +28,6 @@ public class GameFrameController implements ActionListener
         this.gameFrame.remove(this.menuController.getMenuPanel());
         this.gameFrame.addMenu();
         this.mapController = new MapController(this);
-        this.gameFrame.getContentPane().add(this.mapController.getSeparatorPanel());
         this.gameFrame.getContentPane().add(this.mapController.getMapOverview());
         this.gameFrame.getContentPane().add(this.mapController.getMapDetail());
     }

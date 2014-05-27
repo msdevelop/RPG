@@ -13,7 +13,6 @@ public class MapController implements MouseListener
 {
     private MapOverview mapOverview;
     private MapDetail mapDetail;
-    private SeparatorPanel separatorPanel;
     private GameFrameController gameFrameController;
 
     public MapController(GameFrameController paramGameFrameController)
@@ -21,7 +20,6 @@ public class MapController implements MouseListener
         this.gameFrameController = paramGameFrameController;
         this.mapOverview = new MapOverview(this);
         this.mapDetail = new MapDetail(this);
-        this.separatorPanel = new SeparatorPanel();
     }
 
     public MapOverview getMapOverview()
@@ -34,11 +32,6 @@ public class MapController implements MouseListener
         return this.mapDetail;
     }
 
-    public SeparatorPanel getSeparatorPanel()
-    {
-        return this.separatorPanel;
-    }
-
     public GameFrameController getGameFrameController()
     {
         return this.gameFrameController;
@@ -47,9 +40,12 @@ public class MapController implements MouseListener
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        if(e.getComponent().getName().equals("overviewGareth"))
-            this.mapDetail.selectMission("detailGareth");
-        else if(e.getComponent().getName().equals("detailGareth"))
+        if(e.getComponent().getName().startsWith("overview"))
+        {
+            this.mapDetail.selectMission("detail" + e.getComponent().getName().substring(8));
+            this.mapOverview.disableView();
+        }
+        else if(e.getComponent().getName().startsWith("detail"))
             System.out.println("Success!");
     }
 
@@ -71,7 +67,7 @@ public class MapController implements MouseListener
         if(e.getComponent().getName().startsWith("overview"))
         {
             OverviewSelectionItem tmpOverviewItem = (OverviewSelectionItem) e.getComponent();
-            tmpOverviewItem.setBorder(BorderFactory.createLineBorder(Color.blue, 2, true));
+            tmpOverviewItem.setMouseFocus(true);
         }
         else if(e.getComponent().getName().startsWith("detail"))
         {
@@ -86,7 +82,7 @@ public class MapController implements MouseListener
         if(e.getComponent().getName().startsWith("overview"))
         {
             OverviewSelectionItem tmpItem = (OverviewSelectionItem) e.getComponent();
-            tmpItem.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
+            tmpItem.setMouseFocus(false);
         }
         else if(e.getComponent().getName().startsWith("detail"))
         {

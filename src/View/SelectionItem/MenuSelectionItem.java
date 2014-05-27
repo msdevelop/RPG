@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class MenuSelectionItem extends JPanel
 {
-    private Image borderImg;
+    private Image selectionImg;
     private boolean isInMouseFocus = false;
 
     public MenuSelectionItem(int paramXPos, int paramYPos, MenuController paramMenuController, String paramName)
@@ -22,7 +22,7 @@ public class MenuSelectionItem extends JPanel
         this.addMouseListener(paramMenuController);
         try
         {
-            this.borderImg = ImageIO.read(new File("data//img//menu//selectionItem.png"));
+            this.selectionImg = ImageIO.read(new File("data//img//menu//menuSelectionItem.png"));
         }
         catch(IOException e)
         {}
@@ -34,7 +34,7 @@ public class MenuSelectionItem extends JPanel
 
         if(isInMouseFocus)
         {
-            selectionItem.drawImage(this.borderImg, 0, 0, this);
+            selectionItem.drawImage(this.selectionImg, 0, 0, this);
         }
     }
 

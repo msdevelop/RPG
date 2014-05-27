@@ -15,7 +15,6 @@ import java.util.List;
 public class MapDetail extends JPanel
 {
     private Image detailMap, placeholderDetail;
-    private String url;
     private boolean isMissionSelected = false;
     private MapController mapController;
     private List<KoordinatenModel> koordinatenModelList;
@@ -25,11 +24,10 @@ public class MapDetail extends JPanel
         this.mapController = paramMapController;
 
         this.setLayout(null);
-        this.setBounds(821, 0, 1099, 1057);
+        this.setBounds(811, 0, 1109, 1057);
 
         try
         {
-            this.detailMap = ImageIO.read(new File("data//img//map//detail//detailMap.png"));
             this.placeholderDetail = ImageIO.read(new File("data//img//map//detail//placeholderDetail.png"));
         }
         catch(IOException e)
@@ -50,8 +48,14 @@ public class MapDetail extends JPanel
     public void selectMission(String paramMapName)
     {
         DetailKartenModel currentDetailMap = this.mapController.getGameFrameController().getDataManager().getDetailKarte(paramMapName);
-        this.url = currentDetailMap.getUrl();
         this.koordinatenModelList = currentDetailMap.getKoordinatenModelList();
+
+        try
+        {
+            this.detailMap = ImageIO.read(new File(currentDetailMap.getUrl()));
+        }
+        catch(IOException e)
+        {}
 
         for(int i = 0; i < koordinatenModelList.size(); i++)
         {

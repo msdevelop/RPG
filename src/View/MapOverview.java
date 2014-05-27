@@ -19,7 +19,7 @@ public class MapOverview extends JPanel
         this.mapController = paramMapController;
 
         this.setLayout(null);
-        this.setBounds(0, 0, 801, 1057);
+        this.setBounds(0, 0, 811, 1057);
 
         try
         {
@@ -28,12 +28,27 @@ public class MapOverview extends JPanel
         catch(IOException e)
         {}
 
-        this.add(new OverviewSelectionItem("overviewGareth", 350, 460, this.mapController));
+        this.add(new OverviewSelectionItem("overviewGareth", 340, 477, this.mapController));
+        this.add(new OverviewSelectionItem("overviewGerasim", 420, 258, this.mapController));
+
+        //no images, will load gareth
+        this.add(new OverviewSelectionItem("overviewZyklopen", 159, 671, this.mapController));
+        this.add(new OverviewSelectionItem("overviewPerricum", 448, 509, this.mapController));
+        this.add(new OverviewSelectionItem("overviewBeilung", 540, 305, this.mapController));
+        this.add(new OverviewSelectionItem("overviewOrkland", 192, 324, this.mapController));
+        this.add(new OverviewSelectionItem("overviewHavena", 188, 504, this.mapController));
+        this.add(new OverviewSelectionItem("overviewKhom", 328, 661, this.mapController));
     }
 
     public void paintComponent(Graphics map)
     {
         super.paintComponent(map);
         map.drawImage(this.mapImage, 0, 0, this);
+    }
+
+    public void disableView()
+    {
+        this.setEnabled(false);
+        this.removeAll();
     }
 }

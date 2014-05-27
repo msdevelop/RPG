@@ -39,8 +39,7 @@ public class DataManager
             docBuilder = docFactory.newDocumentBuilder();
         }
         catch(ParserConfigurationException pce)
-        {
-        }
+        {}
     }
 
     public DetailKartenModel getDetailKarte(String paramMapName)

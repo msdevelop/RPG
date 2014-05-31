@@ -15,7 +15,7 @@ public class GameFrameController implements ActionListener
 
     public GameFrameController()
     {
-        this.dataManager = new DataManager(this);
+        this.dataManager = new DataManager();
         this.gameFrame = new GameFrame(this);
         this.menuController = new MenuController(this.gameFrame);
         this.gameFrame.setVisible(true);

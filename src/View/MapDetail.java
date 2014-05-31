@@ -10,14 +10,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.LinkedList;
 
 public class MapDetail extends JPanel
 {
     private Image detailMap, placeholderDetail;
     private boolean isMissionSelected = false;
     private MapController mapController;
-    private List<KoordinatenModel> koordinatenModelList;
 
     public MapDetail(MapController paramMapController)
     {
@@ -48,7 +47,7 @@ public class MapDetail extends JPanel
     public void selectMission(String paramMapName)
     {
         DetailKartenModel currentDetailMap = this.mapController.getGameFrameController().getDataManager().getDetailKarte(paramMapName);
-        this.koordinatenModelList = currentDetailMap.getKoordinatenModelList();
+        LinkedList<KoordinatenModel> koordinatenModelList = currentDetailMap.getKoordinatenModelList();
 
         try
         {
@@ -64,7 +63,6 @@ public class MapDetail extends JPanel
             int yPos = currentModel.getyPosition();
             this.add(new DetailSelectionItem(paramMapName, xPos, yPos, this.mapController));
         }
-
         this.setMissionSelected(true);
     }
 

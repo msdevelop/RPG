@@ -1,14 +1,14 @@
 package Model;
 
-import java.util.List;
+import java.util.LinkedList;
 
 public class DetailKartenModel
 {
     private String name;
     private String url;
-    private List<KoordinatenModel> koordinatenModelList;
+    private LinkedList<KoordinatenModel> koordinatenModelList;
 
-    public DetailKartenModel(String paramKartenName, String paramUrl, List<KoordinatenModel> paramListe)
+    public DetailKartenModel(String paramKartenName, String paramUrl, LinkedList<KoordinatenModel> paramListe)
     {
         this.name = paramKartenName;
         this.url = paramUrl;
@@ -20,7 +20,7 @@ public class DetailKartenModel
         this.name = paramKartenName;
     }
 
-    public void setKoordinatenModelList(List<KoordinatenModel> paramListe)
+    public void setKoordinatenModelList(LinkedList<KoordinatenModel> paramListe)
     {
         this.koordinatenModelList = paramListe;
     }
@@ -30,7 +30,7 @@ public class DetailKartenModel
         return this.name;
     }
 
-    public List<KoordinatenModel> getKoordinatenModelList()
+    public LinkedList<KoordinatenModel> getKoordinatenModelList()
     {
         return this.koordinatenModelList;
     }

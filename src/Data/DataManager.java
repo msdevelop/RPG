@@ -1,50 +1,29 @@
 package Data;
 
-import java.io.File;
-import java.util.LinkedList;
-
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import Controller.GameFrameController;
-import Model.KoordinatenModel;
 import Model.DetailKartenModel;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import Model.KoordinatenModel;
+
+import java.sql.*;
+import java.util.LinkedList;
 
 public class DataManager
 {
-    private DocumentBuilder docBuilder;
-    private DocumentBuilderFactory docFactory;
-    private Document doc;
-    private NodeList nodeKartenListe;
-    private Node root;
-    private List<DetailKartenModel> detailKartenModelList = new LinkedList<DetailKartenModel>();
-    private List<KoordinatenModel> koordinatenModelList = new LinkedList<KoordinatenModel>();
-    private GameFrameController gameFrameController;
+    private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<DetailKartenModel>();
+    private Connection connection = null;
 
-    public DataManager(GameFrameController paramGameFrameController)
+    public DataManager()
     {
-        this.gameFrameController = paramGameFrameController;
-
-        docFactory = DocumentBuilderFactory.newInstance();
-
         try
         {
-            docBuilder = docFactory.newDocumentBuilder();
+            Class.forName( "org.hsqldb.jdbcDriver" );
+            this.connection = DriverManager.getConnection("jdbc:hsqldb:file:data\\hsql\\db", "root", "");
         }
-        catch(ParserConfigurationException pce)
+        catch (Exception e)
         {}
     }
 
     public DetailKartenModel getDetailKarte(String paramMapName)
     {
-
         for(int j = 0; j < detailKartenModelList.size(); j++)
         {
             if(detailKartenModelList.get(j).getName().equals(paramMapName))
@@ -53,48 +32,49 @@ public class DataManager
             }
         }
 
+        DetailKartenModel tmpModel = null;
         try
         {
-            File detailMapXmlFile = new File("data//xml//detailMap.xml");
-            doc = docBuilder.parse(detailMapXmlFile);
-            root = doc.getDocumentElement();
+            PreparedStatement pstmt = this.connection.prepareStatement("SELECT * FROM detailMap WHERE (name = ?)");
+            pstmt.setString(1, paramMapName);
+            ResultSet result = pstmt.executeQuery();
+            result.next();
+            tmpModel = new DetailKartenModel(paramMapName, result.getString(2), this.trimPosition(result.getString(3)));
+            this.detailKartenModelList.add(tmpModel);
         }
-        catch(Exception e)
+        catch(SQLException e)
         {}
-
-        //get Liste aller Karten
-        if(root.hasChildNodes())
-        {
-            nodeKartenListe = root.getChildNodes();
-        }
-
-        Element detailMap = null;
-
-        //suche passende Karte nach Kartennamen
-        for(int i = 0; i < nodeKartenListe.getLength(); i++)
-        {
-            detailMap = (Element) nodeKartenListe.item(i);
-            if(detailMap.getElementsByTagName("name").item(0).getFirstChild().getNodeValue().equals(paramMapName))
-                break;
-        }
-
-        String url = detailMap.getElementsByTagName("url").item(0).getFirstChild().getNodeValue();
-        NodeList koordinatenList = detailMap.getElementsByTagName("position").item(0).getChildNodes();
-
-        for(int i = 0; i < koordinatenList.getLength(); i++)
-        {
-            NodeList tmpList = koordinatenList.item(i).getChildNodes();
-
-            int xPos = Integer.parseInt(tmpList.item(0).getFirstChild().getNodeValue());
-            int yPos = Integer.parseInt(tmpList.item(1).getFirstChild().getNodeValue());
-
-            koordinatenModelList.add(new KoordinatenModel(xPos, yPos));
-        }
-        DetailKartenModel tmpModel = new DetailKartenModel(paramMapName, url, koordinatenModelList);
-        detailKartenModelList.add(tmpModel);
-
         return tmpModel;
     }
+
+    public LinkedList<KoordinatenModel> trimPosition(String paramPos)
+    {
+        LinkedList<KoordinatenModel> koordinatenModelList = new LinkedList<KoordinatenModel>();
+        int k = 0;
+        int posLength = paramPos.length();
+
+        while(k < posLength)
+        {
+            String xPos = "";
+            String yPos = "";
+
+            while(paramPos.charAt(k) != ',')
+            {
+                xPos += paramPos.charAt(k);
+                k++;
+            }
+            k++;
+
+            while(paramPos.charAt(k) != '\n')
+            {
+                yPos += paramPos.charAt(k);
+                k++;
+                if(k >= posLength)
+                    break;
+            }
+            k++;
+            koordinatenModelList.add(new KoordinatenModel(Integer.parseInt(xPos), Integer.parseInt(yPos)));
+        }
+        return koordinatenModelList;
+    }
 }
-
-

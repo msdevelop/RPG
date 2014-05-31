@@ -1,7 +1,6 @@
 package MainPage;
 
 import Controller.GameFrameController;
-import Data.DataManager;
 
 public class RPGMainPage
 {

@@ -1,5 +1,6 @@
 package Data;
 
+import Model.CharakterModel;
 import Model.DetailKartenModel;
 import Model.KoordinatenModel;
 
@@ -38,6 +39,7 @@ public class DataManager
             PreparedStatement pstmt = this.connection.prepareStatement("SELECT * FROM detailMap WHERE (name = ?)");
             pstmt.setString(1, paramMapName);
             ResultSet result = pstmt.executeQuery();
+            pstmt.close();
             result.next();
             tmpModel = new DetailKartenModel(paramMapName, result.getString(2), this.trimPosition(result.getString(3)));
             this.detailKartenModelList.add(tmpModel);
@@ -77,4 +79,7 @@ public class DataManager
         }
         return koordinatenModelList;
     }
+
+    public CharakterModel getCharakterRaw()
+    {return null;}
 }

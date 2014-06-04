@@ -10,6 +10,7 @@ import java.util.LinkedList;
 public class DataManager
 {
     private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<DetailKartenModel>();
+    private LinkedList<CharakterModel> charakterModelList;
     private Connection connection = null;
 
     public DataManager()
@@ -43,6 +44,7 @@ public class DataManager
             result.next();
             tmpModel = new DetailKartenModel(paramMapName, result.getString(2), this.trimPosition(result.getString(3)));
             this.detailKartenModelList.add(tmpModel);
+            result.close();
         }
         catch(SQLException e)
         {}
@@ -80,6 +82,44 @@ public class DataManager
         return koordinatenModelList;
     }
 
-    public CharakterModel getCharakterRaw()
-    {return null;}
+    public LinkedList<CharakterModel> getCharaktersRaw()
+    {
+        this.charakterModelList = new LinkedList<CharakterModel>();
+
+        try
+        {
+            Statement stmt = this.connection.createStatement();
+            ResultSet charResult = stmt.executeQuery("SELECT * FROM charakterRaw");
+            while(charResult.next())
+            {
+                CharakterModel tmpModel = new CharakterModel(charResult.getInt("mut"), charResult.getInt("klugheit"), charResult.getInt("intuition"),
+                        charResult.getInt("charisma"), charResult.getInt("fingerfertigkeit"), charResult.getInt("gewandheit"), charResult.getInt("koerperkraft"),
+                        charResult.getInt("lebensPkte"), charResult.getInt("astralPkte"), charResult.getInt("aberglaube"), charResult.getInt("koerperbeherrschung"),
+                        charResult.getInt("selbstbeherrschung"), charResult.getInt("aexteBeile"), charResult.getInt("dolche"), charResult.getInt("schwertSblEh"),
+                        charResult.getInt("schwertSblZh"), charResult.getInt("fechtwaffen"), charResult.getInt("speerStab"), charResult.getInt("stumpfEh"),
+                        charResult.getInt("stumpfZh"), charResult.getInt("armbrust"), charResult.getInt("bogen"), charResult.getInt("stufe"),
+                        charResult.getInt("magieresistenz"), charResult.getInt("ausdauer"), charResult.getInt("attackeWert"), charResult.getInt("paradeWert"),
+                        charResult.getInt("ausweichWert"), charResult.getInt("fernkampfWert"), charResult.getString("namensListe"), charResult.getString("klasse"),
+                        charResult.getString("kopfEq"), charResult.getString("brustEq"), charResult.getString("waffenhandEq"), charResult.getString("nebenhandEq"));
+
+                charakterModelList.add(tmpModel);
+            }
+            stmt.close();
+            charResult.close();
+        }
+        catch(SQLException e)
+        {
+            System.err.println("Fehler beim lesen des charakters");
+        }
+
+
+        //TODO models erstellen und in liste einfuegen
+
+        return this.charakterModelList;
+    }
+
+    public LinkedList<CharakterModel> getCharakterModelList()
+    {
+        return this.charakterModelList;
+    }
 }

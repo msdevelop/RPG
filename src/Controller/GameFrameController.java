@@ -12,6 +12,7 @@ public class GameFrameController implements ActionListener
     private MenuController menuController;
     private MapController mapController;
     private DataManager dataManager;
+    private CharakterSelectionController charakterSelectionController;
 
     public GameFrameController()
     {
@@ -22,14 +23,15 @@ public class GameFrameController implements ActionListener
         this.gameFrame.requestFocus();
     }
 
-    public void startGame()
+    public void startNewGame()
     {
         this.menuController.getMenuPanel().setVisible(false);
         this.gameFrame.remove(this.menuController.getMenuPanel());
-        this.gameFrame.addMenu();
+        this.gameFrame.addMenuBar();
         this.mapController = new MapController(this);
         this.gameFrame.getContentPane().add(this.mapController.getMapOverview());
-        this.gameFrame.getContentPane().add(this.mapController.getMapDetail());
+        this.gameFrame.getContentPane().add(this.mapController.getMapDetailView());
+        this.charakterSelectionController = new CharakterSelectionController(this);
     }
 
     public void loadGame()

@@ -12,14 +12,14 @@ import java.awt.event.MouseListener;
 public class MapController implements MouseListener
 {
     private MapOverview mapOverview;
-    private MapDetail mapDetail;
+    private MapDetailView mapDetailView;
     private GameFrameController gameFrameController;
 
     public MapController(GameFrameController paramGameFrameController)
     {
         this.gameFrameController = paramGameFrameController;
         this.mapOverview = new MapOverview(this);
-        this.mapDetail = new MapDetail(this);
+        this.mapDetailView = new MapDetailView(this);
     }
 
     public MapOverview getMapOverview()
@@ -27,9 +27,9 @@ public class MapController implements MouseListener
         return this.mapOverview;
     }
 
-    public MapDetail getMapDetail()
+    public MapDetailView getMapDetailView()
     {
-        return this.mapDetail;
+        return this.mapDetailView;
     }
 
     public GameFrameController getGameFrameController()
@@ -42,7 +42,7 @@ public class MapController implements MouseListener
     {
         if(e.getComponent().getName().startsWith("overview"))
         {
-            this.mapDetail.selectMission("detail_" + e.getComponent().getName().substring(9));
+            this.mapDetailView.selectMission("detail_" + e.getComponent().getName().substring(9));
             this.mapOverview.disableView();
         }
         else if(e.getComponent().getName().startsWith("detail"))

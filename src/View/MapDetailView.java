@@ -12,13 +12,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class MapDetail extends JPanel
+public class MapDetailView extends JPanel
 {
     private Image detailMap, placeholderDetail;
     private boolean isMissionSelected = false;
     private MapController mapController;
 
-    public MapDetail(MapController paramMapController)
+    public MapDetailView(MapController paramMapController)
     {
         this.mapController = paramMapController;
 

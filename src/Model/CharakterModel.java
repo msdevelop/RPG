@@ -5,6 +5,8 @@ import java.util.LinkedList;
 public class CharakterModel
 {
     private LinkedList<String> namensListe;
+    /**String name := name der vom spieler ausgewählt/gegeben wird*/
+    //TODO bei charakterauswahl namen abfragen und eintragen
     private String klasse, waffenhandEq, nebenhandEq, brustEq, kopfEq, name;
     private int mut, klugheit, intuition, charisma, fingerfertigkeit, gewandheit, koerperkraft, aberglaube, koerperbeherrschung;
     private int selbstbeherrschung, aexteBeile, dolche, schwertSblEh, schwertSblZh, fechtwaffen, speerStab, stumpfEh, stumpfZh;
@@ -13,7 +15,7 @@ public class CharakterModel
 
     public CharakterModel(int mut, int klugheit, int intuition, int charisma, int fingerfertigkeit, int gewandheit, int koerperkraft, int lebensPkte, int astralPkte, int aberglaube,
             int koerperbeherrschung, int selbstbeherrschung, int aexteBeile, int dolche, int schwertSblEh, int schwertSblZh, int fechtwaffen, int speerStab, int stumpfEh, int stumpfZh,
-            int armbrust, int bogen, int stufe, int magieresistenz, int attackeWert, int paradeWert, int ausweichWert, int fernkampfWert,
+            int armbrust, int bogen, int stufe, int magieresistenz, int ausdauer, int attackeWert, int paradeWert, int ausweichWert, int fernkampfWert,
             String namensListe, String klasse, String kopfEq, String brustEq, String waffenhandEq, String nebenhandEq)
     {
         this.klasse = klasse;
@@ -43,13 +45,14 @@ public class CharakterModel
         this.bogen = bogen;
         this.stufe = stufe;
         this.magieresistenz = magieresistenz;
+        this.ausdauer = ausdauer;
         this.attackeWert = attackeWert;
         this.paradeWert = paradeWert;
         this.ausweichWert = ausweichWert;
         this.fernkampfWert = fernkampfWert;
         this.lebensPkte = lebensPkte;
         this.astralPkte = astralPkte;
-        this.namensListe = trimNamensListe(namensListe);
+        this.namensListe = this.trimNamensListe(namensListe);
     }
 
     public LinkedList<String> trimNamensListe(String paramNamensListe)
@@ -62,7 +65,7 @@ public class CharakterModel
         {
             String tmpName = "";
 
-            while(paramNamensListe.charAt(i) != ',')
+            while(paramNamensListe.charAt(i) != '\n')
             {
                 tmpName += paramNamensListe.charAt(i);
                 i++;

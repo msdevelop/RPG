@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="hsqldb" level="application" />
+    <orderEntry type="library" name="hsqldb" level="project" />
   </component>
 </module>
 

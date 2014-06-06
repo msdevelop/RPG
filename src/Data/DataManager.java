@@ -10,14 +10,13 @@ import java.util.LinkedList;
 public class DataManager
 {
     private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<DetailKartenModel>();
-    private LinkedList<CharakterModel> charakterModelList;
     private Connection connection = null;
 
     public DataManager()
     {
         try
         {
-            Class.forName( "org.hsqldb.jdbcDriver" );
+            Class.forName("org.hsqldb.jdbcDriver");
             this.connection = DriverManager.getConnection("jdbc:hsqldb:file:data\\hsql\\db", "root", "");
         }
         catch (Exception e)
@@ -39,12 +38,12 @@ public class DataManager
         {
             PreparedStatement pstmt = this.connection.prepareStatement("SELECT * FROM detailMap WHERE (name = ?)");
             pstmt.setString(1, paramMapName);
-            ResultSet result = pstmt.executeQuery();
+            ResultSet detMapResult = pstmt.executeQuery();
             pstmt.close();
-            result.next();
-            tmpModel = new DetailKartenModel(paramMapName, result.getString(2), this.trimPosition(result.getString(3)));
+            detMapResult.next();
+            tmpModel = new DetailKartenModel(paramMapName, detMapResult.getString(2), this.trimPosition(detMapResult.getString(3)));
             this.detailKartenModelList.add(tmpModel);
-            result.close();
+            detMapResult.close();
         }
         catch(SQLException e)
         {}
@@ -84,12 +83,13 @@ public class DataManager
 
     public LinkedList<CharakterModel> getCharaktersRaw()
     {
-        this.charakterModelList = new LinkedList<CharakterModel>();
+        LinkedList<CharakterModel> charakterModelList = new LinkedList<CharakterModel>();
 
         try
         {
             Statement stmt = this.connection.createStatement();
             ResultSet charResult = stmt.executeQuery("SELECT * FROM charakterRaw");
+            stmt.close();
             while(charResult.next())
             {
                 CharakterModel tmpModel = new CharakterModel(charResult.getInt("mut"), charResult.getInt("klugheit"), charResult.getInt("intuition"),
@@ -104,22 +104,10 @@ public class DataManager
 
                 charakterModelList.add(tmpModel);
             }
-            stmt.close();
             charResult.close();
         }
         catch(SQLException e)
-        {
-            System.err.println("Fehler beim lesen des charakters");
-        }
-
-
-        //TODO models erstellen und in liste einfuegen
-
-        return this.charakterModelList;
-    }
-
-    public LinkedList<CharakterModel> getCharakterModelList()
-    {
-        return this.charakterModelList;
+        {}
+        return charakterModelList;
     }
 }

@@ -17,4 +17,9 @@ public class CharakterSelectionController
         this.charakterModelList = this.gameFrameController.getDataManager().getCharaktersRaw();
         this.charakterSelectionView = new CharakterSelectionView();
     }
+
+    public CharakterSelectionView getCharakterSelectionView()
+    {
+        return this.charakterSelectionView;
+    }
 }

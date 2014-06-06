@@ -29,9 +29,10 @@ public class GameFrameController implements ActionListener
         this.gameFrame.remove(this.menuController.getMenuPanel());
         this.gameFrame.addMenuBar();
         this.mapController = new MapController(this);
+        this.charakterSelectionController = new CharakterSelectionController(this);
+        this.gameFrame.getContentPane().add(this.charakterSelectionController.getCharakterSelectionView());
         this.gameFrame.getContentPane().add(this.mapController.getMapOverview());
         this.gameFrame.getContentPane().add(this.mapController.getMapDetailView());
-        this.charakterSelectionController = new CharakterSelectionController(this);
     }
 
     public void loadGame()

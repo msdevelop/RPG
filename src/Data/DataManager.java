@@ -92,7 +92,7 @@ public class DataManager
             stmt.close();
             while(charResult.next())
             {
-                CharakterModel tmpModel = new CharakterModel(charResult.getInt("mut"), charResult.getInt("klugheit"), charResult.getInt("intuition"),
+                CharakterModel tmpModel = new CharakterModel(charResult.getInt("charID"), charResult.getInt("mut"), charResult.getInt("klugheit"), charResult.getInt("intuition"),
                         charResult.getInt("charisma"), charResult.getInt("fingerfertigkeit"), charResult.getInt("gewandheit"), charResult.getInt("koerperkraft"),
                         charResult.getInt("lebensPkte"), charResult.getInt("astralPkte"), charResult.getInt("aberglaube"), charResult.getInt("koerperbeherrschung"),
                         charResult.getInt("selbstbeherrschung"), charResult.getInt("aexteBeile"), charResult.getInt("dolche"), charResult.getInt("schwertSblEh"),
@@ -100,7 +100,8 @@ public class DataManager
                         charResult.getInt("stumpfZh"), charResult.getInt("armbrust"), charResult.getInt("bogen"), charResult.getInt("stufe"),
                         charResult.getInt("magieresistenz"), charResult.getInt("ausdauer"), charResult.getInt("attackeWert"), charResult.getInt("paradeWert"),
                         charResult.getInt("ausweichWert"), charResult.getInt("fernkampfWert"), charResult.getString("namensListe"), charResult.getString("klasse"),
-                        charResult.getString("kopfEq"), charResult.getString("brustEq"), charResult.getString("waffenhandEq"), charResult.getString("nebenhandEq"));
+                        charResult.getString("kopfEq"), charResult.getString("brustEq"), charResult.getString("waffenhandEq"), charResult.getString("nebenhandEq"),
+                        charResult.getString("url"));
 
                 charakterModelList.add(tmpModel);
             }

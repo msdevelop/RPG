@@ -20,6 +20,7 @@ public class CharakterSelectionView extends JPanel
         {
         }
 
+        this.setLayout(null);
         this.setBounds(0, 0, 1920, 1057);
         this.setVisible(true);
     }

@@ -2,6 +2,7 @@ package View;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -9,16 +10,25 @@ import java.io.IOException;
 public class CharakterSelectionView extends JPanel
 {
     private Image bgImage;
+    JTextField txtfName;
 
     public CharakterSelectionView()
     {
         try
         {
-            this.bgImage = ImageIO.read(new File("data//img//background//charSelection.png"));
+            this.bgImage = ImageIO.read(new File("data//img//charSelection//charSelection.png"));
         }
         catch(IOException e)
         {
         }
+
+        txtfName = new JTextField();
+        txtfName.setBounds(549, 259, 155, 30);
+        txtfName.setFont(new Font("FairydustB", Font.PLAIN, 25));
+        txtfName.setForeground(Color.WHITE);
+        txtfName.setBackground(Color.DARK_GRAY);
+        txtfName.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        this.add(this.txtfName);
 
         this.setLayout(null);
         this.setBounds(0, 0, 1920, 1057);

@@ -15,7 +15,7 @@ public class CharakterSelectionItem extends JPanel
     public CharakterSelectionItem(String paramUrl, int paramXPos, int paramYPos, CharakterSelectionController paramCharakterSelectionController)
     {
         this.setOpaque(false);
-        this.setBounds(paramXPos, paramYPos, 48, 48);
+        this.setBounds(paramXPos, paramYPos, 52, 52);
         this.addMouseListener(paramCharakterSelectionController);
 
         try
@@ -29,6 +29,6 @@ public class CharakterSelectionItem extends JPanel
     public void paintComponent(Graphics charGraphic)
     {
         super.paintComponent(charGraphic);
-        charGraphic.drawImage(this.charImg, 0 , 0, this);
+        charGraphic.drawImage(this.charImg, 2, 2, this);
     }
 }

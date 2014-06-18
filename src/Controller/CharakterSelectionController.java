@@ -27,7 +27,7 @@ public class CharakterSelectionController implements MouseListener
             if(i%2 == 0 && i != 0)
                 j++;
 
-            this.charakterSelectionView.add(new CharakterSelectionItem(this.charakterModelList.get(i).getUrl(), (500 + i * 75), (300 + j * 64), this));
+            this.charakterSelectionView.add(new CharakterSelectionItem(this.charakterModelList.get(i).getUrl(), (476 + (i%2) * 74), (363 + j * 67), this));
         }
     }
 

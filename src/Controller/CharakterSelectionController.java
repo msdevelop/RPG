@@ -27,7 +27,7 @@ public class CharakterSelectionController implements MouseListener
             if(i%2 == 0 && i != 0)
                 j++;
 
-            this.charakterSelectionView.add(new CharakterSelectionItem(this.charakterModelList.get(i).getUrl(), (476 + (i%2) * 74), (363 + j * 67), this));
+            this.charakterSelectionView.add(new CharakterSelectionItem(this.charakterModelList.get(i).getUrl(), (476 + (i%2) * 74), (363 + j * 67), this.charakterModelList.get(i).getCharID(), this));
         }
     }
 
@@ -57,14 +57,20 @@ public class CharakterSelectionController implements MouseListener
     @Override
     public void mouseEntered(MouseEvent e)
     {
-        CharakterSelectionItem tmpItem = (CharakterSelectionItem) e.getComponent();
-        tmpItem.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        if(e.getComponent().getName().startsWith("charakter"))
+        {
+            CharakterSelectionItem tmpItem = (CharakterSelectionItem) e.getComponent();
+            tmpItem.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e)
     {
-        CharakterSelectionItem tmpItem = (CharakterSelectionItem) e.getComponent();
-        tmpItem.setBorder(null);
+        if(e.getComponent().getName().startsWith("charakter"))
+        {
+            CharakterSelectionItem tmpItem = (CharakterSelectionItem) e.getComponent();
+            tmpItem.setBorder(null);
+        }
     }
 }

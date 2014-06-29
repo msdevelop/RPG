@@ -24,7 +24,7 @@ public class CharakterSelectionView extends JPanel
 
         txtfName = new JTextField();
         txtfName.setBounds(549, 259, 155, 30);
-        txtfName.setFont(new Font("FairydustB", Font.PLAIN, 25));
+        txtfName.setFont(new Font("TimesNewRoman", Font.PLAIN, 20));
         txtfName.setForeground(Color.WHITE);
         txtfName.setBackground(Color.DARK_GRAY);
         txtfName.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));

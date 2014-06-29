@@ -114,4 +114,9 @@ public class CharakterModel
     {
         return this.url;
     }
+
+    public int getCharID()
+    {
+        return this.charID;
+    }
 }

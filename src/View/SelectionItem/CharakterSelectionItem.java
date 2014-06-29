@@ -12,9 +12,10 @@ public class CharakterSelectionItem extends JPanel
 {
     private Image charImg;
 
-    public CharakterSelectionItem(String paramUrl, int paramXPos, int paramYPos, CharakterSelectionController paramCharakterSelectionController)
+    public CharakterSelectionItem(String paramUrl, int paramXPos, int paramYPos, int paramID, CharakterSelectionController paramCharakterSelectionController)
     {
         this.setOpaque(false);
+        this.setName("charakter_" + paramID);
         this.setBounds(paramXPos, paramYPos, 52, 52);
         this.addMouseListener(paramCharakterSelectionController);
 

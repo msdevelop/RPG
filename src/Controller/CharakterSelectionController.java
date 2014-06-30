@@ -2,6 +2,7 @@ package Controller;
 
 import Model.CharakterModel;
 import View.CharakterSelectionView;
+import View.SelectionItem.CharakterSelectionButton;
 import View.SelectionItem.CharakterSelectionItem;
 
 import javax.swing.border.BevelBorder;
@@ -29,6 +30,10 @@ public class CharakterSelectionController implements MouseListener
 
             this.charakterSelectionView.add(new CharakterSelectionItem(this.charakterModelList.get(i).getUrl(), (476 + (i%2) * 74), (363 + j * 67), this.charakterModelList.get(i).getCharID(), this));
         }
+
+        this.charakterSelectionView.add(new CharakterSelectionButton("hinzufuegen", 1150, 730, this));
+        this.charakterSelectionView.add(new CharakterSelectionButton("fertig", 1150, 815, this));
+        this.charakterSelectionView.add(new CharakterSelectionButton("reset", 1450, 815, this));
     }
 
     public CharakterSelectionView getCharakterSelectionView()
@@ -62,6 +67,11 @@ public class CharakterSelectionController implements MouseListener
             CharakterSelectionItem tmpItem = (CharakterSelectionItem) e.getComponent();
             tmpItem.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
         }
+        else if(e.getComponent().getName().startsWith("btn"))
+        {
+            CharakterSelectionButton tmpButton = (CharakterSelectionButton) e.getComponent();
+            tmpButton.setIntMouseFocus(true);
+        }
     }
 
     @Override
@@ -71,6 +81,11 @@ public class CharakterSelectionController implements MouseListener
         {
             CharakterSelectionItem tmpItem = (CharakterSelectionItem) e.getComponent();
             tmpItem.setBorder(null);
+        }
+        else if(e.getComponent().getName().startsWith("btn"))
+        {
+            CharakterSelectionButton tmpButton = (CharakterSelectionButton) e.getComponent();
+            tmpButton.setIntMouseFocus(false);
         }
     }
 }

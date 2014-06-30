@@ -33,9 +33,7 @@ public class MenuSelectionItem extends JPanel
         super.paintComponent(selectionItem);
 
         if(isInMouseFocus)
-        {
             selectionItem.drawImage(this.selectionImg, 0, 0, this);
-        }
     }
 
     public void setInMouseFocus(boolean paramBool)

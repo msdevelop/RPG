@@ -6,11 +6,13 @@ import View.SelectionItem.CharakterSelectionButton;
 import View.SelectionItem.CharakterSelectionItem;
 
 import javax.swing.border.BevelBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedList;
 
-public class CharakterSelectionController implements MouseListener
+public class CharakterSelectionController implements MouseListener, ActionListener
 {
     private GameFrameController gameFrameController;
     private CharakterSelectionView charakterSelectionView;
@@ -20,7 +22,7 @@ public class CharakterSelectionController implements MouseListener
     {
         this.gameFrameController = paramGameFrameController;
         this.charakterModelList = this.gameFrameController.getDataManager().getCharaktersRaw();
-        this.charakterSelectionView = new CharakterSelectionView();
+        this.charakterSelectionView = new CharakterSelectionView(this);
 
         int j = 0;
         for(int i = 0; i < this.charakterModelList.size(); i++)
@@ -44,19 +46,8 @@ public class CharakterSelectionController implements MouseListener
     @Override
     public void mouseClicked(MouseEvent e)
     {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e)
-    {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e)
-    {
-
+        if(e.getComponent().getName().startsWith("charakter"))
+            this.forwardCharakter(Integer.parseInt(e.getComponent().getName().substring(10)));
     }
 
     @Override
@@ -87,5 +78,28 @@ public class CharakterSelectionController implements MouseListener
             CharakterSelectionButton tmpButton = (CharakterSelectionButton) e.getComponent();
             tmpButton.setIntMouseFocus(false);
         }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e)
+    {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+
+    }
+
+    public void forwardCharakter(int paramID)
+    {
+        this.charakterSelectionView.synchronizeCharProperties(this.charakterModelList.get(paramID));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        this.charakterSelectionView.selectRandomName();
     }
 }

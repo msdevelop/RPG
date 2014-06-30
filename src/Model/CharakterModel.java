@@ -119,4 +119,154 @@ public class CharakterModel
     {
         return this.charID;
     }
+
+    public int getMut()
+    {
+        return this.mut;
+    }
+
+    public int getKlugheit()
+    {
+        return this.klugheit;
+    }
+
+    public int getIntuition()
+    {
+        return this.intuition;
+    }
+
+    public int getCharisma()
+    {
+        return this.charisma;
+    }
+
+    public int getFingerfertigkeit()
+    {
+        return this.fingerfertigkeit;
+    }
+
+    public int getGewandheit()
+    {
+        return this.gewandheit;
+    }
+
+    public int getKoerperkraft()
+    {
+        return this.koerperkraft;
+    }
+
+    public int getAberglaube()
+    {
+        return this.aberglaube;
+    }
+
+    public int getKoerperbeherrschung()
+    {
+        return this.koerperbeherrschung;
+    }
+
+    public int getSelbstbeherrschung()
+    {
+        return this.selbstbeherrschung;
+    }
+
+    public int getAexteBeile()
+    {
+        return this.aexteBeile;
+    }
+
+    public int getDolche()
+    {
+        return this.dolche;
+    }
+
+    public int getSchwertSblEh()
+    {
+        return this.schwertSblEh;
+    }
+
+    public int getSchwertSblZh()
+    {
+        return this.schwertSblZh;
+    }
+
+    public int getFechtwaffen()
+    {
+        return this.fechtwaffen;
+    }
+
+    public int getSpeerStab()
+    {
+        return this.speerStab;
+    }
+
+    public int getStumpfEh()
+    {
+        return this.stumpfEh;
+    }
+
+    public int getStumpfZh()
+    {
+        return this.stumpfZh;
+    }
+
+    public int getArmbrust()
+    {
+        return this.armbrust;
+    }
+
+    public int getBogen()
+    {
+        return this.bogen;
+    }
+
+    public int getStufe()
+    {
+        return this.stufe;
+    }
+
+    public int getMagieresistenz()
+    {
+        return this.magieresistenz;
+    }
+
+    public int getAusdauer()
+    {
+        return this.ausdauer;
+    }
+
+    public int getAttackeWert()
+    {
+        return this.attackeWert;
+    }
+
+    public int getParadeWert()
+    {
+        return this.paradeWert;
+    }
+
+    public int getAusweichWert()
+    {
+        return this.ausweichWert;
+    }
+
+    public int getFernkampfWert()
+    {
+        return this.fernkampfWert;
+    }
+
+    public int getLebensPkte()
+    {
+        return this.lebensPkte;
+    }
+
+    public int getAstralPkte()
+    {
+        return this.astralPkte;
+    }
+
+    public LinkedList<String> getNamensListe()
+    {
+        return this.namensListe;
+    }
 }

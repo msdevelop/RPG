@@ -23,6 +23,7 @@ public class CharakterSelectionView extends JPanel
     private String selbstbeherrschung, aexteBeile, dolche, schwertSblEh, schwertSblZh, fechtwaffen, speerStab, stumpfEh, stumpfZh;
     private String armbrust, bogen, magieresistenz, ausdauer, attackeWert, paradeWert, ausweichWert, fernkampfWert;
     private LinkedList<String> namensListe;
+    private LinkedList<String> selectedCharakterImages = new LinkedList<String>();
 
     public CharakterSelectionView(CharakterSelectionController paramController)
     {
@@ -94,6 +95,20 @@ public class CharakterSelectionView extends JPanel
             charBg.drawString(this.schwertSblZh, 1400, 405);
             charBg.drawString(this.speerStab, 1400, 440);
         }
+
+        if(this.selectedCharakterImages.size() > 0)
+        {
+            for(int i = 0; i < this.selectedCharakterImages.size(); i++)
+            {
+                try
+                {
+                    Image tmpImage = ImageIO.read(new File(this.selectedCharakterImages.get(i)));
+                    charBg.drawImage(tmpImage, 642 + (75*i), 825, this);
+                }
+                catch(IOException e)
+                {}
+            }
+        }
     }
 
     public void synchronizeCharProperties(CharakterModel paramModel)
@@ -150,5 +165,34 @@ public class CharakterSelectionView extends JPanel
         }
         catch(NullPointerException e)
         {}
+    }
+
+    public void setIsCharSelected(boolean paramBool)
+    {
+        this.isCharSelected = paramBool;
+        this.txtfName.setText("");
+        this.repaint();
+    }
+
+    public boolean getIsCharSelected()
+    {
+        return this.isCharSelected;
+    }
+
+    public String getNameFromTextfield()
+    {
+        return this.txtfName.getText();
+    }
+
+    public void addSelectedCharakterImage(String paramUrl)
+    {
+        this.selectedCharakterImages.add(paramUrl);
+        this.repaint();
+    }
+
+    public void removeSelectedCharakterImage()
+    {
+        this.selectedCharakterImages.removeLast();
+        this.repaint();
     }
 }

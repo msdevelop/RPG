@@ -17,6 +17,11 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     private GameFrameController gameFrameController;
     private CharakterSelectionView charakterSelectionView;
     private LinkedList<CharakterModel> charakterModelList;
+    private LinkedList<CharakterModel> groupSelectionList = new LinkedList<CharakterModel>();
+    private CharakterModel currentCharakter;
+    private CharakterSelectionItem currentCharakterSelectionItem = null;
+    private CharakterSelectionItem previousCharakterSelectionItem = null;
+    private LinkedList<CharakterSelectionItem> selectedCharakterItems = new LinkedList<CharakterSelectionItem>();
 
     public CharakterSelectionController(GameFrameController paramGameFrameController)
     {
@@ -27,27 +32,40 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         int j = 0;
         for(int i = 0; i < this.charakterModelList.size(); i++)
         {
-            if(i%2 == 0 && i != 0)
+            if(i % 2 == 0 && i != 0)
                 j++;
 
-            this.charakterSelectionView.add(new CharakterSelectionItem(this.charakterModelList.get(i).getUrl(), (476 + (i%2) * 74), (363 + j * 67), this.charakterModelList.get(i).getCharID(), this));
+            this.charakterSelectionView.add(new CharakterSelectionItem(this.charakterModelList.get(i).getUrl(), (476 + (i % 2) * 74), (363 + j * 67), this.charakterModelList.get(i).getCharID(), this));
         }
 
         this.charakterSelectionView.add(new CharakterSelectionButton("hinzufuegen", 1150, 730, this));
         this.charakterSelectionView.add(new CharakterSelectionButton("fertig", 1150, 815, this));
-        this.charakterSelectionView.add(new CharakterSelectionButton("reset", 1450, 815, this));
-    }
-
-    public CharakterSelectionView getCharakterSelectionView()
-    {
-        return this.charakterSelectionView;
+        this.charakterSelectionView.add(new CharakterSelectionButton("remove", 1450, 815, this));
     }
 
     @Override
     public void mouseClicked(MouseEvent e)
     {
         if(e.getComponent().getName().startsWith("charakter"))
-            this.forwardCharakter(Integer.parseInt(e.getComponent().getName().substring(10)));
+        {
+            this.previousCharakterSelectionItem = this.currentCharakterSelectionItem;
+            this.currentCharakterSelectionItem = (CharakterSelectionItem) e.getComponent();
+            this.validateMouseListener();
+            this.forwardCharakter(Integer.parseInt(this.currentCharakterSelectionItem.getName().substring(10)));
+        }
+        else if(e.getComponent().getName().startsWith("btn"))
+        {
+            if(e.getComponent().getName().endsWith("hinzufuegen"))
+            {
+                if(this.charakterSelectionView.getIsCharSelected())
+                    this.addCharakterToGroupSelection();
+            }
+            else if(e.getComponent().getName().endsWith("remove"))
+            {
+                if(this.groupSelectionList.size() > 0)
+                    this.removeLastFromGroupSelection();
+            }
+        }
     }
 
     @Override
@@ -92,14 +110,51 @@ public class CharakterSelectionController implements MouseListener, ActionListen
 
     }
 
-    public void forwardCharakter(int paramID)
-    {
-        this.charakterSelectionView.synchronizeCharProperties(this.charakterModelList.get(paramID));
-    }
-
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        this.charakterSelectionView.selectRandomName();
+        if(this.charakterSelectionView.getIsCharSelected())
+            this.charakterSelectionView.selectRandomName();
+    }
+
+    public void forwardCharakter(int paramID)
+    {
+        this.currentCharakter = this.charakterModelList.get(paramID);
+        this.charakterSelectionView.synchronizeCharProperties(this.currentCharakter);
+    }
+
+    public void validateMouseListener()
+    {
+        if(this.previousCharakterSelectionItem != null)
+        {
+            this.previousCharakterSelectionItem.addMouseListener(this);
+            this.previousCharakterSelectionItem.setBorder(null);
+        }
+        this.currentCharakterSelectionItem.removeMouseListener(this);
+    }
+
+    public void addCharakterToGroupSelection()
+    {
+        this.currentCharakterSelectionItem.setBorder(null);
+        this.selectedCharakterItems.add(this.currentCharakterSelectionItem);
+        this.currentCharakterSelectionItem = null;
+        this.previousCharakterSelectionItem = null;
+        this.currentCharakter.setName(this.charakterSelectionView.getNameFromTextfield());
+        this.groupSelectionList.add(this.currentCharakter);
+        this.charakterSelectionView.addSelectedCharakterImage(this.currentCharakter.getUrl());
+        this.charakterSelectionView.setIsCharSelected(false);
+    }
+
+    public void removeLastFromGroupSelection()
+    {
+        this.groupSelectionList.removeLast();
+        this.charakterSelectionView.removeSelectedCharakterImage();
+        CharakterSelectionItem tmpItem = this.selectedCharakterItems.removeLast();
+        tmpItem.addMouseListener(this);
+    }
+
+    public CharakterSelectionView getCharakterSelectionView()
+    {
+        return this.charakterSelectionView;
     }
 }

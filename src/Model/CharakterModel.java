@@ -5,8 +5,6 @@ import java.util.LinkedList;
 public class CharakterModel
 {
     private LinkedList<String> namensListe;
-    /**String name := name der vom spieler ausgewählt/gegeben wird*/
-    //TODO bei charakterauswahl namen abfragen und eintragen
     private String klasse, waffenhandEq, nebenhandEq, brustEq, kopfEq, url, name;
     private int mut, klugheit, intuition, charisma, fingerfertigkeit, gewandheit, koerperkraft, aberglaube, koerperbeherrschung;
     private int selbstbeherrschung, aexteBeile, dolche, schwertSblEh, schwertSblZh, fechtwaffen, speerStab, stumpfEh, stumpfZh;
@@ -268,5 +266,10 @@ public class CharakterModel
     public LinkedList<String> getNamensListe()
     {
         return this.namensListe;
+    }
+
+    public void setName(String paramName)
+    {
+        this.name = paramName;
     }
 }

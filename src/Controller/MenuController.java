@@ -8,23 +8,23 @@ import java.awt.event.MouseListener;
 
 public class MenuController implements MouseListener
 {
-    private GameFrame gameFrame;
+    private GameFrameController gameFrameController;
     private MenuPanel menuPanel;
 
-    public MenuController(GameFrame paramGameFrame)
+    public MenuController(GameFrameController paramGameFrameController)
     {
-        this.gameFrame = paramGameFrame;
+        this.gameFrameController = paramGameFrameController;
         this.menuPanel = new MenuPanel(this);
-        this.gameFrame.getContentPane().add(this.menuPanel);
+        this.gameFrameController.getGameFrame().getContentPane().add(this.menuPanel);
     }
 
     @Override
     public void mouseClicked(MouseEvent e)
     {
         if(e.getComponent().getName().equals("neuesSpiel"))
-            this.gameFrame.getGameFrameController().initializeCharakterSelection();
+            this.gameFrameController.initializeCharakterSelection();
         else if(e.getComponent().getName().equals("spielLaden"))
-            this.gameFrame.getGameFrameController().loadGame();
+            this.gameFrameController.loadGame();
         else if(e.getComponent().getName().equals("beenden"))
             System.exit(0);
     }

@@ -23,6 +23,39 @@ public class DataManager
         {}
     }
 
+    public boolean isValidUsername(String paramUsername)
+    {
+        try
+        {
+            PreparedStatement pstmt = this.connection.prepareStatement("SELECT * FROM user WHERE (name = ?)");
+            pstmt.setString(1, paramUsername);
+            ResultSet userResult = pstmt.executeQuery();
+            pstmt.close();
+            if(userResult.next())
+            {
+                userResult.close();
+                return false;
+            }
+            else
+            {
+                userResult.close();
+                this.addUser(paramUsername);
+                return true;
+            }
+        }
+        catch(SQLException e)
+        {
+            return false;
+        }
+    }
+
+    public void addUser(String paramUsername) throws SQLException
+    {
+            Statement stmt = connection.createStatement();
+            stmt.executeQuery("INSERT INTO user(name, status) VALUES('" + paramUsername + "', false)");
+            stmt.close();
+    }
+
     public DetailKartenModel getDetailKarte(String paramMapName)
     {
         for(int j = 0; j < detailKartenModelList.size(); j++)

@@ -5,6 +5,7 @@ import View.CharakterSelectionView;
 import View.SelectionItem.CharakterSelectionButton;
 import View.SelectionItem.CharakterSelectionItem;
 
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,7 +51,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         {
             this.previousCharakterSelectionItem = this.currentCharakterSelectionItem;
             this.currentCharakterSelectionItem = (CharakterSelectionItem) e.getComponent();
-            this.validateMouseListener();
+            this.switchMouseListenerOnCharakterSelectionItem();
             this.forwardCharakter(Integer.parseInt(this.currentCharakterSelectionItem.getName().substring(10)));
         }
         else if(e.getComponent().getName().startsWith("btn"))
@@ -123,7 +124,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         this.charakterSelectionView.synchronizeCharProperties(this.currentCharakter);
     }
 
-    public void validateMouseListener()
+    public void switchMouseListenerOnCharakterSelectionItem()
     {
         if(this.previousCharakterSelectionItem != null)
         {
@@ -135,14 +136,21 @@ public class CharakterSelectionController implements MouseListener, ActionListen
 
     public void addCharakterToGroupSelection()
     {
-        this.currentCharakterSelectionItem.setBorder(null);
-        this.selectedCharakterItems.add(this.currentCharakterSelectionItem);
-        this.currentCharakterSelectionItem = null;
-        this.previousCharakterSelectionItem = null;
-        this.currentCharakter.setName(this.charakterSelectionView.getNameFromTextfield());
-        this.groupSelectionList.add(this.currentCharakter);
-        this.charakterSelectionView.addSelectedCharakterImage(this.currentCharakter.getUrl());
-        this.charakterSelectionView.setIsCharSelected(false);
+        if(this.charakterSelectionView.getNameFromTextfield().length() < 15)
+        {
+            this.currentCharakterSelectionItem.setBorder(null);
+            this.selectedCharakterItems.add(this.currentCharakterSelectionItem);
+            this.currentCharakterSelectionItem = null;
+            this.previousCharakterSelectionItem = null;
+            this.currentCharakter.setName(this.charakterSelectionView.getNameFromTextfield());
+            this.groupSelectionList.add(this.currentCharakter);
+            this.charakterSelectionView.addSelectedCharakterImage(this.currentCharakter.getUrl());
+            this.charakterSelectionView.setIsCharSelected(false);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog (null, "Charaktername darf maximal 15 Zeichen enthalten!", "Fehler beim Hinzufügen!", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public void removeLastFromGroupSelection()

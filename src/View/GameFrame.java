@@ -45,9 +45,4 @@ public class GameFrame extends JFrame
         JMenuItem itemSteuerung = new JMenuItem("Steuerung");
         menuHilfe.add(itemSteuerung);
     }
-
-    public GameFrameController getGameFrameController()
-    {
-        return this.gameFrameController;
-    }
 }

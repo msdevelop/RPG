@@ -153,10 +153,6 @@ public class DataManager
             stmt.executeQuery("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramCharIDCollection[0]
             + " OR charID = " + paramCharIDCollection[1] + " OR charID = " + paramCharIDCollection[2] + " OR charID = " + paramCharIDCollection[3]
             + " OR charID = " + paramCharIDCollection[4] + " OR charID = " + paramCharIDCollection[5] + ") WITH DATA");
-//            for(int i = 1; i < paramCharIDCollection.length; i++)
-//            {
-//                stmt.executeQuery("SELECT * INTO " + paramUser + "_charakter WHERE charID = " + paramCharIDCollection[i]);
-//            }
             stmt.close();
         }
         catch(SQLException e)

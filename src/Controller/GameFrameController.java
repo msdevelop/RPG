@@ -1,11 +1,13 @@
 package Controller;
 
 import Data.DataManager;
+import Model.CharakterModel;
 import View.GameFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 public class GameFrameController implements ActionListener
 {
@@ -15,6 +17,7 @@ public class GameFrameController implements ActionListener
     private DataManager dataManager;
     private CharakterSelectionController charakterSelectionController;
     private String username = "", currentUser;
+    private LinkedList<CharakterModel> currentGroup;
 
     public GameFrameController()
     {
@@ -27,14 +30,13 @@ public class GameFrameController implements ActionListener
 
     public void initializeCharakterSelection()
     {
-        //TODO prüfen ob benutzername bereits in DB vorhanden ist
         this.username = JOptionPane.showInputDialog(null, "Bitte geben Sie einen Benutzername ein.", "Benutzername Eingeben", JOptionPane.QUESTION_MESSAGE);
         this.username.trim();
         if((this.username.length() < 4) || (this.username.length() > 15) || (!(this.username.matches("\\w*"))))
         {
-            JOptionPane.showMessageDialog(null, "Gültiger Benutzername:\n" +
-                    "       kann Klein- und Großbuchstaben, sowie Zahlen und Unterstrich enthalten\n" +
-                    "       ist kürzer als 4 bzw. länger als 15 Zeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ungültiger Benutzername!\n" +
+                    "      - Gültige Zeichen: [a-z] [A-Z] [0-9] [_]\n" +
+                    "      - mindestens 4 maximal 15 Zeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
         }
         else if(!this.validateUsername())
         {
@@ -51,8 +53,11 @@ public class GameFrameController implements ActionListener
         }
     }
 
-    public void initializeMapSelection()
+    public void initializeMapSelection(LinkedList<CharakterModel> paramGroupList)
     {
+        this.currentGroup = paramGroupList;
+        this.charakterSelectionController.getCharakterSelectionView().setVisible(false);
+        this.gameFrame.remove(this.charakterSelectionController.getCharakterSelectionView());
         this.mapController = new MapController(this);
         this.gameFrame.getContentPane().add(this.mapController.getMapOverview());
         this.gameFrame.getContentPane().add(this.mapController.getMapDetailView());
@@ -70,7 +75,10 @@ public class GameFrameController implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         if(e.getActionCommand().equals("beenden"))
+        {
+            this.dataManager.closeConnection();
             System.exit(0);
+        }
     }
 
     public DataManager getDataManager()
@@ -81,5 +89,10 @@ public class GameFrameController implements ActionListener
     public GameFrame getGameFrame()
     {
         return this.gameFrame;
+    }
+
+    public String getCurrentUser()
+    {
+        return this.currentUser;
     }
 }

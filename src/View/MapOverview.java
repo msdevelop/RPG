@@ -28,6 +28,7 @@ public class MapOverview extends JPanel
         catch(IOException e)
         {}
 
+        this.enableView();
         this.setVisible(true);
     }
 
@@ -47,13 +48,5 @@ public class MapOverview extends JPanel
     {
         this.add(new OverviewSelectionItem("overview_gareth", 340, 477, this.mapController));
         this.add(new OverviewSelectionItem("overview_gerasim", 420, 258, this.mapController));
-
-        //no images, will display "error"
-        this.add(new OverviewSelectionItem("overview_zyklopen", 159, 671, this.mapController));
-        this.add(new OverviewSelectionItem("overview_perricum", 448, 509, this.mapController));
-        this.add(new OverviewSelectionItem("overview_beilung", 540, 305, this.mapController));
-        this.add(new OverviewSelectionItem("overview_orkland", 192, 324, this.mapController));
-        this.add(new OverviewSelectionItem("overview_havena", 188, 504, this.mapController));
-        this.add(new OverviewSelectionItem("overview_khom", 328, 661, this.mapController));
     }
 }

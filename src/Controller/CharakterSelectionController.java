@@ -66,6 +66,18 @@ public class CharakterSelectionController implements MouseListener, ActionListen
                 if(this.groupSelectionList.size() > 0)
                     this.removeLastFromGroupSelection();
             }
+            else if(e.getComponent().getName().endsWith("fertig"))
+            {
+                //TODO size() = 6 ------ testvalue
+                if(this.groupSelectionList.size() == 3)
+                {
+                    int yesNoOption = JOptionPane.showConfirmDialog(null, "Ist ihre Gruppe fertiggestellt?", "Fortfahren?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if(yesNoOption == JOptionPane.YES_OPTION)
+                        this.finalizeCharakterSelection();
+                }
+                else
+                    JOptionPane.showMessageDialog(null, "Bitte wählen Sie 6 Charaktere aus!", "Gruppe nicht voll", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 
@@ -159,6 +171,18 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         this.charakterSelectionView.removeSelectedCharakterImage();
         CharakterSelectionItem tmpItem = this.selectedCharakterItems.removeLast();
         tmpItem.addMouseListener(this);
+    }
+
+    public void finalizeCharakterSelection()
+    {
+        //TODO gruppe in DB abspeichern
+        int[] charIDCollection = new int[6];
+        for(int i = 0; i < this.groupSelectionList.size(); i++)
+        {
+            charIDCollection[i] = groupSelectionList.get(i).getCharID();
+        }
+        this.gameFrameController.getDataManager().createNewCharTableForUser(this.gameFrameController.getCurrentUser(), charIDCollection);
+        this.gameFrameController.initializeMapSelection(this.groupSelectionList);
     }
 
     public CharakterSelectionView getCharakterSelectionView()

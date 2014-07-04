@@ -144,4 +144,34 @@ public class DataManager
         {}
         return charakterModelList;
     }
+
+    public void createNewCharTableForUser(String paramUser, int[] paramCharIDCollection)
+    {
+        try
+        {
+            Statement stmt = connection.createStatement();
+            stmt.executeQuery("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramCharIDCollection[0]
+            + " OR charID = " + paramCharIDCollection[1] + " OR charID = " + paramCharIDCollection[2] + " OR charID = " + paramCharIDCollection[3]
+            + " OR charID = " + paramCharIDCollection[4] + " OR charID = " + paramCharIDCollection[5] + ") WITH DATA");
+//            for(int i = 1; i < paramCharIDCollection.length; i++)
+//            {
+//                stmt.executeQuery("SELECT * INTO " + paramUser + "_charakter WHERE charID = " + paramCharIDCollection[i]);
+//            }
+            stmt.close();
+        }
+        catch(SQLException e)
+        {}
+    }
+
+    public void closeConnection()
+    {
+        try
+        {
+            if(this.connection != null)
+                this.connection.close();
+
+        }
+        catch(SQLException e)
+        {}
+    }
 }

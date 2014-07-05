@@ -11,6 +11,8 @@ public class MenuController implements MouseListener
     private GameFrameController gameFrameController;
     private MenuPanel menuPanel;
 
+    /*erzeugt MenuPanel(View)
+     * zeigt MenuPanel zum Spielstart an*/
     public MenuController(GameFrameController paramGameFrameController)
     {
         this.gameFrameController = paramGameFrameController;

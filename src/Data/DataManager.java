@@ -23,6 +23,9 @@ public class DataManager
         {}
     }
 
+    /*Gleicht gegeben die Datenbanktabelle 'user' ab ob der übergebene Benutzername bereits vorhanden ist -> return false
+    * Ist der Benutzername gültig, wird er der Datenbanktabelle 'user' hinzugefügt -> this.addUser() -> return true
+    * SQLException -> return false*/
     public boolean isValidUsername(String paramUsername)
     {
         try
@@ -49,6 +52,8 @@ public class DataManager
         }
     }
 
+    /*Fügt den übergebenen Benutzernamen der Datenbanktabelle 'user' hinzu (status = false)
+    * Das Datenfeld 'status <boolean>'  gibt an ob der Beutzer die CharakterSelektion bereits abgeschlossen hat (true) oder nicht (false = default)*/
     public void addUser(String paramUsername) throws SQLException
     {
             Statement stmt = connection.createStatement();
@@ -145,7 +150,7 @@ public class DataManager
         return charakterModelList;
     }
 
-    public void createNewCharTableForUser(String paramUser, int[] paramCharIDCollection)
+    public void createNewCharTableForUser(String paramUser, int[] paramCharIDCollection, String[] paramCharNameCollection)
     {
         try
         {
@@ -153,12 +158,19 @@ public class DataManager
             stmt.executeQuery("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramCharIDCollection[0]
             + " OR charID = " + paramCharIDCollection[1] + " OR charID = " + paramCharIDCollection[2] + " OR charID = " + paramCharIDCollection[3]
             + " OR charID = " + paramCharIDCollection[4] + " OR charID = " + paramCharIDCollection[5] + ") WITH DATA");
+            for(int i = 0; i < 6; i++)
+            {
+                stmt.executeQuery("UPDATE " + paramUser + "_charakter SET namensliste = '" + paramCharNameCollection[i] + "' WHERE charID = " + paramCharIDCollection[i]);
+            }
+            stmt.executeQuery("UPDATE user SET status = true WHERE name = '" + paramUser + "'");
             stmt.close();
         }
         catch(SQLException e)
         {}
     }
 
+    /*Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder Absturz)
+    * Schließt die Datenbankverbindung (falls vorhanden) um COMMIT der Daten zu gewährleisten*/
     public void closeConnection()
     {
         try

@@ -19,6 +19,9 @@ public class GameFrameController implements ActionListener
     private String username = "", currentUser;
     private LinkedList<CharakterModel> currentGroup;
 
+    /*Initialisiert den DataManager
+     * erzeugt GameFrame(View)
+     * erzeugt MenuController*/
     public GameFrameController()
     {
         this.dataManager = new DataManager();
@@ -28,6 +31,12 @@ public class GameFrameController implements ActionListener
         this.gameFrame.requestFocus();
     }
 
+    /*Wird aufgerufen wenn im Menü der Punkt "Neues Spiel" gewählt wird
+     * Benutzer wird zur Eingabe eines Benutzernamens aufgefordert -> JOptionPane
+     * Führende und angehängte Leerzeichen werden abgeschnitten -> String.trim()
+     * Länge des Benutzernamens muss zwischen 4 und 15 Zeichen liegen und muss den Pattern [a-z] [A-Z] [0-9] [ _ ] in beliebiger Reihenfolge entsprechen
+     * Es wird geprüft ob der Benutzername bereits vergeben ist ->this.validateUsername()
+     * Fehlermeldungen via JOptionPane*/
     public void initializeCharakterSelection()
     {
         this.username = JOptionPane.showInputDialog(null, "Bitte geben Sie einen Benutzername ein.", "Benutzername Eingeben", JOptionPane.QUESTION_MESSAGE);
@@ -35,13 +44,15 @@ public class GameFrameController implements ActionListener
         if((this.username.length() < 4) || (this.username.length() > 15) || (!(this.username.matches("\\w*"))))
         {
             JOptionPane.showMessageDialog(null, "Ungültiger Benutzername!\n" +
-                    "      - Gültige Zeichen: [a-z] [A-Z] [0-9] [_]\n" +
+                    "      - Gültige Zeichen: [a-z] [A-Z] [0-9] [ _ ]\n" +
                     "      - mindestens 4 maximal 15 Zeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
         }
         else if(!this.validateUsername())
         {
             JOptionPane.showMessageDialog(null, "Benutzername bereits vergeben!", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
         }
+        /*Wenn der Benutzername gültig ist wird das MenuPanel(View) entfernt und die MenuBar(View) hinzugefügt -> gameFrame.addMenuBar()
+         * Die Charakterselektion wird initialisiert -> new CharakterSelectionController*/
         else
         {
             this.currentUser = username;
@@ -66,6 +77,9 @@ public class GameFrameController implements ActionListener
     public void loadGame()
     {}
 
+    /*Übergibt den eingegebenen Benutzernamen an den DataManager um zu überprüfen ob er bereits vergeben ist
+     * return true -> Beutzername ist gültig und wurde der Datenbanktabelle 'user' hinzugefügt
+     * return false -> Benutzername ist bereits vergeben*/
     public boolean validateUsername()
     {
         return this.dataManager.isValidUsername(this.username);

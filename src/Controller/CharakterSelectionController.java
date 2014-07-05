@@ -59,7 +59,12 @@ public class CharakterSelectionController implements MouseListener, ActionListen
             if(e.getComponent().getName().endsWith("hinzufuegen"))
             {
                 if(this.charakterSelectionView.getIsCharSelected())
-                    this.addCharakterToGroupSelection();
+                {
+                    if(this.groupSelectionList.size() < 6)
+                        this.addCharakterToGroupSelection();
+                    else
+                        JOptionPane.showMessageDialog(null, "Ihre Gruppe ist voll!", "Gruppe ist voll", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
             else if(e.getComponent().getName().endsWith("remove"))
             {
@@ -68,11 +73,10 @@ public class CharakterSelectionController implements MouseListener, ActionListen
             }
             else if(e.getComponent().getName().endsWith("fertig"))
             {
-                //TODO size() = 6 ------ testvalue
-                if(this.groupSelectionList.size() == 3)
+                if(this.groupSelectionList.size() == 6)
                 {
-                    int yesNoOption = JOptionPane.showConfirmDialog(null, "Ist ihre Gruppe fertiggestellt?", "Fortfahren?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                    if(yesNoOption == JOptionPane.YES_OPTION)
+                    int userInputOption = JOptionPane.showConfirmDialog(null, "Ist ihre Gruppe fertiggestellt?", "Fortfahren?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if(userInputOption == JOptionPane.YES_OPTION)
                         this.finalizeCharakterSelection();
                 }
                 else
@@ -175,13 +179,14 @@ public class CharakterSelectionController implements MouseListener, ActionListen
 
     public void finalizeCharakterSelection()
     {
-        //TODO gruppe in DB abspeichern
         int[] charIDCollection = new int[6];
+        String[] charNameCollection = new String[6];
         for(int i = 0; i < this.groupSelectionList.size(); i++)
         {
             charIDCollection[i] = groupSelectionList.get(i).getCharID();
+            charNameCollection[i] = groupSelectionList.get(i).getName();
         }
-        this.gameFrameController.getDataManager().createNewCharTableForUser(this.gameFrameController.getCurrentUser(), charIDCollection);
+        this.gameFrameController.getDataManager().createNewCharTableForUser(this.gameFrameController.getCurrentUser(), charIDCollection, charNameCollection);
         this.gameFrameController.initializeMapSelection(this.groupSelectionList);
     }
 

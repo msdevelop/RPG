@@ -64,6 +64,11 @@ public class GameFrameController implements ActionListener
         }
     }
 
+    /*Wird aufgerufen wenn die Charakterauswahl beendet ist
+    * setzt currentGroup
+    * entfern die CharakterSelectionView
+    * initialisiert den MapController
+    * fügt die MapOveriview(View) und MapDetailView(View) dem GameFrame hinzu*/
     public void initializeMapSelection(LinkedList<CharakterModel> paramGroupList)
     {
         this.currentGroup = paramGroupList;
@@ -95,16 +100,19 @@ public class GameFrameController implements ActionListener
         }
     }
 
+    /*Gibt den aktuellen DataManager zurück*/
     public DataManager getDataManager()
     {
         return this.dataManager;
     }
 
+    /*Gibt den aktuellen GameFrame zurück*/
     public GameFrame getGameFrame()
     {
         return this.gameFrame;
     }
 
+    /*Gibt den aktuell im Programmfokus stehenden Benutzer zurück*/
     public String getCurrentUser()
     {
         return this.currentUser;

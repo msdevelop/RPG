@@ -17,6 +17,7 @@ public class GameFrame extends JFrame
         this.setExtendedState(MAXIMIZED_BOTH);
     }
 
+    /*Fügt dem aktuellen GameFrame eine MenuBar am oberen Bildschirmrand hinzu*/
     public void addMenuBar()
     {
         JMenuBar menuBar = new JMenuBar();

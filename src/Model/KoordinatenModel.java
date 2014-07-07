@@ -10,16 +10,6 @@ public class KoordinatenModel
         yPosition = newY;
     }
 
-    public void setxPosition(int newX)
-    {
-        xPosition = newX;
-    }
-
-    public void setyPosition(int newY)
-    {
-        yPosition = newY;
-    }
-
     public int getxPosition()
     {
         return xPosition;

@@ -55,6 +55,8 @@ public class CharakterModel
         this.namensListe = this.trimNamensListe(namensListe);
     }
 
+    /*Teilt die Liste von zusammenhängenden Namen aus der Datenbank in einzelne Namen auf
+    * Namen werden durch (\n) getrennt*/
     public LinkedList<String> trimNamensListe(String paramNamensListe)
     {
         int i = 0;

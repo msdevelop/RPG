@@ -15,16 +15,6 @@ public class DetailKartenModel
         this.koordinatenModelList = paramListe;
     }
 
-    public void setName(String paramKartenName)
-    {
-        this.name = paramKartenName;
-    }
-
-    public void setKoordinatenModelList(LinkedList<KoordinatenModel> paramListe)
-    {
-        this.koordinatenModelList = paramListe;
-    }
-
     public String getName()
     {
         return this.name;
@@ -33,11 +23,6 @@ public class DetailKartenModel
     public LinkedList<KoordinatenModel> getKoordinatenModelList()
     {
         return this.koordinatenModelList;
-    }
-
-    public void setUrl(String paramUrl)
-    {
-        this.url = paramUrl;
     }
 
     public String getUrl()

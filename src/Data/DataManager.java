@@ -12,6 +12,7 @@ public class DataManager
     private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<DetailKartenModel>();
     private Connection connection = null;
 
+    /*Baut die Verbindung zur angegebenen Datenbank auf*/
     public DataManager()
     {
         try
@@ -61,6 +62,10 @@ public class DataManager
             stmt.close();
     }
 
+    /*Prüft ob die angeforderte DetailMap bereits aus der DB ausgelesen und in der Liste detailKartenModelList gespeichert wurde -> return DetailKartenModel
+    * Sonst: liest den Datensatz der angeforderten DetailMap aus der Datenbanktabelle 'detailMap' aus und erzeugt ein neues DetaiKartenModel aus den ausgelesenen Daten
+    * fügt das neue DetailKartenModel der detailKartenModelList hinzu
+    * -> return DetailKartenModel*/
     public DetailKartenModel getDetailKarte(String paramMapName)
     {
         for(int j = 0; j < detailKartenModelList.size(); j++)
@@ -88,6 +93,11 @@ public class DataManager
         return tmpModel;
     }
 
+    /*Wird von getDetailKarte aufgerufen um die Liste der x,y - Positionen aus der Datenbank in einzelne Koordinatenpaare aufzuteilen
+    * x und y Position sind durch (,) getrennt, Koordinatenpaare durch (\n)
+    * erzeugt aus einem Koordinatenpaar (x,y) ein KoordinatenModel
+    * speichert alle KoordinatenModels in einer koordinatenModelList
+    * -> return koordinatenModelList*/
     public LinkedList<KoordinatenModel> trimPosition(String paramPos)
     {
         LinkedList<KoordinatenModel> koordinatenModelList = new LinkedList<KoordinatenModel>();
@@ -119,6 +129,10 @@ public class DataManager
         return koordinatenModelList;
     }
 
+    /*Liest alle Charaktere aus der Datenbanktabelle 'charakterRaw' aus
+    * erzeugt für jeden Charakter ein CharakterModel und befüllt dieses mit den Daten aus dem Datensatz
+    * speichert alle CharakterModel in einer charakterModelList
+    * -> return charakterModelList*/
     public LinkedList<CharakterModel> getCharaktersRaw()
     {
         LinkedList<CharakterModel> charakterModelList = new LinkedList<CharakterModel>();
@@ -150,6 +164,10 @@ public class DataManager
         return charakterModelList;
     }
 
+    /*Erzeugt eine neue Datenbanktabelle nach dem Muster [Benutzername_charakter]
+    * kopiert die Datensätze der Charaktere mit ID aus paramCharIDCollection aus der Datenbanktabelle 'charakterRaw' in die neu erstellte
+    * die Namen der Charaktere werden durch die vom Benutzer ausgewählten Namen ersetzt
+    * das Datenfeld 'status' in der Datenbanktabelle 'user' wird für den Benutzer 'paramUser' auf true gesetzt*/
     public void createNewCharTableForUser(String paramUser, int[] paramCharIDCollection, String[] paramCharNameCollection)
     {
         try

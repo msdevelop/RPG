@@ -79,6 +79,7 @@ public class GameFrameController implements ActionListener
         this.gameFrame.getContentPane().add(this.mapController.getMapDetailView());
     }
 
+    /*currently not ín use*/
     public void loadGame()
     {}
 

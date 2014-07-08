@@ -144,18 +144,6 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         }
     }
 
-    @Override /*not in use*/
-    public void mousePressed(MouseEvent e)
-    {
-
-    }
-
-    @Override /*not in use*/
-    public void mouseReleased(MouseEvent e)
-    {
-
-    }
-
     @Override
     /*ActionEvent für JButton Zufallsname*/
     public void actionPerformed(ActionEvent e)
@@ -248,5 +236,17 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     public CharakterSelectionView getCharakterSelectionView()
     {
         return this.charakterSelectionView;
+    }
+
+    @Override /*not in use*/
+    public void mousePressed(MouseEvent e)
+    {
+
+    }
+
+    @Override /*not in use*/
+    public void mouseReleased(MouseEvent e)
+    {
+
     }
 }

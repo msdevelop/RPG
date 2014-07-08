@@ -12,6 +12,10 @@ public class CharakterSelectionItem extends JPanel
 {
     private Image charImg;
 
+    /*SelectionItems für Charaktere
+    * Namen nach dem Muster charakter_charID
+    * fügt MouseListener hinzu (CharakterSelectionController)
+    * lädt Charakterbild*/
     public CharakterSelectionItem(String paramUrl, int paramXPos, int paramYPos, int paramID, CharakterSelectionController paramCharakterSelectionController)
     {
         this.setOpaque(false);

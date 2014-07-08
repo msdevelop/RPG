@@ -13,6 +13,10 @@ public class OverviewSelectionItem extends JPanel
     private Image selectionImg_100, selectionImg_50;
     private boolean isInMouseFocus = false;
 
+    /*SelectionItem für Missionen in der MapOverview
+    * Namen nach dem Muster overview_kartenabschnitt
+    * fügt MouseListener hinzu (MapController)
+    * lädt Bilder für Anzeige im MouseFocus und Default*/
     public OverviewSelectionItem(String paramName, int paramXPos, int paramYPos, MapController paramMapController)
     {
         this.setLayout(null);
@@ -30,6 +34,8 @@ public class OverviewSelectionItem extends JPanel
         {}
     }
 
+    /*Zeichnet selectionImg_100 wenn sich die Component im MouseFocus befindet -> isInMouseFocus = true
+    * zeichnet selectionImg_50 -> default*/
     public void paintComponent(Graphics selectionItem)
     {
         super.paintComponent(selectionItem);
@@ -42,6 +48,9 @@ public class OverviewSelectionItem extends JPanel
             selectionItem.drawImage(this.selectionImg_50, 0, 0, this);
     }
 
+    /*setzt isInMouseFocus(boolean) auf den übergebenen Wert
+    * führt in paintComponent() zur Anzeige eines anderen Bildes
+    * this.repaint()*/
     public void setMouseFocus(boolean paramBool)
     {
         this.isInMouseFocus = paramBool;

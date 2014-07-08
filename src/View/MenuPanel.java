@@ -13,7 +13,8 @@ public class MenuPanel extends JPanel
 {
     private Image menuBg;
 
-    /*Erzeugt MenuSelectionItems für jeden Menüpunkt*/
+    /*Erzeugt MenuSelectionItems für jeden Menüpunkt
+    * lädt Hintergrundbild für Hauptmenü*/
     public MenuPanel(MenuController paramMenuController)
     {
         this.setLayout(null);

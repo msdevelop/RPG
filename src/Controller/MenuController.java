@@ -48,19 +48,20 @@ public class MenuController implements MouseListener
         tmpItem.setInMouseFocus(false);
     }
 
-    @Override
+    /*Gibt aktuelles MenuPanel(View) zurück*/
+    public MenuPanel getMenuPanel()
+    {
+        return this.menuPanel;
+    }
+
+    @Override /*not in user*/
     public void mousePressed(MouseEvent e)
     {
     }
 
-    @Override
+    @Override /*not in user*/
     public void mouseReleased(MouseEvent e)
     {
 
-    }
-
-    public MenuPanel getMenuPanel()
-    {
-        return this.menuPanel;
     }
 }

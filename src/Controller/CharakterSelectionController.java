@@ -185,7 +185,8 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     * setzt isCharSelected(boolean) der CharakterSelectionView auf false damit keine Charakterwerte mehr in der View angezeigt werden*/
     public void addCharakterToGroupSelection()
     {
-        if(this.charakterSelectionView.getNameFromTextfield().length() < 15)
+        String tmpName = this.charakterSelectionView.getNameFromTextfield();
+        if((tmpName.length() >= 2) && (tmpName.length() < 15))
         {
             this.currentCharakterSelectionItem.setBorder(null);
             this.selectedCharakterItems.add(this.currentCharakterSelectionItem);
@@ -198,7 +199,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         }
         else
         {
-            JOptionPane.showMessageDialog (null, "Charaktername darf maximal 15 Zeichen enthalten!", "Fehler beim Hinzufügen!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog (null, "Charaktername zu kurz oder zu lang!\nMindestens 2 maximal 15 Zeichen.", "Fehler beim Hinzufügen!", JOptionPane.WARNING_MESSAGE);
         }
     }
 

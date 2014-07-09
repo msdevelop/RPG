@@ -1,2 +1,11 @@
-/*C2*/SET SCHEMA PUBLIC
+/*C3*/SET SCHEMA PUBLIC
+drop table hanswurst_charakter
+drop table asdqwe_charakter
+drop table asdfg_charakter
+DELETE FROM USER WHERE NAME='asdfg'
+COMMIT
+DELETE FROM USER WHERE NAME='asdqwe'
+COMMIT
+DELETE FROM USER WHERE NAME='HansWurst'
+COMMIT
 DISCONNECT

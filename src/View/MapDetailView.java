@@ -31,7 +31,9 @@ public class MapDetailView extends JPanel
             this.placeholderDetail = ImageIO.read(new File("data//img//map//detail//placeholderDetail.png"));
         }
         catch(IOException e)
-        {}
+        {
+            System.err.println("IOException\nFehler beim Laden von Hintergrundbild\nMapDetailView.constructor()");
+        }
 
         this.setVisible(true);
     }
@@ -62,7 +64,9 @@ public class MapDetailView extends JPanel
             this.detailMap = ImageIO.read(new File(currentDetailMap.getUrl()));
         }
         catch(IOException e)
-        {}
+        {
+            System.err.println("IOException\nFehler beim Laden von detailMap\nMapDetailView.selectMission()");
+        }
 
         for(int i = 0; i < koordinatenModelList.size(); i++)
         {

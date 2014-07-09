@@ -27,7 +27,9 @@ public class MapOverview extends JPanel
             this.mapImage = ImageIO.read(new File("data//img//map//overview//overviewMap.png"));
         }
         catch(IOException e)
-        {}
+        {
+            System.err.println("IOException\nFehler beim Laden von Hintergrundbild\nMapOverview.constructor()");
+        }
 
         this.enableView();
         this.setVisible(true);

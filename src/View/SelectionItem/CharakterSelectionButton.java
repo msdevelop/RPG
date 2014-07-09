@@ -31,7 +31,9 @@ public class CharakterSelectionButton extends JPanel
             this.btnImageActive = ImageIO.read(new File("data//img//charSelection//button//btn_" + paramName + "_active.png"));
         }
         catch(IOException e)
-        {}
+        {
+            System.err.println("IOException\nFehler beim Laden von Buttons\nCharakterSelectionButton.constructor()");
+        }
     }
 
     /*Zeichnet den Button in den Container

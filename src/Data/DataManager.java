@@ -4,6 +4,7 @@ import Model.CharakterModel;
 import Model.DetailKartenModel;
 import Model.KoordinatenModel;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.LinkedList;
 
@@ -12,16 +13,32 @@ public class DataManager
     private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<DetailKartenModel>();
     private Connection connection = null;
 
-    /*Baut die Verbindung zur angegebenen Datenbank auf*/
+    /*Lädt Treiberklasse
+    * baut die Verbindung zur angegebenen Datenbank auf
+    * -> errorMessage + exit(0) sonst*/
     public DataManager()
     {
         try
         {
             Class.forName("org.hsqldb.jdbcDriver");
-            this.connection = DriverManager.getConnection("jdbc:hsqldb:file:data\\hsql\\db", "root", "");
         }
-        catch (Exception e)
-        {}
+        catch (ClassNotFoundException cnfE)
+        {
+            JOptionPane.showMessageDialog(null, "ErrorMessage: " + cnfE.getMessage() + "\nExceptionType: ClassNotFoundException" +
+                    "\nTreiberklasse konnte nicht geladen werden!", "Fehler beim Laden der Datenbank", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
+        try
+        {
+            this.connection = DriverManager.getConnection("jdbc:hsqldb:file:data\\hsql\\db;ifexists=true", "root", "");
+        }
+        catch (SQLException sqlE)
+        {
+            JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
+                    "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
+                    "\nVerbindung zur Datenbank konnte nicht hergestellt werden!", "Fehler beim Laden der Datenbank", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
     }
 
     /*Gleicht gegeben die Datenbanktabelle 'user' ab ob der übergebene Benutzername bereits vorhanden ist -> return false
@@ -49,6 +66,8 @@ public class DataManager
         }
         catch(SQLException e)
         {
+            System.err.println("SQLException\nFehler beim Prüfen oder Hinzufügen von Benutzer\nDataManager.isValidUsername" +
+                    "\nINFO: Methode ruft DataManager.addUser() auf (throws SQLException)");
             return false;
         }
     }
@@ -89,7 +108,9 @@ public class DataManager
             detMapResult.close();
         }
         catch(SQLException e)
-        {}
+        {
+            System.err.println("SQLException\nFehler beim Auslesen von DetailKarte\nDataManager.getDetailKarte()");
+        }
         return tmpModel;
     }
 
@@ -160,7 +181,9 @@ public class DataManager
             charResult.close();
         }
         catch(SQLException e)
-        {}
+        {
+            System.err.println("SQLException\nFehler beim Auslesen von Charakter\nDataManager.getCharaktersRaw()");
+        }
         return charakterModelList;
     }
 
@@ -184,7 +207,9 @@ public class DataManager
             stmt.close();
         }
         catch(SQLException e)
-        {}
+        {
+            System.err.println("SQLException\nFehler beim erzeugen von DBTable " + paramUser + "_charakter\nDataManager.createNewCHarTableForUser()");
+        }
     }
 
     /*Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder Absturz)
@@ -198,6 +223,8 @@ public class DataManager
 
         }
         catch(SQLException e)
-        {}
+        {
+            System.err.println("SQLException\nFehler beim Schließen der connection\nDataManager.closeConnection()");
+        }
     }
 }

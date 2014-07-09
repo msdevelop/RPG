@@ -28,7 +28,9 @@ public class MenuPanel extends JPanel
             menuBg = ImageIO.read(new File("data//img//menu//menuBg.png"));
         }
         catch(IOException e)
-        {}
+        {
+            System.err.println("IOException\nFehler beim Laden von Hintergrundbild\nMenuPanel.constructor()");
+        }
 
         setVisible(true);
     }

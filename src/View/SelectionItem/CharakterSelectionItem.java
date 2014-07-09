@@ -28,7 +28,9 @@ public class CharakterSelectionItem extends JPanel
             this.charImg = ImageIO.read(new File(paramUrl));
         }
         catch(IOException e)
-        {}
+        {
+            System.err.println("IOExceptio\nFehler beim Laden von Charakterbild\nCharakterSelectionItem.constructor()");
+        }
     }
 
     public void paintComponent(Graphics charGraphic)

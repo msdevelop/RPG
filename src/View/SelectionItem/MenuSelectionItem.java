@@ -29,7 +29,9 @@ public class MenuSelectionItem extends JPanel
             this.selectionImg = ImageIO.read(new File("data//img//menu//menuSelectionItem.png"));
         }
         catch(IOException e)
-        {}
+        {
+            System.err.println("IOException\nFehler beim Laden von MenuSelectionItem.png\nMenuSelectionItem.constructor()");
+        }
     }
 
     /*Zeichnet Bild wenn isInMouseFocus = true*/

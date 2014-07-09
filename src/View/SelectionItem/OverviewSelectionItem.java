@@ -31,7 +31,9 @@ public class OverviewSelectionItem extends JPanel
             this.selectionImg_50 = ImageIO.read(new File("data//img//map//overview//overviewSelectionItem_50.png"));
         }
         catch(IOException e)
-        {}
+        {
+            System.err.println("IOException\nFehler beim Laden von overviewSelectionItem_xxx.png\nOvervieSelectionItem.constructor()");
+        }
     }
 
     /*Zeichnet selectionImg_100 wenn sich die Component im MouseFocus befindet -> isInMouseFocus = true

@@ -36,6 +36,7 @@ public class CharakterSelectionView extends JPanel
         }
         catch(IOException e)
         {
+            System.err.println("IOException\nFehler beim Laden von Hintergrundbild\n CharakterSelectionView.constructor()");
         }
 
         this.txtfName = new JTextField();
@@ -112,7 +113,9 @@ public class CharakterSelectionView extends JPanel
                     charBg.drawImage(tmpImage, 642 + (75*i), 825, this);
                 }
                 catch(IOException e)
-                {}
+                {
+                    System.err.println("IOException\nFehler beim Laden von Charakterbildern\nCharakterSelectionView.paintComponent()");
+                }
             }
         }
     }
@@ -177,7 +180,9 @@ public class CharakterSelectionView extends JPanel
             this.txtfName.setText(this.namensListe.get(this.nameIndex));
         }
         catch(NullPointerException e)
-        {}
+        {
+            System.err.println("NullPointerException\nFehler beim Generieren von randomNumber\nCharakterSelectionView.selectRandomName");
+        }
     }
 
     /*fügt die übergebene BildURL der Liste selectedCharakterImages hinzu

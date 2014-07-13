@@ -36,7 +36,9 @@ public class MapController implements MouseListener
         }
         /*MouseClicked für DetailSelectionItem(SelectionItem)*/
         else if(e.getComponent().getName().startsWith("detail"))
-            System.out.println("Success!");
+        {
+            this.gameFrameController.startTestLevel();
+        }
     }
 
     @Override

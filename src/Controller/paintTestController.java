@@ -1,5 +1,6 @@
 package Controller;
 
+import View.DesignElement.LevelBorder;
 import View.GameFrame;
 import View.paintTest;
 
@@ -9,10 +10,12 @@ import java.awt.event.KeyListener;
 public class paintTestController implements KeyListener
 {
     private paintTest paintTest;
+    private LevelBorder levelBorder;
 
     public paintTestController(GameFrame gf)
     {
         this.paintTest = new paintTest(gf, this);
+        this.levelBorder = new LevelBorder(gf);
     }
 
     @Override

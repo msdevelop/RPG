@@ -15,18 +15,22 @@ public class paintTest extends JPanel
 
     public paintTest(GameFrame gameFrame, paintTestController parampaintTestController)
     {
-        this.setBounds(0, 0, 1920, 1057);
+        this.setBounds(24, 24, 1872, 1008);
         this.setLayout(null);
 
         try
         {
-            this.testMat = ImageIO.read(new File("data\\img\\tiles\\materials\\grass.png"));
+            this.testMat = ImageIO.read(new File("data\\img\\tiles\\materials\\tree.png"));
             this.player = ImageIO.read(new File("data\\img\\tiles\\char\\magier.png"));
         }
         catch(IOException e)
         {
             System.err.println("IOException\nFehler beim Laden von Testmaterial\npaintTest.constructor()");
         }
+
+        //TODO remove test parameters
+        this.setBackground(Color.yellow);
+
 
         this.addKeyListener(parampaintTestController);
         this.setVisible(true);
@@ -38,11 +42,11 @@ public class paintTest extends JPanel
     {
         super.paintComponent(field);
 
-        for(int i = 0; i < 23; i++)
+        for(int i = 0; i < 21; i++)
         {
-            for(int j = 0; j < 40; j++)
+            for(int j = 0; j < 39; j++)
             {
-                field.drawImage(this.testMat, 48 * j, 48 * i, this);
+                field.drawImage(this.testMat,48 * j, 48 * i, this);
             }
         }
         field.drawImage(this.player, this.x, this.y, this);
@@ -50,7 +54,7 @@ public class paintTest extends JPanel
 
     public void addX()
     {
-        if(this.x < 1872)
+        if(this.x < 1824)
         {
             this.x += this.z;
             this.repaint();
@@ -68,7 +72,7 @@ public class paintTest extends JPanel
 
     public void addY()
     {
-        if(this.y  < 1008)
+        if(this.y  < 960)
         {
             this.y += this.z;
             this.repaint();

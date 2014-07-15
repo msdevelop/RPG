@@ -30,7 +30,7 @@ public class DataManager
         }
         try
         {
-            this.connection = DriverManager.getConnection("jdbc:hsqldb:file:data\\hsql\\db;ifexists=true", "root", "");
+            this.connection = DriverManager.getConnection("jdbc:hsqldb:file:data\\hsql\\common\\db;ifexists=true;shutdown=true", "root", "");
         }
         catch (SQLException sqlE)
         {

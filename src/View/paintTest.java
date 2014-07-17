@@ -27,11 +27,6 @@ public class paintTest extends JPanel
         {
             System.err.println("IOException\nFehler beim Laden von Testmaterial\npaintTest.constructor()");
         }
-
-        //TODO remove test parameters
-        this.setBackground(Color.yellow);
-
-
         this.addKeyListener(parampaintTestController);
         this.setVisible(true);
         gameFrame.getContentPane().add(this);

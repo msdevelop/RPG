@@ -15,33 +15,20 @@ public class paintTestController implements KeyListener
     public paintTestController(GameFrame gf)
     {
         this.paintTest = new paintTest(gf, this);
-        this.levelBorder = new LevelBorder(gf);
+        //this.levelBorder = new LevelBorder(gf);
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
-        System.out.println("Success");
         if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-        {
            this.paintTest.addX();
-            System.out.println("RIGHT");
-        }
         else if(e.getKeyCode() == KeyEvent.VK_LEFT)
-        {
             this.paintTest.subX();
-            System.out.println("LEFT");
-        }
         else if(e.getKeyCode() == KeyEvent.VK_UP)
-        {
             this.paintTest.subY();
-            System.out.println("UP");
-        }
         else if(e.getKeyCode() == KeyEvent.VK_DOWN)
-        {
             this.paintTest.addY();
-            System.out.println("DOWN");
-        }
     }
 
     @Override

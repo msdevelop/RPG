@@ -3,6 +3,7 @@ package Data;
 import Model.CharakterModel;
 import Model.DetailKartenModel;
 import Model.KoordinatenModel;
+import Model.MaterialModel;
 
 import javax.swing.*;
 import java.sql.*;
@@ -11,7 +12,7 @@ import java.util.LinkedList;
 public class DataManager
 {
     private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<DetailKartenModel>();
-    private Connection connection = null;
+    private Connection commonCon = null, levelCon = null;
 
     /*Lädt Treiberklasse
     * baut die Verbindung zur angegebenen Datenbank auf
@@ -22,7 +23,7 @@ public class DataManager
         {
             Class.forName("org.hsqldb.jdbcDriver");
         }
-        catch (ClassNotFoundException cnfE)
+        catch(ClassNotFoundException cnfE)
         {
             JOptionPane.showMessageDialog(null, "ErrorMessage: " + cnfE.getMessage() + "\nExceptionType: ClassNotFoundException" +
                     "\nTreiberklasse konnte nicht geladen werden!", "Fehler beim Laden der Datenbank", JOptionPane.ERROR_MESSAGE);
@@ -30,9 +31,10 @@ public class DataManager
         }
         try
         {
-            this.connection = DriverManager.getConnection("jdbc:hsqldb:file:data\\hsql\\common\\db;ifexists=true;shutdown=true", "root", "");
+            this.commonCon = DriverManager.getConnection("jdbc:hsqldb:file:data\\hsql\\common\\db;ifexists=true;shutdown=true", "root", "");
+            this.levelCon = DriverManager.getConnection("jdbc:hsqldb:file:data\\hsql\\level\\levelDB;ifexists=true;shutdown=true", "root", "");
         }
-        catch (SQLException sqlE)
+        catch(SQLException sqlE)
         {
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                     "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
@@ -48,7 +50,7 @@ public class DataManager
     {
         try
         {
-            PreparedStatement pstmt = this.connection.prepareStatement("SELECT * FROM user WHERE (name = ?)");
+            PreparedStatement pstmt = this.commonCon.prepareStatement("SELECT * FROM user WHERE (name = ?)");
             pstmt.setString(1, paramUsername);
             ResultSet userResult = pstmt.executeQuery();
             pstmt.close();
@@ -66,8 +68,7 @@ public class DataManager
         }
         catch(SQLException e)
         {
-            System.err.println("SQLException\nFehler beim Prüfen oder Hinzufügen von Benutzer\nDataManager.isValidUsername" +
-                    "\nINFO: Methode ruft DataManager.addUser() auf (throws SQLException)");
+            System.err.println("SQLException\nFehler beim Prüfen oder Hinzufügen von Benutzer\nDataManager.isValidUsername" + "\nINFO: Methode ruft DataManager.addUser() auf (throws SQLException)");
             return false;
         }
     }
@@ -76,9 +77,9 @@ public class DataManager
     * Das Datenfeld 'status <boolean>'  gibt an ob der Beutzer die CharakterSelektion bereits abgeschlossen hat (true) oder nicht (false = default)*/
     public void addUser(String paramUsername) throws SQLException
     {
-            Statement stmt = connection.createStatement();
-            stmt.executeQuery("INSERT INTO user(name, status) VALUES('" + paramUsername + "', false)");
-            stmt.close();
+        Statement stmt = commonCon.createStatement();
+        stmt.executeQuery("INSERT INTO user(name, status) VALUES('" + paramUsername + "', false)");
+        stmt.close();
     }
 
     /*Prüft ob die angeforderte DetailMap bereits aus der DB ausgelesen und in der Liste detailKartenModelList gespeichert wurde -> return DetailKartenModel
@@ -98,7 +99,7 @@ public class DataManager
         DetailKartenModel tmpModel = null;
         try
         {
-            PreparedStatement pstmt = this.connection.prepareStatement("SELECT * FROM detailMap WHERE (name = ?)");
+            PreparedStatement pstmt = this.commonCon.prepareStatement("SELECT * FROM detailMap WHERE (name = ?)");
             pstmt.setString(1, paramMapName);
             ResultSet detMapResult = pstmt.executeQuery();
             pstmt.close();
@@ -160,21 +161,12 @@ public class DataManager
 
         try
         {
-            Statement stmt = this.connection.createStatement();
+            Statement stmt = this.commonCon.createStatement();
             ResultSet charResult = stmt.executeQuery("SELECT * FROM charakterRaw");
             stmt.close();
             while(charResult.next())
             {
-                CharakterModel tmpModel = new CharakterModel(charResult.getInt("charID"), charResult.getInt("mut"), charResult.getInt("klugheit"), charResult.getInt("intuition"),
-                        charResult.getInt("charisma"), charResult.getInt("fingerfertigkeit"), charResult.getInt("gewandheit"), charResult.getInt("koerperkraft"),
-                        charResult.getInt("lebensPkte"), charResult.getInt("astralPkte"), charResult.getInt("aberglaube"), charResult.getInt("koerperbeherrschung"),
-                        charResult.getInt("selbstbeherrschung"), charResult.getInt("aexteBeile"), charResult.getInt("dolche"), charResult.getInt("schwertSblEh"),
-                        charResult.getInt("schwertSblZh"), charResult.getInt("fechtwaffen"), charResult.getInt("speerStab"), charResult.getInt("stumpfEh"),
-                        charResult.getInt("stumpfZh"), charResult.getInt("armbrust"), charResult.getInt("bogen"), charResult.getInt("stufe"),
-                        charResult.getInt("magieresistenz"), charResult.getInt("ausdauer"), charResult.getInt("attackeWert"), charResult.getInt("paradeWert"),
-                        charResult.getInt("ausweichWert"), charResult.getInt("fernkampfWert"), charResult.getString("namensListe"), charResult.getString("klasse"),
-                        charResult.getString("kopfEq"), charResult.getString("brustEq"), charResult.getString("waffenhandEq"), charResult.getString("nebenhandEq"),
-                        charResult.getString("url"));
+                CharakterModel tmpModel = new CharakterModel(charResult.getInt("charID"), charResult.getInt("mut"), charResult.getInt("klugheit"), charResult.getInt("intuition"), charResult.getInt("charisma"), charResult.getInt("fingerfertigkeit"), charResult.getInt("gewandheit"), charResult.getInt("koerperkraft"), charResult.getInt("lebensPkte"), charResult.getInt("astralPkte"), charResult.getInt("aberglaube"), charResult.getInt("koerperbeherrschung"), charResult.getInt("selbstbeherrschung"), charResult.getInt("aexteBeile"), charResult.getInt("dolche"), charResult.getInt("schwertSblEh"), charResult.getInt("schwertSblZh"), charResult.getInt("fechtwaffen"), charResult.getInt("speerStab"), charResult.getInt("stumpfEh"), charResult.getInt("stumpfZh"), charResult.getInt("armbrust"), charResult.getInt("bogen"), charResult.getInt("stufe"), charResult.getInt("magieresistenz"), charResult.getInt("ausdauer"), charResult.getInt("attackeWert"), charResult.getInt("paradeWert"), charResult.getInt("ausweichWert"), charResult.getInt("fernkampfWert"), charResult.getString("namensListe"), charResult.getString("klasse"), charResult.getString("kopfEq"), charResult.getString("brustEq"), charResult.getString("waffenhandEq"), charResult.getString("nebenhandEq"), charResult.getString("url"));
 
                 charakterModelList.add(tmpModel);
             }
@@ -195,10 +187,8 @@ public class DataManager
     {
         try
         {
-            Statement stmt = connection.createStatement();
-            stmt.executeQuery("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramCharIDCollection[0]
-            + " OR charID = " + paramCharIDCollection[1] + " OR charID = " + paramCharIDCollection[2] + " OR charID = " + paramCharIDCollection[3]
-            + " OR charID = " + paramCharIDCollection[4] + " OR charID = " + paramCharIDCollection[5] + ") WITH DATA");
+            Statement stmt = commonCon.createStatement();
+            stmt.executeQuery("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramCharIDCollection[0] + " OR charID = " + paramCharIDCollection[1] + " OR charID = " + paramCharIDCollection[2] + " OR charID = " + paramCharIDCollection[3] + " OR charID = " + paramCharIDCollection[4] + " OR charID = " + paramCharIDCollection[5] + ") WITH DATA");
             for(int i = 0; i < 6; i++)
             {
                 stmt.executeQuery("UPDATE " + paramUser + "_charakter SET namensliste = '" + paramCharNameCollection[i] + "' WHERE charID = " + paramCharIDCollection[i]);
@@ -212,14 +202,47 @@ public class DataManager
         }
     }
 
+    public MaterialModel[][] loadLevel(String paramLevelName)
+    {
+        MaterialModel[][] tmpMatModelArray = new MaterialModel[21][39];
+
+        try
+        {
+            Statement stmt = this.levelCon.createStatement();
+            ResultSet levelResult = stmt.executeQuery("SELECT * FROM " + paramLevelName);
+            int j = 0;
+            while(levelResult.next())
+            {
+                for(int i = 0; i < 39; i++)
+                {
+                    ResultSet materialResult = stmt.executeQuery("SELECT materialName FROM materialAllocation WHERE materialID = " + levelResult.getInt(i + 1));
+                    materialResult.next();
+                    tmpMatModelArray[j][i] = new MaterialModel(materialResult.getString(1), levelResult.getInt(i + 1));
+                }
+                j++;
+            }
+            return tmpMatModelArray;
+        }
+        catch(SQLException sqlE)
+        {
+            JOptionPane.showMessageDialog(null, "SQLException\nFehler beim Laden des Levels!\nDataManager.loadLevel()" +
+                    "\nMessage: " + sqlE.getMessage() + "\nErrorCode: " + sqlE.getErrorCode() + "\nSQLState: " + sqlE.getSQLState(), "Laden von Level fehlgeschlagen"
+                    ,JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+            return null;
+        }
+    }
+
     /*Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder Absturz)
     * Schließt die Datenbankverbindung (falls vorhanden) um COMMIT der Daten zu gewährleisten*/
     public void closeConnection()
     {
         try
         {
-            if(this.connection != null)
-                this.connection.close();
+            if(this.commonCon != null)
+                this.commonCon.close();
+            if(this.levelCon != null)
+                this.levelCon.close();
 
         }
         catch(SQLException e)

@@ -73,7 +73,7 @@ public class MapDetailView extends JPanel
             KoordinatenModel currentModel = koordinatenModelList.get(i);
             int xPos = currentModel.getxPosition();
             int yPos = currentModel.getyPosition();
-            this.add(new DetailSelectionItem(paramMapName, xPos, yPos, this.mapController));
+            this.add(new DetailSelectionItem(paramMapName + "_" + i, xPos, yPos, this.mapController));
         }
         this.isMissionSelected = true;
         this.repaint();

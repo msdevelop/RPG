@@ -18,7 +18,7 @@ public class GameFrameController implements ActionListener
     private CharakterSelectionController charakterSelectionController;
     private String username = "", currentUser;
     private LinkedList<CharakterModel> currentGroup;
-    private paintTestController testController;
+    private LevelViewController levelViewController;
 
     /*Initialisiert den DataManager
      * erzeugt GameFrame(View)
@@ -102,9 +102,9 @@ public class GameFrameController implements ActionListener
         }
     }
 
-    public void startTestLevel()
+    public void initiateLevel(String paramLevelName)
     {
-        this.testController = new paintTestController(this.gameFrame);
+        this.levelViewController = new LevelViewController(this, paramLevelName);
         this.mapController.getMapOverview().setVisible(false);
         this.mapController.getMapDetailView().setVisible(false);
         this.gameFrame.remove(this.mapController.getMapOverview());
@@ -127,5 +127,10 @@ public class GameFrameController implements ActionListener
     public String getCurrentUser()
     {
         return this.currentUser;
+    }
+
+    public LinkedList<CharakterModel> getCurrentGroup()
+    {
+        return this.currentGroup;
     }
 }

@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class LevelView extends JPanel
 {
-    private int playerXPos = 0, playerYPos = 0, playerStepSize = 48;
+    private int currentPlayerXPos = 0, currentPlayerYPos = 0, playerStepSize = 48;
     private MaterialModel[][] matModelArray;
     private Image playerImg;
     private boolean fieldIsPainted = false;
@@ -46,47 +46,47 @@ public class LevelView extends JPanel
                 field.drawImage(this.matModelArray[i][j].getMatImg(), 48 * j, 48 * i, this);
                 if((this.matModelArray[i][j].getMaterialID() == 302) && !(this.fieldIsPainted))
                 {
-                    this.playerXPos = 48 * j;
-                    this.playerYPos = 48 * i;
+                    this.currentPlayerXPos = 48 * j;
+                    this.currentPlayerYPos = 48 * i;
                     this.fieldIsPainted = true;
                 }
             }
         }
-        field.drawImage(this.playerImg, this.playerXPos, this.playerYPos, this);
+        field.drawImage(this.playerImg, this.currentPlayerXPos, this.currentPlayerYPos, this);
     }
 
     public void addX()
     {
-        if(this.playerXPos < 1824)
+        if((this.currentPlayerXPos < 1824) && (((this.matModelArray[this.currentPlayerYPos / 48][(this.currentPlayerXPos + this.playerStepSize) / 48].getMaterialID()) % 200) >= 100))
         {
-            this.playerXPos += this.playerStepSize;
+            this.currentPlayerXPos += this.playerStepSize;
             this.repaint();
         }
     }
 
     public void subX()
     {
-        if(this.playerXPos >= 48)
+        if((this.currentPlayerXPos >= 48) && (((this.matModelArray[this.currentPlayerYPos / 48][(this.currentPlayerXPos - this.playerStepSize) / 48].getMaterialID()) % 200) >= 100))
         {
-            this.playerXPos -= this.playerStepSize;
+            this.currentPlayerXPos -= this.playerStepSize;
             this.repaint();
         }
     }
 
     public void addY()
     {
-        if(this.playerYPos < 960)
+        if((this.currentPlayerYPos < 960) && (((this.matModelArray[(this.currentPlayerYPos + this.playerStepSize) / 48][this.currentPlayerXPos / 48].getMaterialID()) % 200) >= 100))
         {
-            this.playerYPos += this.playerStepSize;
+            this.currentPlayerYPos += this.playerStepSize;
             this.repaint();
         }
     }
 
     public void subY()
     {
-        if(this.playerYPos >= 48)
+        if((this.currentPlayerYPos >= 48) && (((this.matModelArray[(this.currentPlayerYPos - this.playerStepSize) / 48][this.currentPlayerXPos / 48].getMaterialID()) % 200) >= 100))
         {
-            this.playerYPos -= this.playerStepSize;
+            this.currentPlayerYPos -= this.playerStepSize;
             this.repaint();
         }
     }

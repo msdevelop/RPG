@@ -24,7 +24,7 @@ public class LevelViewController implements KeyListener
     public void keyPressed(KeyEvent e)
     {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-           this.LevelView.addX();
+            this.LevelView.addX();
         else if(e.getKeyCode() == KeyEvent.VK_LEFT)
             this.LevelView.subX();
         else if(e.getKeyCode() == KeyEvent.VK_UP)

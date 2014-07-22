@@ -16,7 +16,7 @@ public class LevelView extends JPanel
     private Image playerImg;
     private boolean fieldIsPainted = false;
 
-    public LevelView(GameFrame gameFrame, LevelViewController paramLevelViewController, String paramLevelName)
+    public LevelView(GameFrame paramGameFrame, LevelViewController paramLevelViewController, String paramLevelName)
     {
         this.matModelArray = paramLevelViewController.getGameFrameController().getDataManager().loadLevel(paramLevelName);
         try
@@ -31,7 +31,7 @@ public class LevelView extends JPanel
         this.setLayout(null);
         this.addKeyListener(paramLevelViewController);
         this.setVisible(true);
-        gameFrame.getContentPane().add(this);
+        paramGameFrame.getContentPane().add(this);
         this.requestFocus();
     }
 
@@ -44,7 +44,7 @@ public class LevelView extends JPanel
             for(int j = 0; j < 39; j++)
             {
                 field.drawImage(this.matModelArray[i][j].getMatImg(), 48 * j, 48 * i, this);
-                if((this.matModelArray[i][j].getMaterialID() == 302) && !(this.fieldIsPainted))
+                if((this.matModelArray[i][j].getMaterialID() == 302) && ! (this.fieldIsPainted))
                 {
                     this.currentPlayerXPos = 48 * j;
                     this.currentPlayerYPos = 48 * i;

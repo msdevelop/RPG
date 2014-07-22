@@ -35,20 +35,20 @@ public class GameFrameController implements ActionListener
     /*Wird aufgerufen wenn im Menü der Punkt "Neues Spiel" gewählt wird
      * Benutzer wird zur Eingabe eines Benutzernamens aufgefordert -> JOptionPane
      * Führende und angehängte Leerzeichen werden abgeschnitten -> String.trim()
-     * Länge des Benutzernamens muss zwischen 4 und 15 Zeichen liegen und muss den Pattern [a-z] [A-Z] [0-9] [ _ ] in beliebiger Reihenfolge entsprechen
+     * Länge des Benutzernamens muss zwischen 4 und 15 Zeichen liegen und muss den Pattern [a-z] [A-Z] [0-9] [ _ ] in beliebiger Reihenfolge entsprechen (keine führenden/angehämgten Leer- bzw Sonderzeichen)
      * Es wird geprüft ob der Benutzername bereits vergeben ist ->this.validateUsername()
      * Fehlermeldungen via JOptionPane*/
-    public void initializeCharakterSelection()
+    public void initiateCharakterSelection()
     {
         this.username = JOptionPane.showInputDialog(null, "Bitte geben Sie einen Benutzername ein.", "Benutzername Eingeben", JOptionPane.QUESTION_MESSAGE);
-        this.username.trim();
-        if((this.username.length() < 4) || (this.username.length() > 15) || (!(this.username.matches("\\w*"))))
+        if((this.username.length() < 4) || (this.username.length() > 15) || (! (this.username.matches("\\p{Alpha}\\w*"))))
         {
             JOptionPane.showMessageDialog(null, "Ungültiger Benutzername!\n" +
                     "      - Gültige Zeichen: [a-z] [A-Z] [0-9] [ _ ]\n" +
-                    "      - mindestens 4 maximal 15 Zeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
+                    "      - mindestens 4 maximal 15 Zeichen\n" +
+                    "      - keine führenden oder angehängten Leer- oder Sonderzeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
         }
-        else if(!this.validateUsername())
+        else if(! this.validateUsername())
         {
             JOptionPane.showMessageDialog(null, "Benutzername bereits vergeben!", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
         }
@@ -70,7 +70,7 @@ public class GameFrameController implements ActionListener
     * entfern die CharakterSelectionView
     * initialisiert den MapController
     * fügt die MapOveriview(View) und MapDetailView(View) dem GameFrame hinzu*/
-    public void initializeMapSelection(LinkedList<CharakterModel> paramGroupList)
+    public void initiateMapSelection(LinkedList<CharakterModel> paramGroupList)
     {
         this.currentGroup = paramGroupList;
         this.charakterSelectionController.getCharakterSelectionView().setVisible(false);
@@ -82,7 +82,8 @@ public class GameFrameController implements ActionListener
 
     /*currently not ín use*/
     public void loadGame()
-    {}
+    {
+    }
 
     /*Übergibt den eingegebenen Benutzernamen an den DataManager um zu überprüfen ob er bereits vergeben ist
      * return true -> Beutzername ist gültig und wurde der Datenbanktabelle 'user' hinzugefügt
@@ -96,19 +97,16 @@ public class GameFrameController implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         if(e.getActionCommand().equals("beenden"))
-        {
             this.dataManager.closeConnection();
-            System.exit(0);
-        }
     }
 
     public void initiateLevel(String paramLevelName)
     {
-        this.levelViewController = new LevelViewController(this, paramLevelName);
         this.mapController.getMapOverview().setVisible(false);
         this.mapController.getMapDetailView().setVisible(false);
         this.gameFrame.remove(this.mapController.getMapOverview());
         this.gameFrame.remove(this.mapController.getMapDetailView());
+        this.levelViewController = new LevelViewController(this, paramLevelName);
     }
 
     /*Gibt den aktuellen DataManager zurück*/

@@ -66,9 +66,13 @@ public class DataManager
                 return true;
             }
         }
-        catch(SQLException e)
+        catch(SQLException sqlE)
         {
-            System.err.println("SQLException\nFehler beim Prüfen oder Hinzufügen von Benutzer\nDataManager.isValidUsername" + "\nINFO: Methode ruft DataManager.addUser() auf (throws SQLException)");
+            JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
+                    "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
+                    "\nFehler beim Prüfen oder Hinzufügen von Benutzer!\nDataManager.isValidUsername()\nINFO: Methode ruft DataManager.addUser() auf (throws SQLException)",
+                    "Fehler beim Lesen/Schreiben der Datenbank", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
             return false;
         }
     }
@@ -108,9 +112,13 @@ public class DataManager
             this.detailKartenModelList.add(tmpModel);
             detMapResult.close();
         }
-        catch(SQLException e)
+        catch(SQLException sqlE)
         {
-            System.err.println("SQLException\nFehler beim Auslesen von DetailKarte\nDataManager.getDetailKarte()");
+            JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
+                            "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
+                            "\nFehler beim Auslesen von DetailKarte\nDataManager.getDetailKarte()",
+                            "Fehler beim Lesen der Datenbank", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
         return tmpModel;
     }
@@ -166,15 +174,26 @@ public class DataManager
             stmt.close();
             while(charResult.next())
             {
-                CharakterModel tmpModel = new CharakterModel(charResult.getInt("charID"), charResult.getInt("mut"), charResult.getInt("klugheit"), charResult.getInt("intuition"), charResult.getInt("charisma"), charResult.getInt("fingerfertigkeit"), charResult.getInt("gewandheit"), charResult.getInt("koerperkraft"), charResult.getInt("lebensPkte"), charResult.getInt("astralPkte"), charResult.getInt("aberglaube"), charResult.getInt("koerperbeherrschung"), charResult.getInt("selbstbeherrschung"), charResult.getInt("aexteBeile"), charResult.getInt("dolche"), charResult.getInt("schwertSblEh"), charResult.getInt("schwertSblZh"), charResult.getInt("fechtwaffen"), charResult.getInt("speerStab"), charResult.getInt("stumpfEh"), charResult.getInt("stumpfZh"), charResult.getInt("armbrust"), charResult.getInt("bogen"), charResult.getInt("stufe"), charResult.getInt("magieresistenz"), charResult.getInt("ausdauer"), charResult.getInt("attackeWert"), charResult.getInt("paradeWert"), charResult.getInt("ausweichWert"), charResult.getInt("fernkampfWert"), charResult.getString("namensListe"), charResult.getString("klasse"), charResult.getString("kopfEq"), charResult.getString("brustEq"), charResult.getString("waffenhandEq"), charResult.getString("nebenhandEq"), charResult.getString("url"));
+                CharakterModel tmpModel = new CharakterModel(charResult.getInt("charID"), charResult.getInt("mut"), charResult.getInt("klugheit"), charResult.getInt("intuition"),
+                        charResult.getInt("charisma"), charResult.getInt("fingerfertigkeit"), charResult.getInt("gewandheit"), charResult.getInt("koerperkraft"),
+                        charResult.getInt("lebensPkte"), charResult.getInt("astralPkte"), charResult.getInt("aberglaube"), charResult.getInt("koerperbeherrschung"),
+                        charResult.getInt("selbstbeherrschung"), charResult.getInt("aexteBeile"), charResult.getInt("dolche"), charResult.getInt("schwertSblEh"),
+                        charResult.getInt("schwertSblZh"), charResult.getInt("fechtwaffen"), charResult.getInt("speerStab"), charResult.getInt("stumpfEh"), charResult.getInt("stumpfZh"),
+                        charResult.getInt("armbrust"), charResult.getInt("bogen"), charResult.getInt("stufe"), charResult.getInt("magieresistenz"), charResult.getInt("ausdauer"),
+                        charResult.getInt("attackeWert"), charResult.getInt("paradeWert"), charResult.getInt("ausweichWert"), charResult.getInt("fernkampfWert"),
+                        charResult.getString("namensListe"), charResult.getString("klasse"), charResult.getString("kopfEq"), charResult.getString("brustEq"),
+                        charResult.getString("waffenhandEq"), charResult.getString("nebenhandEq"), charResult.getString("url"));
 
                 charakterModelList.add(tmpModel);
             }
             charResult.close();
         }
-        catch(SQLException e)
+        catch(SQLException sqlE)
         {
-            System.err.println("SQLException\nFehler beim Auslesen von Charakter\nDataManager.getCharaktersRaw()");
+            JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
+                            "\nErrorMessage: " + sqlE.getMessage() + "\nSQLException\nFehler beim Auslesen von Charakter\nDataManager.getCharaktersRaw()",
+                            "Fehler beim Auslesen der Datenbank",JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
         return charakterModelList;
     }
@@ -188,7 +207,9 @@ public class DataManager
         try
         {
             Statement stmt = commonCon.createStatement();
-            stmt.executeQuery("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramCharIDCollection[0] + " OR charID = " + paramCharIDCollection[1] + " OR charID = " + paramCharIDCollection[2] + " OR charID = " + paramCharIDCollection[3] + " OR charID = " + paramCharIDCollection[4] + " OR charID = " + paramCharIDCollection[5] + ") WITH DATA");
+            stmt.executeQuery("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramCharIDCollection[0] +
+                    " OR charID = " + paramCharIDCollection[1] + " OR charID = " + paramCharIDCollection[2] + " OR charID = " + paramCharIDCollection[3] +
+                    " OR charID = " + paramCharIDCollection[4] + " OR charID = " + paramCharIDCollection[5] + ") WITH DATA");
             for(int i = 0; i < 6; i++)
             {
                 stmt.executeQuery("UPDATE " + paramUser + "_charakter SET namensliste = '" + paramCharNameCollection[i] + "' WHERE charID = " + paramCharIDCollection[i]);
@@ -196,9 +217,12 @@ public class DataManager
             stmt.executeQuery("UPDATE user SET status = true WHERE name = '" + paramUser + "'");
             stmt.close();
         }
-        catch(SQLException e)
+        catch(SQLException sqlE)
         {
-            System.err.println("SQLException\nFehler beim erzeugen von DBTable " + paramUser + "_charakter\nDataManager.createNewCHarTableForUser()");
+            JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
+                    "\nErrorMessage: " + sqlE.getMessage() + "\nSQLException\nFehler beim erzeugen von DBTable " + paramUser + "_charakter\nDataManager.createNewCharTableForUser()",
+                    "Fehler beim Erstellen von Datenbanktabelle", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
     }
 
@@ -210,24 +234,33 @@ public class DataManager
         {
             Statement stmt = this.levelCon.createStatement();
             ResultSet levelResult = stmt.executeQuery("SELECT * FROM " + paramLevelName);
+
+            PreparedStatement pstmt = this.levelCon.prepareStatement("SELECT materialName FROM materialAllocation WHERE (materialID = ?)");
+
             int j = 0;
             while(levelResult.next())
             {
                 for(int i = 0; i < 39; i++)
                 {
-                    ResultSet materialResult = stmt.executeQuery("SELECT materialName FROM materialAllocation WHERE materialID = " + levelResult.getInt(i + 1));
+                    int tmpMatID = levelResult.getInt(i + 1);
+                    pstmt.setInt(1, tmpMatID);
+                    ResultSet materialResult = pstmt.executeQuery();
                     materialResult.next();
-                    tmpMatModelArray[j][i] = new MaterialModel(materialResult.getString(1), levelResult.getInt(i + 1));
+                    tmpMatModelArray[j][i] = new MaterialModel(materialResult.getString(1), tmpMatID);
+                    materialResult.close();
                 }
                 j++;
             }
+            levelResult.close();
+            stmt.close();
+            pstmt.close();
             return tmpMatModelArray;
         }
         catch(SQLException sqlE)
         {
             JOptionPane.showMessageDialog(null, "SQLException\nFehler beim Laden des Levels!\nDataManager.loadLevel()" +
-                    "\nMessage: " + sqlE.getMessage() + "\nErrorCode: " + sqlE.getErrorCode() + "\nSQLState: " + sqlE.getSQLState(), "Laden von Level fehlgeschlagen"
-                    ,JOptionPane.ERROR_MESSAGE);
+                    "\nMessage: " + sqlE.getMessage() + "\nErrorCode: " + sqlE.getErrorCode() + "\nSQLState: " + sqlE.getSQLState(), "Laden von Level fehlgeschlagen",
+                    JOptionPane.ERROR_MESSAGE);
             System.exit(0);
             return null;
         }
@@ -243,11 +276,16 @@ public class DataManager
                 this.commonCon.close();
             if(this.levelCon != null)
                 this.levelCon.close();
+            System.exit(0);
 
         }
-        catch(SQLException e)
+        catch(SQLException sqlE)
         {
-            System.err.println("SQLException\nFehler beim Schließen der connection\nDataManager.closeConnection()");
+            JOptionPane.showMessageDialog(null, "SQLException\nFFehler beim Schließen der connection!\nDataManager.closeConnection()" +
+                    "\nMessage: " + sqlE.getMessage() + "\nErrorCode: " + sqlE.getErrorCode() + "\nSQLState: " + sqlE.getSQLState(), "Schließen einer connection fehlgeschlagen",
+                    JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+
         }
     }
 }

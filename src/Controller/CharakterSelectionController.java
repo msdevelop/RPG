@@ -199,7 +199,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         }
         else
         {
-            JOptionPane.showMessageDialog (null, "Charaktername zu kurz oder zu lang!\nMindestens 2 maximal 15 Zeichen.", "Fehler beim Hinzufügen!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Charaktername zu kurz oder zu lang!\nMindestens 2 maximal 15 Zeichen.", "Fehler beim Hinzufügen!", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -219,7 +219,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     * speichert die charID's der Charaktere aus der Gruppe -> int[] charIDCollection
     * speichert die Namen der Charaktere aus der Gruppe -> String[] charNameCollection
     * übergibt die beiden Arrays und den Namen des currentUsers an den DataManager -> DataManager.createNewCharTableForUser()
-    * übergibt die finale Gruppe und ruft die MapSelection auf-> GameFrameController.initializeMapSelection()*/
+    * übergibt die finale Gruppe und ruft die MapSelection auf-> GameFrameController.initiateMapSelection()*/
     public void finalizeCharakterSelection()
     {
         int[] charIDCollection = new int[6];
@@ -230,7 +230,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
             charNameCollection[i] = groupSelectionList.get(i).getName();
         }
         this.gameFrameController.getDataManager().createNewCharTableForUser(this.gameFrameController.getCurrentUser(), charIDCollection, charNameCollection);
-        this.gameFrameController.initializeMapSelection(this.groupSelectionList);
+        this.gameFrameController.initiateMapSelection(this.groupSelectionList);
     }
 
     /*Gibt die aktuelle CharakterSelectionView zurück*/

@@ -24,14 +24,11 @@ public class MenuController implements MouseListener
     public void mouseClicked(MouseEvent e)
     {
         if(e.getComponent().getName().equals("neuesSpiel"))
-            this.gameFrameController.initializeCharakterSelection();
+            this.gameFrameController.initiateCharakterSelection();
         else if(e.getComponent().getName().equals("spielLaden"))
             this.gameFrameController.loadGame();
         else if(e.getComponent().getName().equals("beenden"))
-        {
             this.gameFrameController.getDataManager().closeConnection();
-            System.exit(0);
-        }
     }
 
     @Override

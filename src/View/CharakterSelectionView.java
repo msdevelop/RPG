@@ -17,8 +17,8 @@ public class CharakterSelectionView extends JPanel
     private Image bgImage;
     private JTextField txtfName;
     private boolean isCharSelected = false;
-    private int nameIndex = -1;
-    private String klasse,lebensPkte, astralPkte;
+    private int nameIndex = - 1;
+    private String klasse, lebensPkte, astralPkte;
     private String mut, klugheit, intuition, charisma, fingerfertigkeit, gewandheit, koerperkraft, aberglaube, koerperbeherrschung;
     private String selbstbeherrschung, aexteBeile, dolche, schwertSblEh, schwertSblZh, fechtwaffen, speerStab, stumpfEh, stumpfZh;
     private String armbrust, bogen, magieresistenz, ausdauer, attackeWert, paradeWert, ausweichWert, fernkampfWert;
@@ -110,7 +110,7 @@ public class CharakterSelectionView extends JPanel
                 try
                 {
                     Image tmpImage = ImageIO.read(new File(this.selectedCharakterImages.get(i)));
-                    charBg.drawImage(tmpImage, 642 + (75*i), 825, this);
+                    charBg.drawImage(tmpImage, 642 + (75 * i), 825, this);
                 }
                 catch(IOException e)
                 {

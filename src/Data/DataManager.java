@@ -1,9 +1,6 @@
 package Data;
 
-import Model.CharakterModel;
-import Model.DetailKartenModel;
-import Model.KoordinatenModel;
-import Model.MaterialModel;
+import Model.*;
 
 import javax.swing.*;
 import java.sql.*;
@@ -12,7 +9,7 @@ import java.util.LinkedList;
 public class DataManager
 {
     private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<DetailKartenModel>();
-    private Connection commonCon = null, levelCon = null;
+    private Connection commonCon, levelCon;
 
     /*Lädt Treiberklasse
     * baut die Verbindung zur angegebenen Datenbank auf
@@ -27,7 +24,7 @@ public class DataManager
         {
             JOptionPane.showMessageDialog(null, "ErrorMessage: " + cnfE.getMessage() + "\nExceptionType: ClassNotFoundException" +
                     "\nTreiberklasse konnte nicht geladen werden!", "Fehler beim Laden der Datenbank", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+            this.closeConnection();
         }
         try
         {
@@ -39,7 +36,7 @@ public class DataManager
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                     "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
                     "\nVerbindung zur Datenbank konnte nicht hergestellt werden!", "Fehler beim Laden der Datenbank", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+            this.closeConnection();
         }
     }
 
@@ -48,22 +45,19 @@ public class DataManager
     * SQLException -> return false*/
     public boolean isValidUsername(String paramUsername)
     {
-        try
+        try(PreparedStatement pstmt = this.commonCon.prepareStatement("SELECT * FROM user WHERE (name = ?)"))
         {
-            PreparedStatement pstmt = this.commonCon.prepareStatement("SELECT * FROM user WHERE (name = ?)");
             pstmt.setString(1, paramUsername);
-            ResultSet userResult = pstmt.executeQuery();
-            pstmt.close();
-            if(userResult.next())
+
+            try(ResultSet userResult = pstmt.executeQuery())
             {
-                userResult.close();
-                return false;
-            }
-            else
-            {
-                userResult.close();
-                this.addUser(paramUsername);
-                return true;
+                if(userResult.next())
+                    return false;
+                else
+                {
+                    this.addUser(paramUsername);
+                    return true;
+                }
             }
         }
         catch(SQLException sqlE)
@@ -72,16 +66,16 @@ public class DataManager
                     "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
                     "\nFehler beim Prüfen oder Hinzufügen von Benutzer!\nDataManager.isValidUsername()\nINFO: Methode ruft DataManager.addUser() auf (throws SQLException)",
                     "Fehler beim Lesen/Schreiben der Datenbank", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-            return false;
+            this.closeConnection();
         }
+        return false;
     }
 
     /*Fügt den übergebenen Benutzernamen der Datenbanktabelle 'user' hinzu (status = false)
     * Das Datenfeld 'status <boolean>'  gibt an ob der Beutzer die CharakterSelektion bereits abgeschlossen hat (true) oder nicht (false = default)*/
     public void addUser(String paramUsername) throws SQLException
     {
-        Statement stmt = commonCon.createStatement();
+        Statement stmt = this.commonCon.createStatement();
         stmt.executeQuery("INSERT INTO user(name, status) VALUES('" + paramUsername + "', false)");
         stmt.close();
     }
@@ -92,25 +86,24 @@ public class DataManager
     * -> return DetailKartenModel*/
     public DetailKartenModel getDetailKarte(String paramMapName)
     {
-        for(int j = 0; j < detailKartenModelList.size(); j++)
+        for(int j = 0; j < this.detailKartenModelList.size(); j++)
         {
-            if(detailKartenModelList.get(j).getName().equals(paramMapName))
+            if(this.detailKartenModelList.get(j).getName().equals(paramMapName))
             {
-                return detailKartenModelList.get(j);
+                return this.detailKartenModelList.get(j);
             }
         }
 
         DetailKartenModel tmpModel = null;
-        try
+        try(PreparedStatement pstmt = this.commonCon.prepareStatement("SELECT * FROM detailMap WHERE (name = ?)"))
         {
-            PreparedStatement pstmt = this.commonCon.prepareStatement("SELECT * FROM detailMap WHERE (name = ?)");
             pstmt.setString(1, paramMapName);
-            ResultSet detMapResult = pstmt.executeQuery();
-            pstmt.close();
-            detMapResult.next();
-            tmpModel = new DetailKartenModel(paramMapName, detMapResult.getString(2), this.trimPosition(detMapResult.getString(3)));
-            this.detailKartenModelList.add(tmpModel);
-            detMapResult.close();
+            try(ResultSet detMapResult = pstmt.executeQuery())
+            {
+                detMapResult.next();
+                tmpModel = new DetailKartenModel(paramMapName, detMapResult.getString(2), this.trimPosition(detMapResult.getString(3)));
+                this.detailKartenModelList.add(tmpModel);
+            }
         }
         catch(SQLException sqlE)
         {
@@ -118,7 +111,7 @@ public class DataManager
                             "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
                             "\nFehler beim Auslesen von DetailKarte\nDataManager.getDetailKarte()",
                             "Fehler beim Lesen der Datenbank", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+            this.closeConnection();
         }
         return tmpModel;
     }
@@ -128,7 +121,7 @@ public class DataManager
     * erzeugt aus einem Koordinatenpaar (x,y) ein KoordinatenModel
     * speichert alle KoordinatenModels in einer koordinatenModelList
     * -> return koordinatenModelList*/
-    public LinkedList<KoordinatenModel> trimPosition(String paramPos)
+    public static LinkedList<KoordinatenModel> trimPosition(String paramPos)
     {
         LinkedList<KoordinatenModel> koordinatenModelList = new LinkedList<KoordinatenModel>();
         int k = 0;
@@ -136,25 +129,28 @@ public class DataManager
 
         while(k < posLength)
         {
-            String xPos = "";
-            String yPos = "";
+            char tmpChar = paramPos.charAt(k);
+            StringBuilder xPos = new StringBuilder("");
 
-            while(paramPos.charAt(k) != ',')
+            while(tmpChar != ',')
             {
-                xPos += paramPos.charAt(k);
+                xPos.append(tmpChar);
                 k++;
+                tmpChar = paramPos.charAt(k);
             }
             k++;
-
-            while(paramPos.charAt(k) != '\n')
+            tmpChar = paramPos.charAt(k);
+            StringBuilder yPos = new StringBuilder("");
+            while(tmpChar != '\n')
             {
-                yPos += paramPos.charAt(k);
+                yPos.append(tmpChar);
                 k++;
                 if(k >= posLength)
                     break;
+                tmpChar = paramPos.charAt(k);
             }
             k++;
-            koordinatenModelList.add(new KoordinatenModel(Integer.parseInt(xPos), Integer.parseInt(yPos)));
+            koordinatenModelList.add(new KoordinatenModel(Integer.parseInt(xPos.toString()), Integer.parseInt(yPos.toString())));
         }
         return koordinatenModelList;
     }
@@ -167,103 +163,98 @@ public class DataManager
     {
         LinkedList<CharakterModel> charakterModelList = new LinkedList<CharakterModel>();
 
-        try
+        try(Statement stmt = this.commonCon.createStatement())
         {
-            Statement stmt = this.commonCon.createStatement();
-            ResultSet charResult = stmt.executeQuery("SELECT * FROM charakterRaw");
-            stmt.close();
-            while(charResult.next())
+            try(ResultSet charResult = stmt.executeQuery("SELECT * FROM charakterRaw"))
             {
-                CharakterModel tmpModel = new CharakterModel(charResult.getInt("charID"), charResult.getInt("mut"), charResult.getInt("klugheit"), charResult.getInt("intuition"),
-                        charResult.getInt("charisma"), charResult.getInt("fingerfertigkeit"), charResult.getInt("gewandheit"), charResult.getInt("koerperkraft"),
-                        charResult.getInt("lebensPkte"), charResult.getInt("astralPkte"), charResult.getInt("aberglaube"), charResult.getInt("koerperbeherrschung"),
-                        charResult.getInt("selbstbeherrschung"), charResult.getInt("aexteBeile"), charResult.getInt("dolche"), charResult.getInt("schwertSblEh"),
-                        charResult.getInt("schwertSblZh"), charResult.getInt("fechtwaffen"), charResult.getInt("speerStab"), charResult.getInt("stumpfEh"), charResult.getInt("stumpfZh"),
-                        charResult.getInt("armbrust"), charResult.getInt("bogen"), charResult.getInt("stufe"), charResult.getInt("magieresistenz"), charResult.getInt("ausdauer"),
-                        charResult.getInt("attackeWert"), charResult.getInt("paradeWert"), charResult.getInt("ausweichWert"), charResult.getInt("fernkampfWert"),
-                        charResult.getString("namensListe"), charResult.getString("klasse"), charResult.getString("kopfEq"), charResult.getString("brustEq"),
-                        charResult.getString("waffenhandEq"), charResult.getString("nebenhandEq"), charResult.getString("url"));
+                while(charResult.next())
+                {
+                    CharakterModel tmpModel = new CharakterModel(charResult.getInt("charID"), charResult.getInt("mut"), charResult.getInt("klugheit"), charResult.getInt("intuition"),
+                            charResult.getInt("charisma"), charResult.getInt("fingerfertigkeit"), charResult.getInt("gewandheit"), charResult.getInt("koerperkraft"),
+                            charResult.getInt("lebensPkte"), charResult.getInt("astralPkte"), charResult.getInt("aberglaube"), charResult.getInt("koerperbeherrschung"),
+                            charResult.getInt("selbstbeherrschung"), charResult.getInt("aexteBeile"), charResult.getInt("dolche"), charResult.getInt("schwertSblEh"),
+                            charResult.getInt("schwertSblZh"), charResult.getInt("fechtwaffen"), charResult.getInt("speerStab"), charResult.getInt("stumpfEh"), charResult.getInt("stumpfZh"),
+                            charResult.getInt("armbrust"), charResult.getInt("bogen"), charResult.getInt("stufe"), charResult.getInt("magieresistenz"), charResult.getInt("ausdauer"),
+                            charResult.getInt("attackeWert"), charResult.getInt("paradeWert"), charResult.getInt("ausweichWert"), charResult.getInt("fernkampfWert"),
+                            charResult.getString("namensListe"), charResult.getString("klasse"), charResult.getString("kopfEq"), charResult.getString("brustEq"),
+                            charResult.getString("waffenhandEq"), charResult.getString("nebenhandEq"), charResult.getString("url"));
 
-                charakterModelList.add(tmpModel);
+                    charakterModelList.add(tmpModel);
+                }
             }
-            charResult.close();
         }
         catch(SQLException sqlE)
         {
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                             "\nErrorMessage: " + sqlE.getMessage() + "\nSQLException\nFehler beim Auslesen von Charakter\nDataManager.getCharaktersRaw()",
                             "Fehler beim Auslesen der Datenbank",JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+            this.closeConnection();
         }
         return charakterModelList;
     }
 
     /*Erzeugt eine neue Datenbanktabelle nach dem Muster [Benutzername_charakter]
-    * kopiert die Datensätze der Charaktere mit ID aus paramCharIDCollection aus der Datenbanktabelle 'charakterRaw' in die neu erstellte
+    * kopiert die Datensätze der Charaktere mit ID aus paramChIDCol aus der Datenbanktabelle 'charakterRaw' in die neu erstellte
     * die Namen der Charaktere werden durch die vom Benutzer ausgewählten Namen ersetzt
     * das Datenfeld 'status' in der Datenbanktabelle 'user' wird für den Benutzer 'paramUser' auf true gesetzt*/
-    public void createNewCharTableForUser(String paramUser, int[] paramCharIDCollection, String[] paramCharNameCollection)
+    public void createNewCharTableForUser(String paramUser, int[]paramChIDCol, String[] paramChNameCol)
     {
-        try
+        try(Statement stmt = this.commonCon.createStatement())
         {
-            Statement stmt = commonCon.createStatement();
-            stmt.executeQuery("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramCharIDCollection[0] +
-                    " OR charID = " + paramCharIDCollection[1] + " OR charID = " + paramCharIDCollection[2] + " OR charID = " + paramCharIDCollection[3] +
-                    " OR charID = " + paramCharIDCollection[4] + " OR charID = " + paramCharIDCollection[5] + ") WITH DATA");
+            stmt.executeQuery("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramChIDCol[0] +
+                    " OR charID = " + paramChIDCol[1] + " OR charID = " + paramChIDCol[2] + " OR charID = " + paramChIDCol[3] +
+                    " OR charID = " + paramChIDCol[4] + " OR charID = " + paramChIDCol[5] + ") WITH DATA");
             for(int i = 0; i < 6; i++)
             {
-                stmt.executeQuery("UPDATE " + paramUser + "_charakter SET namensliste = '" + paramCharNameCollection[i] + "' WHERE charID = " + paramCharIDCollection[i]);
+                stmt.executeQuery("UPDATE " + paramUser + "_charakter SET namensliste = '" + paramChNameCol[i] + "' WHERE charID = " + paramChIDCol[i]);
             }
-            stmt.executeQuery("UPDATE user SET status = true WHERE name = '" + paramUser + "'");
-            stmt.close();
+            stmt.executeQuery("UPDATE user SET status = true WHERE name = '" + paramUser + '\'');
         }
         catch(SQLException sqlE)
         {
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                     "\nErrorMessage: " + sqlE.getMessage() + "\nSQLException\nFehler beim erzeugen von DBTable " + paramUser + "_charakter\nDataManager.createNewCharTableForUser()",
                     "Fehler beim Erstellen von Datenbanktabelle", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+            this.closeConnection();
         }
     }
 
     public MaterialModel[][] loadLevel(String paramLevelName)
     {
-        MaterialModel[][] tmpMatModelArray = new MaterialModel[21][39];
-
-        try
+        try(PreparedStatement stmt = this.levelCon.prepareStatement("SELECT * FROM " + paramLevelName))
         {
-            Statement stmt = this.levelCon.createStatement();
-            ResultSet levelResult = stmt.executeQuery("SELECT * FROM " + paramLevelName);
-
-            PreparedStatement pstmt = this.levelCon.prepareStatement("SELECT materialName FROM materialAllocation WHERE (materialID = ?)");
-
-            int j = 0;
-            while(levelResult.next())
+            try(ResultSet levelResult = stmt.executeQuery())
             {
-                for(int i = 0; i < 39; i++)
+                try(PreparedStatement pstmt = this.levelCon.prepareStatement("SELECT materialName FROM materialAllocation WHERE (materialID = ?)"))
                 {
-                    int tmpMatID = levelResult.getInt(i + 1);
-                    pstmt.setInt(1, tmpMatID);
-                    ResultSet materialResult = pstmt.executeQuery();
-                    materialResult.next();
-                    tmpMatModelArray[j][i] = new MaterialModel(materialResult.getString(1), tmpMatID);
-                    materialResult.close();
+                    int j = 0;
+                    MaterialModel[][] tmpMatModelArray = new MaterialModel[21][39];
+                    while(levelResult.next())
+                    {
+                        for(int i = 0; i < 39; i++)
+                        {
+                            int tmpMatID = levelResult.getInt(i + 1);
+                            pstmt.setInt(1, tmpMatID);
+                            try(ResultSet materialResult = pstmt.executeQuery())
+                            {
+                                materialResult.next();
+                                tmpMatModelArray[j][i] = new MaterialModel(materialResult.getString(1), tmpMatID);
+                            }
+                        }
+                        j++;
+                    }
+                    return tmpMatModelArray;
                 }
-                j++;
             }
-            levelResult.close();
-            stmt.close();
-            pstmt.close();
-            return tmpMatModelArray;
         }
         catch(SQLException sqlE)
         {
             JOptionPane.showMessageDialog(null, "SQLException\nFehler beim Laden des Levels!\nDataManager.loadLevel()" +
                     "\nMessage: " + sqlE.getMessage() + "\nErrorCode: " + sqlE.getErrorCode() + "\nSQLState: " + sqlE.getSQLState(), "Laden von Level fehlgeschlagen",
                     JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-            return null;
+            this.closeConnection();
         }
+        return null;
     }
 
     /*Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder Absturz)

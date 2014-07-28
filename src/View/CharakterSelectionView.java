@@ -23,7 +23,7 @@ public class CharakterSelectionView extends JPanel
     private String selbstbeherrschung, aexteBeile, dolche, schwertSblEh, schwertSblZh, fechtwaffen, speerStab, stumpfEh, stumpfZh;
     private String armbrust, bogen, magieresistenz, ausdauer, attackeWert, paradeWert, ausweichWert, fernkampfWert;
     private LinkedList<String> namensListe;
-    private LinkedList<String> selectedCharakterImages = new LinkedList<String>();
+    private LinkedList<String> selectedCharakterImages = new LinkedList<>();
 
     /*liest das Hintergrundbild ein -> this.bgImage
     * erzeugt ein JTextField zur Eingabe des Charakternamens

@@ -18,11 +18,11 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     private GameFrameController gameFrameController;
     private CharakterSelectionView charakterSelectionView;
     private LinkedList<CharakterModel> charakterModelList;
-    private LinkedList<CharakterModel> groupSelectionList = new LinkedList<CharakterModel>();
+    private LinkedList<CharakterModel> groupSelectionList = new LinkedList<>();
     private CharakterModel currentCharakter;
     private CharakterSelectionItem currentCharakterSelectionItem = null;
     private CharakterSelectionItem previousCharakterSelectionItem = null;
-    private LinkedList<CharakterSelectionItem> selectedCharakterItems = new LinkedList<CharakterSelectionItem>();
+    private LinkedList<CharakterSelectionItem> selectedCharakterItems = new LinkedList<>();
 
     /*Initialisiert die CharakterSelectionView
     * speichert in 'charakterModelList' alle aus der Datenbanktabelle 'charakterraw' ausgelesenen Charaktere als CharakterModel(Model) (Aufruf DataManager.getCharaktersRaw())
@@ -156,7 +156,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
 
     /*speichert den derzeit ausgewählten Charakter -> currentCharakter(CharakterModel)
     * übergibt currentCharakter an charakterSelectionView.synchronizeProperties() um Charakterwerte in der CharakterSelectionView anzuzeigen*/
-    public void forwardCharakter(int paramID)
+    private void forwardCharakter(int paramID)
     {
         this.currentCharakter = this.charakterModelList.get(paramID);
         this.charakterSelectionView.synchronizeCharProperties(this.currentCharakter);
@@ -164,7 +164,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
 
     /*fügt previous einen MouseListener hinzu und setzt Border auf null -> wenn previous != null
     * entfernt MouseListener von current*/
-    public void switchMouseListenerOnCharakterSelectionItem()
+    private void switchMouseListenerOnCharakterSelectionItem()
     {
         if(this.previousCharakterSelectionItem != null)
         {
@@ -183,7 +183,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     * currentCharakter wird der Liste mit ausgewählten Charakteren hinzugefüt (Gruppe) -> this.groupSelectionList.add()
     * fügt das Bild des Charakters der Gruppenauswahl hinzu -> this.charakterSelectionView.addSelectedCharakterImage()
     * setzt isCharSelected(boolean) der CharakterSelectionView auf false damit keine Charakterwerte mehr in der View angezeigt werden*/
-    public void addCharakterToGroupSelection()
+    private void addCharakterToGroupSelection()
     {
         String tmpName = this.charakterSelectionView.getNameFromTextfield();
         if((tmpName.length() >= 2) && (tmpName.length() < 15))
@@ -207,7 +207,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     * entfernt das Bild des Charakters aus der Gruppenauswahl -> this.charakterSelectionView.removeSelectedCharakterImage()
     * entfernt das CharakterSelectionItem des aus der Liste entfernten Charakters aus der Liste der ausgewählten Charaktere -> this.selectedCHarakterItems.removeLast()
     * fügt dem CharakterSelectionItem des soeben aus der Gruppe entfernten Charakters einen MouseListener hinzu -> tmpItem.addMouseListener()*/
-    public void removeLastFromGroupSelection()
+    private void removeLastFromGroupSelection()
     {
         this.groupSelectionList.removeLast();
         this.charakterSelectionView.removeSelectedCharakterImage();
@@ -220,7 +220,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     * speichert die Namen der Charaktere aus der Gruppe -> String[] charNameCollection
     * übergibt die beiden Arrays und den Namen des currentUsers an den DataManager -> DataManager.createNewCharTableForUser()
     * übergibt die finale Gruppe und ruft die MapSelection auf-> GameFrameController.initiateMapSelection()*/
-    public void finalizeCharakterSelection()
+    private void finalizeCharakterSelection()
     {
         int[] charIDCollection = new int[6];
         String[] charNameCollection = new String[6];

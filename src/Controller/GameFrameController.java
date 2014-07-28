@@ -88,7 +88,7 @@ public class GameFrameController implements ActionListener
     /*Übergibt den eingegebenen Benutzernamen an den DataManager um zu überprüfen ob er bereits vergeben ist
      * return true -> Beutzername ist gültig und wurde der Datenbanktabelle 'user' hinzugefügt
      * return false -> Benutzername ist bereits vergeben*/
-    public boolean validateUsername()
+    private boolean validateUsername()
     {
         return this.dataManager.isValidUsername(this.username);
     }

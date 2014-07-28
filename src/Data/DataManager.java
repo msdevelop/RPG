@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 public class DataManager
 {
-    private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<DetailKartenModel>();
+    private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<>();
     private Connection commonCon, levelCon;
 
     /*Lädt Treiberklasse
@@ -86,12 +86,10 @@ public class DataManager
     * -> return DetailKartenModel*/
     public DetailKartenModel getDetailKarte(String paramMapName)
     {
-        for(int j = 0; j < this.detailKartenModelList.size(); j++)
+        for(DetailKartenModel tmpDetailKartenModel : this.detailKartenModelList)
         {
-            if(this.detailKartenModelList.get(j).getName().equals(paramMapName))
-            {
-                return this.detailKartenModelList.get(j);
-            }
+            if(tmpDetailKartenModel.getName().equals(paramMapName))
+                return tmpDetailKartenModel;
         }
 
         DetailKartenModel tmpModel = null;
@@ -121,9 +119,9 @@ public class DataManager
     * erzeugt aus einem Koordinatenpaar (x,y) ein KoordinatenModel
     * speichert alle KoordinatenModels in einer koordinatenModelList
     * -> return koordinatenModelList*/
-    public static LinkedList<KoordinatenModel> trimPosition(String paramPos)
+    public LinkedList<KoordinatenModel> trimPosition(String paramPos)
     {
-        LinkedList<KoordinatenModel> koordinatenModelList = new LinkedList<KoordinatenModel>();
+        LinkedList<KoordinatenModel> koordinatenModelList = new LinkedList<>();
         int k = 0;
         int posLength = paramPos.length();
 
@@ -161,7 +159,7 @@ public class DataManager
     * -> return charakterModelList*/
     public LinkedList<CharakterModel> getCharaktersRaw()
     {
-        LinkedList<CharakterModel> charakterModelList = new LinkedList<CharakterModel>();
+        LinkedList<CharakterModel> charakterModelList = new LinkedList<>();
 
         try(Statement stmt = this.commonCon.createStatement())
         {

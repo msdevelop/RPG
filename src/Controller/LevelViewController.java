@@ -1,7 +1,6 @@
 package Controller;
 
 import View.DesignElement.LevelBorder;
-import View.GameFrame;
 import View.LevelView;
 
 import java.awt.event.KeyEvent;

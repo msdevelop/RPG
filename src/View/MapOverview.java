@@ -51,7 +51,7 @@ public class MapOverview extends JPanel
 
     /*Fügt OverviewSelectionItems zur View hinzu
     * Namen nach dem Muster overview_kartenabschnitt*/
-    public void enableView()
+    private void enableView()
     {
         this.add(new OverviewSelectionItem("overview_gareth", 340, 477, this.mapController));
         this.add(new OverviewSelectionItem("overview_gerasim", 420, 258, this.mapController));

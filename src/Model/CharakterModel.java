@@ -57,11 +57,11 @@ public class CharakterModel
 
     /*Teilt die Liste von zusammenhängenden Namen aus der Datenbank in einzelne Namen auf
     * Namen werden durch (\n) getrennt*/
-    public LinkedList<String> trimNamensListe(String paramNamensListe)
+    private LinkedList<String> trimNamensListe(String paramNamensListe)
     {
         int i = 0;
         int paramLength = paramNamensListe.length();
-        LinkedList<String> paramLinkedList = new LinkedList<String>();
+        LinkedList<String> paramLinkedList = new LinkedList<>();
 
         while(i < paramLength)
         {

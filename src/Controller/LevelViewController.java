@@ -12,6 +12,8 @@ public class LevelViewController implements KeyListener
     private LevelBorder levelBorder;
     private GameFrameController gameFrameController;
 
+    /*initialisiert LevelView
+    * initialisiert LevelBorder*/
     public LevelViewController(GameFrameController paramGameFrameController, String paramLevelName)
     {
         this.gameFrameController = paramGameFrameController;
@@ -32,6 +34,8 @@ public class LevelViewController implements KeyListener
             this.LevelView.addY();
     }
 
+    /*Gibt GameFrameController zurück
+    * Aufruf LevelView.constructor()*/
     public GameFrameController getGameFrameController()
     {
         return this.gameFrameController;

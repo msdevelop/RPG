@@ -217,6 +217,10 @@ public class DataManager
         }
     }
 
+    /*Liest Level aus der Datenbank aus
+    * try-with-resource -> statements die in Klammern hinter dem try Aufruf erzeugt werden, werden automatisch geschlossen, wenn der try-block abgearbeitet ist
+    * -> return MaterialModel[][]
+    * -> kein ExceptionHandling => Level MUSS vorhanden sein*/
     public MaterialModel[][] loadLevel(String paramLevelName)
     {
         try(PreparedStatement stmt = this.levelCon.prepareStatement("SELECT * FROM " + paramLevelName))

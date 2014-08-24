@@ -100,6 +100,8 @@ public class GameFrameController implements ActionListener
             this.dataManager.closeConnection();
     }
 
+    /*Entfernt nach erfolgreicher Levelauswahl die MapDetailView und MapOverview
+    * initialisiert den LevelViewController*/
     public void initiateLevel(String paramLevelName)
     {
         this.mapController.getMapOverview().setVisible(false);
@@ -127,6 +129,7 @@ public class GameFrameController implements ActionListener
         return this.currentUser;
     }
 
+    /*Gibt die aktuelle Gruppe aus 6 Charakteren zurück*/
     public LinkedList<CharakterModel> getCurrentGroup()
     {
         return this.currentGroup;

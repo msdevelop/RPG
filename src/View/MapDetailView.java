@@ -18,7 +18,7 @@ public class MapDetailView extends JPanel
     private boolean isMissionSelected = false;
     private MapController mapController;
 
-    /*Liest Platzhalterbild der MapDetailView ein*/
+    /*Lädt Platzhalterbild der MapDetailView*/
     public MapDetailView(MapController paramMapController)
     {
         this.mapController = paramMapController;

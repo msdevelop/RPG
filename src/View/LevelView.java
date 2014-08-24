@@ -16,6 +16,8 @@ public class LevelView extends JPanel
     private Image playerImg;
     private boolean fieldIsPainted = false;
 
+    /*Lädt matModelArray für angefordertes Level aus der DB
+    * setzt currentGroup(0) als playerImg*/
     public LevelView(GameFrame paramGameFrame, LevelViewController paramLevelViewController, String paramLevelName)
     {
         this.matModelArray = paramLevelViewController.getGameFrameController().getDataManager().loadLevel(paramLevelName);
@@ -55,6 +57,8 @@ public class LevelView extends JPanel
         field.drawImage(this.playerImg, this.currentPlayerXPos, this.currentPlayerYPos, this);
     }
 
+    /*Bewegt die Spielfigur um playerStepSize nach rechts
+    * wenn dortiges Feld gültig ist*/
     public void addX()
     {
         if((this.currentPlayerXPos < 1824) && (((this.matModelArray[this.currentPlayerYPos / 48][(this.currentPlayerXPos + this.playerStepSize) / 48].getMaterialID()) % 200) >= 100))
@@ -64,6 +68,8 @@ public class LevelView extends JPanel
         }
     }
 
+    /*Bewegt die Spielfigur um playerStepSize nach links
+    * wenn dortiges Feld gültig ist*/
     public void subX()
     {
         if((this.currentPlayerXPos >= 48) && (((this.matModelArray[this.currentPlayerYPos / 48][(this.currentPlayerXPos - this.playerStepSize) / 48].getMaterialID()) % 200) >= 100))
@@ -73,6 +79,8 @@ public class LevelView extends JPanel
         }
     }
 
+    /*Bewegt die Spielfigur um playerStepSize nach unten
+    * wenn dortiges Feld gültig ist*/
     public void addY()
     {
         if((this.currentPlayerYPos < 960) && (((this.matModelArray[(this.currentPlayerYPos + this.playerStepSize) / 48][this.currentPlayerXPos / 48].getMaterialID()) % 200) >= 100))
@@ -82,6 +90,8 @@ public class LevelView extends JPanel
         }
     }
 
+    /*Bewegt die Spielfigur um playerStepSize nach oben
+    * wenn dortiges Feld gültig ist*/
     public void subY()
     {
         if((this.currentPlayerYPos >= 48) && (((this.matModelArray[(this.currentPlayerYPos - this.playerStepSize) / 48][this.currentPlayerXPos / 48].getMaterialID()) % 200) >= 100))
@@ -90,6 +100,4 @@ public class LevelView extends JPanel
             this.repaint();
         }
     }
-
-
 }

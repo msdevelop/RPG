@@ -40,29 +40,35 @@ public class GameFrameController implements ActionListener
      * Fehlermeldungen via JOptionPane*/
     public void initiateCharakterSelection()
     {
-        this.username = JOptionPane.showInputDialog(null, "Bitte geben Sie einen Benutzername ein.", "Benutzername Eingeben", JOptionPane.QUESTION_MESSAGE);
-        if((this.username.length() < 4) || (this.username.length() > 15) || (! (this.username.matches("\\p{Alpha}\\w*"))))
+        try
         {
-            JOptionPane.showMessageDialog(null, "Ungültiger Benutzername!\n" +
-                    "      - Gültige Zeichen: [a-z] [A-Z] [0-9] [ _ ]\n" +
-                    "      - mindestens 4 maximal 15 Zeichen\n" +
-                    "      - keine führenden oder angehängten Leer- oder Sonderzeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
-        }
-        else if(! this.validateUsername())
-        {
-            JOptionPane.showMessageDialog(null, "Benutzername bereits vergeben!", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
-        }
+            this.username = JOptionPane.showInputDialog(null, "Bitte geben Sie einen Benutzername ein.", "Benutzername Eingeben", JOptionPane.QUESTION_MESSAGE);
+
+            if((this.username.length() < 4) || (this.username.length() > 15) || (! (this.username.matches("\\p{Alpha}\\w*"))))
+            {
+                JOptionPane.showMessageDialog(null, "Ungültiger Benutzername!\n" +
+                        "      - Gültige Zeichen: [a-z] [A-Z] [0-9] [ _ ]\n" +
+                        "      - mindestens 4 maximal 15 Zeichen\n" +
+                        "      - keine führenden oder angehängten Leer- oder Sonderzeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
+            }
+            else if(! this.validateUsername())
+            {
+                JOptionPane.showMessageDialog(null, "Benutzername bereits vergeben!", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
+            }
         /*Wenn der Benutzername gültig ist wird das MenuPanel(View) entfernt und die MenuBar(View) hinzugefügt -> gameFrame.addMenuBar()
          * Die Charakterselektion wird initialisiert -> new CharakterSelectionController*/
-        else
-        {
-            this.currentUser = username;
-            this.menuController.getMenuPanel().setVisible(false);
-            this.gameFrame.remove(this.menuController.getMenuPanel());
-            this.gameFrame.addMenuBar();
-            this.charakterSelectionController = new CharakterSelectionController(this);
-            this.gameFrame.getContentPane().add(this.charakterSelectionController.getCharakterSelectionView());
+            else
+            {
+                this.currentUser = username;
+                this.menuController.getMenuPanel().setVisible(false);
+                this.gameFrame.remove(this.menuController.getMenuPanel());
+                this.gameFrame.addMenuBar();
+                this.charakterSelectionController = new CharakterSelectionController(this);
+                this.gameFrame.getContentPane().add(this.charakterSelectionController.getCharakterSelectionView());
+            }
         }
+        catch(NullPointerException e)
+        {}
     }
 
     /*Wird aufgerufen wenn die Charakterauswahl beendet ist

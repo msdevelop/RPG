@@ -49,7 +49,8 @@ public class GameFrameController implements ActionListener
                 JOptionPane.showMessageDialog(null, "Ungültiger Benutzername!\n" +
                         "      - Gültige Zeichen: [a-z] [A-Z] [0-9] [ _ ]\n" +
                         "      - mindestens 4 maximal 15 Zeichen\n" +
-                        "      - keine führenden oder angehängten Leer- oder Sonderzeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
+                        "      - keine Leerzeichen\n" +
+                        "      - keine führenden Zahlen oder Sonderzeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
             }
             else if(! this.validateUsername())
             {

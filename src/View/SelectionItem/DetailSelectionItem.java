@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class DetailSelectionItem extends JPanel
 {
-    /*SelectionItem zur Auswahl des Missionsabschnittes in der MapDetailView
+    /**SelectionItem zur Auswahl des Missionsabschnittes in der MapDetailView
     * Namen nach dem Muster detail_kartenabschnitt
     * fügt MouseListener hinzu (MapController)*/
     public DetailSelectionItem(String paramName, int paramXPos, int paramYPos, MapController paramMapController)

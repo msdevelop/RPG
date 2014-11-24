@@ -16,7 +16,7 @@ public class LevelView extends JPanel
     private Image playerImg;
     private boolean fieldIsPainted = false;
 
-    /*Lädt matModelArray für angefordertes Level aus der DB
+    /**Lädt matModelArray für angefordertes Level aus der DB
     * setzt currentGroup(0) als playerImg*/
     public LevelView(GameFrame paramGameFrame, LevelViewController paramLevelViewController, String paramLevelName)
     {
@@ -57,7 +57,7 @@ public class LevelView extends JPanel
         field.drawImage(this.playerImg, this.currentPlayerXPos, this.currentPlayerYPos, this);
     }
 
-    /*Bewegt die Spielfigur um playerStepSize nach rechts
+    /**Bewegt die Spielfigur um playerStepSize nach rechts
     * wenn dortiges Feld gültig ist*/
     public void addX()
     {
@@ -79,7 +79,7 @@ public class LevelView extends JPanel
         }
     }
 
-    /*Bewegt die Spielfigur um playerStepSize nach unten
+    /**Bewegt die Spielfigur um playerStepSize nach unten
     * wenn dortiges Feld gültig ist*/
     public void addY()
     {
@@ -90,7 +90,7 @@ public class LevelView extends JPanel
         }
     }
 
-    /*Bewegt die Spielfigur um playerStepSize nach oben
+    /**Bewegt die Spielfigur um playerStepSize nach oben
     * wenn dortiges Feld gültig ist*/
     public void subY()
     {

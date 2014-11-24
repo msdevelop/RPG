@@ -12,7 +12,7 @@ public class LevelViewController implements KeyListener
     private LevelBorder levelBorder;
     private GameFrameController gameFrameController;
 
-    /*initialisiert LevelView
+    /**initialisiert LevelView
     * initialisiert LevelBorder*/
     public LevelViewController(GameFrameController paramGameFrameController, String paramLevelName)
     {
@@ -34,20 +34,20 @@ public class LevelViewController implements KeyListener
             this.LevelView.addY();
     }
 
-    /*Gibt GameFrameController zurück
+    /**Gibt GameFrameController zurück
     * Aufruf LevelView.constructor()*/
     public GameFrameController getGameFrameController()
     {
         return this.gameFrameController;
     }
 
-    @Override /*not in use*/
+    @Override /**not in use*/
     public void keyReleased(KeyEvent e)
     {
 
     }
 
-    @Override /*not in use*/
+    @Override /**not in use*/
     public void keyTyped(KeyEvent e)
     {
 

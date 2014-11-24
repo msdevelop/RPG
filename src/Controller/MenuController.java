@@ -11,7 +11,7 @@ public class MenuController implements MouseListener
     private GameFrameController gameFrameController;
     private MenuPanel menuPanel;
 
-    /*erzeugt MenuPanel(View)
+    /**erzeugt MenuPanel(View)
      * zeigt MenuPanel zum Spielstart an*/
     public MenuController(GameFrameController paramGameFrameController)
     {
@@ -45,7 +45,7 @@ public class MenuController implements MouseListener
         tmpItem.setInMouseFocus(false);
     }
 
-    /*Gibt aktuelles MenuPanel(View) zurück*/
+    /**Gibt aktuelles MenuPanel(View) zurück*/
     public MenuPanel getMenuPanel()
     {
         return this.menuPanel;
@@ -56,7 +56,7 @@ public class MenuController implements MouseListener
     {
     }
 
-    @Override /*not in user*/
+    @Override /**not in user*/
     public void mouseReleased(MouseEvent e)
     {
 

@@ -14,7 +14,7 @@ public class MapOverview extends JPanel
     private MapController mapController;
     private Image mapImage;
 
-    /*Lädt Hintergrundbild der MapOverview*/
+    /**Lädt Hintergrundbild der MapOverview*/
     public MapOverview(MapController paramMapController)
     {
         this.mapController = paramMapController;
@@ -41,7 +41,7 @@ public class MapOverview extends JPanel
         map.drawImage(this.mapImage, 0, 0, this);
     }
 
-    /*Wird aufgerufen nachdem eine Mission ausgewählt wurde
+    /**Wird aufgerufen nachdem eine Mission ausgewählt wurde
     * Entfernt alle OverviewSelectionItems aus der View*/
     public void disableView()
     {
@@ -49,7 +49,7 @@ public class MapOverview extends JPanel
         this.removeAll();
     }
 
-    /*Fügt OverviewSelectionItems zur View hinzu
+    /**Fügt OverviewSelectionItems zur View hinzu
     * Namen nach dem Muster overview_kartenabschnitt*/
     private void enableView()
     {

@@ -11,7 +11,7 @@ public class DataManager
     private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<>();
     private Connection commonCon, levelCon;
 
-    /*Lädt Treiberklasse
+    /**Lädt Treiberklasse
     * baut die Verbindung zur angegebenen Datenbank auf
     * -> errorMessage + exit(0) sonst*/
     public DataManager()
@@ -40,7 +40,7 @@ public class DataManager
         }
     }
 
-    /*Gleicht gegeben die Datenbanktabelle 'user' ab ob der übergebene Benutzername bereits vorhanden ist -> return false
+    /**Gleicht gegeben die Datenbanktabelle 'user' ab ob der übergebene Benutzername bereits vorhanden ist -> return false
     * Ist der Benutzername gültig, wird er der Datenbanktabelle 'user' hinzugefügt -> this.addUser() -> return true
     * SQLException -> return false*/
     public boolean isValidUsername(String paramUsername)
@@ -71,7 +71,7 @@ public class DataManager
         return false;
     }
 
-    /*Fügt den übergebenen Benutzernamen der Datenbanktabelle 'user' hinzu (status = false)
+    /**Fügt den übergebenen Benutzernamen der Datenbanktabelle 'user' hinzu (status = false)
     * Das Datenfeld 'status <boolean>'  gibt an ob der Beutzer die CharakterSelektion bereits abgeschlossen hat (true) oder nicht (false = default)*/
     public void addUser(String paramUsername) throws SQLException
     {
@@ -80,7 +80,7 @@ public class DataManager
         stmt.close();
     }
 
-    /*Prüft ob die angeforderte DetailMap bereits aus der DB ausgelesen und in der Liste detailKartenModelList gespeichert wurde -> return DetailKartenModel
+    /**Prüft ob die angeforderte DetailMap bereits aus der DB ausgelesen und in der Liste detailKartenModelList gespeichert wurde -> return DetailKartenModel
     * Sonst: liest den Datensatz der angeforderten DetailMap aus der Datenbanktabelle 'detailMap' aus und erzeugt ein neues DetaiKartenModel aus den ausgelesenen Daten
     * fügt das neue DetailKartenModel der detailKartenModelList hinzu
     * -> return DetailKartenModel*/
@@ -114,7 +114,7 @@ public class DataManager
         return tmpModel;
     }
 
-    /*Wird von getDetailKarte aufgerufen um die Liste der x,y - Positionen aus der Datenbank in einzelne Koordinatenpaare aufzuteilen
+    /**Wird von getDetailKarte aufgerufen um die Liste der x,y - Positionen aus der Datenbank in einzelne Koordinatenpaare aufzuteilen
     * x und y Position sind durch (,) getrennt, Koordinatenpaare durch (\n)
     * erzeugt aus einem Koordinatenpaar (x,y) ein KoordinatenModel
     * speichert alle KoordinatenModels in einer koordinatenModelList
@@ -153,7 +153,7 @@ public class DataManager
         return koordinatenModelList;
     }
 
-    /*Liest alle Charaktere aus der Datenbanktabelle 'charakterRaw' aus
+    /**Liest alle Charaktere aus der Datenbanktabelle 'charakterRaw' aus
     * erzeugt für jeden Charakter ein CharakterModel und befüllt dieses mit den Daten aus dem Datensatz
     * speichert alle CharakterModel in einer charakterModelList
     * -> return charakterModelList*/
@@ -191,7 +191,7 @@ public class DataManager
         return charakterModelList;
     }
 
-    /*Erzeugt eine neue Datenbanktabelle nach dem Muster [Benutzername_charakter]
+    /**Erzeugt eine neue Datenbanktabelle nach dem Muster [Benutzername_charakter]
     * kopiert die Datensätze der Charaktere mit ID aus paramChIDCol aus der Datenbanktabelle 'charakterRaw' in die neu erstellte
     * die Namen der Charaktere werden durch die vom Benutzer ausgewählten Namen ersetzt
     * das Datenfeld 'status' in der Datenbanktabelle 'user' wird für den Benutzer 'paramUser' auf true gesetzt*/
@@ -217,7 +217,7 @@ public class DataManager
         }
     }
 
-    /*Liest Level aus der Datenbank aus
+    /**Liest Level aus der Datenbank aus
     * try-with-resource -> statements die in Klammern hinter dem try Aufruf erzeugt werden, werden automatisch geschlossen, wenn der try-block abgearbeitet ist
     * -> return MaterialModel[][]
     * -> kein ExceptionHandling => Level MUSS vorhanden sein*/
@@ -259,7 +259,7 @@ public class DataManager
         return null;
     }
 
-    /*Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder Absturz)
+    /**Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder Absturz)
     * Schließt die Datenbankverbindung (falls vorhanden) um COMMIT der Daten zu gewährleisten*/
     public void closeConnection()
     {

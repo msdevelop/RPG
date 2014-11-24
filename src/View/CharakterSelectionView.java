@@ -25,7 +25,7 @@ public class CharakterSelectionView extends JPanel
     private LinkedList<String> namensListe;
     private LinkedList<String> selectedCharakterImages = new LinkedList<>();
 
-    /*liest das Hintergrundbild ein -> this.bgImage
+    /**liest das Hintergrundbild ein -> this.bgImage
     * erzeugt ein JTextField zur Eingabe des Charakternamens
     * erzeugt einen JButton zur Randomisierung des Charakternamens*/
     public CharakterSelectionView(CharakterSelectionController paramController)
@@ -58,7 +58,7 @@ public class CharakterSelectionView extends JPanel
         this.setVisible(true);
     }
 
-    /*Zeichnet das Hintergrundbild
+    /**Zeichnet das Hintergrundbild
     * wenn ein Charakter ausgewählt wurde (charIsSelected = true) werden die Werte des Charakters in die View gezeichnet
     * zeichnet die Bilder der sich aktuell in der Gruppe befindlichen Charaktere*/
     public void paintComponent(Graphics charBg)
@@ -120,7 +120,7 @@ public class CharakterSelectionView extends JPanel
         }
     }
 
-    /*speichert die Werte des übergebenen CharakterModels in den globalen Variablen der Klasse
+    /**speichert die Werte des übergebenen CharakterModels in den globalen Variablen der Klasse
     * lässt einen Zufallsnamen aus der namensListe auswählen -> this.selectRandomName()
     * setzt isCharSelected(boolean) auf true um die ausgelesenen Werte in der View anzuzeigen
     * this.repaint()*/
@@ -162,7 +162,7 @@ public class CharakterSelectionView extends JPanel
         this.repaint();
     }
 
-    /*Wählt zufällig einen Namen aus der namensListe des Charakters aus
+    /**Wählt zufällig einen Namen aus der namensListe des Charakters aus
     * gleicher Name kann nicht zweimal hintereinander kommen
     * ausgewählter Name wird im JTextField txtfName ausgegeben*/
     public void selectRandomName()
@@ -185,7 +185,7 @@ public class CharakterSelectionView extends JPanel
         }
     }
 
-    /*fügt die übergebene BildURL der Liste selectedCharakterImages hinzu
+    /**fügt die übergebene BildURL der Liste selectedCharakterImages hinzu
     * das Charakterbild wird jetzt in der Gruppenauswahl der View angezeigt
     * this.repaint()*/
     public void addSelectedCharakterImage(String paramUrl)
@@ -194,7 +194,7 @@ public class CharakterSelectionView extends JPanel
         this.repaint();
     }
 
-    /*entfernt die BildURL des zuletzt zur Gruppe hinzugefügten Charakter aus der Liste selectedCharakterImages
+    /**entfernt die BildURL des zuletzt zur Gruppe hinzugefügten Charakter aus der Liste selectedCharakterImages
     * entfernt somit das Bild aus der Gruppenauswahl der View
     * this.repaint()*/
     public void removeSelectedCharakterImage()
@@ -203,7 +203,7 @@ public class CharakterSelectionView extends JPanel
         this.repaint();
     }
 
-    /*setzte isCharSelected auf den übergebenen Wert
+    /**setzte isCharSelected auf den übergebenen Wert
     * löscht den Inhalt des JTextFields txtfName
     * this.repaint()*/
     public void setIsCharSelected(boolean paramBool)
@@ -213,13 +213,13 @@ public class CharakterSelectionView extends JPanel
         this.repaint();
     }
 
-    /*Gibt den aktuellen Wert von isCharSelected zurück*/
+    /**Gibt den aktuellen Wert von isCharSelected zurück*/
     public boolean getIsCharSelected()
     {
         return this.isCharSelected;
     }
 
-    /*Gibt den aktuellen Inhalt des JTextFields txtfName zurück*/
+    /**Gibt den aktuellen Inhalt des JTextFields txtfName zurück*/
     public String getNameFromTextfield()
     {
         return this.txtfName.getText();

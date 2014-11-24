@@ -15,7 +15,7 @@ public class MapController implements MouseListener
     private MapDetailView mapDetailView;
     private GameFrameController gameFrameController;
 
-    /*erzeugt MapOverview(View)
+    /**erzeugt MapOverview(View)
     * erzeugt MapDetailView(View)*/
     public MapController(GameFrameController paramGameFrameController)
     {
@@ -26,15 +26,15 @@ public class MapController implements MouseListener
 
     @Override
     public void mouseClicked(MouseEvent e)
-    {   /*MouseClicked für OverviewSelectionItem(SelectionItem)*/
+    {   /**MouseClicked für OverviewSelectionItem(SelectionItem)*/
         if(e.getComponent().getName().startsWith("overview"))
         {
-            /*Gibt den Namen der in der View ausgewählten Karte an die MapDetailView weiter um den Kartenausschnitt anzuzeigen
+            /**Gibt den Namen der in der View ausgewählten Karte an die MapDetailView weiter um den Kartenausschnitt anzuzeigen
             * entfernt alle OverviewSelectionItems von der MapOverview*/
             this.mapDetailView.selectMission("detail_" + e.getComponent().getName().substring(9));
             this.mapOverview.disableView();
         }
-        /*MouseClicked für DetailSelectionItem(SelectionItem)*/
+        /**MouseClicked für DetailSelectionItem(SelectionItem)*/
         else if(e.getComponent().getName().startsWith("detail"))
             this.gameFrameController.initiateLevel(e.getComponent().getName().substring(7));
     }
@@ -42,13 +42,13 @@ public class MapController implements MouseListener
     @Override
     public void mouseEntered(MouseEvent e)
     {
-        /*MouseEntered für OverviewSelectionItem*/
+        /**MouseEntered für OverviewSelectionItem*/
         if(e.getComponent().getName().startsWith("overview"))
         {
             OverviewSelectionItem tmpOverviewItem = (OverviewSelectionItem) e.getComponent();
             tmpOverviewItem.setMouseFocus(true);
         }
-        /*MouseEntered für DetailSelectionItem*/
+        /**MouseEntered für DetailSelectionItem*/
         else if(e.getComponent().getName().startsWith("detail"))
         {
             DetailSelectionItem tmpDetailItem = (DetailSelectionItem) e.getComponent();
@@ -59,13 +59,13 @@ public class MapController implements MouseListener
     @Override
     public void mouseExited(MouseEvent e)
     {
-        /*MouseExited für OverviewSelectionItem*/
+        /**MouseExited für OverviewSelectionItem*/
         if(e.getComponent().getName().startsWith("overview"))
         {
             OverviewSelectionItem tmpItem = (OverviewSelectionItem) e.getComponent();
             tmpItem.setMouseFocus(false);
         }
-        /*MouseExited für DetailSelectionItem*/
+        /**MouseExited für DetailSelectionItem*/
         else if(e.getComponent().getName().startsWith("detail"))
         {
             DetailSelectionItem tmpDetailItem = (DetailSelectionItem) e.getComponent();
@@ -74,31 +74,31 @@ public class MapController implements MouseListener
     }
 
 
-    /*Gibt aktuelle MapOverview(View) zurück*/
+    /**Gibt aktuelle MapOverview(View) zurück*/
     public MapOverview getMapOverview()
     {
         return this.mapOverview;
     }
 
-    /*Gibt aktuelle MapDetailView(View) zurück*/
+    /**Gibt aktuelle MapDetailView(View) zurück*/
     public MapDetailView getMapDetailView()
     {
         return this.mapDetailView;
     }
 
-    /*Gibt aktuellen GameFrameController zurück*/
+    /**Gibt aktuellen GameFrameController zurück*/
     public GameFrameController getGameFrameController()
     {
         return this.gameFrameController;
     }
 
-    @Override /*not in use*/
+    @Override /**not in use*/
     public void mousePressed(MouseEvent e)
     {
 
     }
 
-    @Override /*not in use*/
+    @Override /**not in use*/
     public void mouseReleased(MouseEvent e)
     {
 

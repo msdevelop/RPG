@@ -18,7 +18,7 @@ public class MapDetailView extends JPanel
     private boolean isMissionSelected = false;
     private MapController mapController;
 
-    /*Lädt Platzhalterbild der MapDetailView*/
+    /**Lädt Platzhalterbild der MapDetailView*/
     public MapDetailView(MapController paramMapController)
     {
         this.mapController = paramMapController;
@@ -38,7 +38,7 @@ public class MapDetailView extends JPanel
         this.setVisible(true);
     }
 
-    /*Zeichnet das Platzhalterbild
+    /**Zeichnet das Platzhalterbild
     * Wenn eine Mission ausgewählt wurde (isMissionSelected = true) wird die entsprechende DetailMap gezeichnet*/
     public void paintComponent(Graphics detailMap)
     {
@@ -49,7 +49,7 @@ public class MapDetailView extends JPanel
             detailMap.drawImage(this.placeholderDetail, 0, 0, this);
     }
 
-    /*Liest die angeforderte DetailMap [currentDetailMap(DetailKartenModel)] aus dem DataManager aus -> DataManager.getDetailKarte()
+    /**Liest die angeforderte DetailMap [currentDetailMap(DetailKartenModel)] aus dem DataManager aus -> DataManager.getDetailKarte()
     * lädt das Bild der currentDetailMap
     * fügt für jedes Koordinatenpaar aus der koordinatenModelList der currentDetailMap ein DetailSelectionIem zur View hinzu
     * setzt isMissionSelected auf true

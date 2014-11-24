@@ -20,7 +20,7 @@ public class GameFrameController implements ActionListener
     private LinkedList<CharakterModel> currentGroup;
     private LevelViewController levelViewController;
 
-    /*Initialisiert den DataManager
+    /**Initialisiert den DataManager
      * erzeugt GameFrame(View)
      * erzeugt MenuController*/
     public GameFrameController()
@@ -32,7 +32,7 @@ public class GameFrameController implements ActionListener
         this.gameFrame.requestFocus();
     }
 
-    /*Wird aufgerufen wenn im Menü der Punkt "Neues Spiel" gewählt wird
+    /**Wird aufgerufen wenn im Menü der Punkt "Neues Spiel" gewählt wird
      * Benutzer wird zur Eingabe eines Benutzernamens aufgefordert -> JOptionPane
      * Führende und angehängte Leerzeichen werden abgeschnitten -> String.trim()
      * Länge des Benutzernamens muss zwischen 4 und 15 Zeichen liegen und muss den Pattern [a-z] [A-Z] [0-9] [ _ ] in beliebiger Reihenfolge entsprechen (keine führenden/angehämgten Leer- bzw Sonderzeichen)
@@ -55,7 +55,7 @@ public class GameFrameController implements ActionListener
             {
                 JOptionPane.showMessageDialog(null, "Benutzername bereits vergeben!", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
             }
-        /*Wenn der Benutzername gültig ist wird das MenuPanel(View) entfernt und die MenuBar(View) hinzugefügt -> gameFrame.addMenuBar()
+        /**Wenn der Benutzername gültig ist wird das MenuPanel(View) entfernt und die MenuBar(View) hinzugefügt -> gameFrame.addMenuBar()
          * Die Charakterselektion wird initialisiert -> new CharakterSelectionController*/
             else
             {
@@ -71,7 +71,7 @@ public class GameFrameController implements ActionListener
         {}
     }
 
-    /*Wird aufgerufen wenn die Charakterauswahl beendet ist
+    /**Wird aufgerufen wenn die Charakterauswahl beendet ist
     * setzt currentGroup
     * entfern die CharakterSelectionView
     * initialisiert den MapController
@@ -86,12 +86,12 @@ public class GameFrameController implements ActionListener
         this.gameFrame.getContentPane().add(this.mapController.getMapDetailView());
     }
 
-    /*currently not ín use*/
+    /**currently not ín use*/
     public void loadGame()
     {
     }
 
-    /*Übergibt den eingegebenen Benutzernamen an den DataManager um zu überprüfen ob er bereits vergeben ist
+    /**Übergibt den eingegebenen Benutzernamen an den DataManager um zu überprüfen ob er bereits vergeben ist
      * return true -> Beutzername ist gültig und wurde der Datenbanktabelle 'user' hinzugefügt
      * return false -> Benutzername ist bereits vergeben*/
     private boolean validateUsername()
@@ -106,7 +106,7 @@ public class GameFrameController implements ActionListener
             this.dataManager.closeConnection();
     }
 
-    /*Entfernt nach erfolgreicher Levelauswahl die MapDetailView und MapOverview
+    /**Entfernt nach erfolgreicher Levelauswahl die MapDetailView und MapOverview
     * initialisiert den LevelViewController*/
     public void initiateLevel(String paramLevelName)
     {
@@ -117,25 +117,25 @@ public class GameFrameController implements ActionListener
         this.levelViewController = new LevelViewController(this, paramLevelName);
     }
 
-    /*Gibt den aktuellen DataManager zurück*/
+    /**Gibt den aktuellen DataManager zurück*/
     public DataManager getDataManager()
     {
         return this.dataManager;
     }
 
-    /*Gibt den aktuellen GameFrame zurück*/
+    /**Gibt den aktuellen GameFrame zurück*/
     public GameFrame getGameFrame()
     {
         return this.gameFrame;
     }
 
-    /*Gibt den aktuell im Programmfokus stehenden Benutzer zurück*/
+    /**ibt den aktuell im Programmfokus stehenden Benutzer zurück*/
     public String getCurrentUser()
     {
         return this.currentUser;
     }
 
-    /*Gibt die aktuelle Gruppe aus 6 Charakteren zurück*/
+    /**Gibt die aktuelle Gruppe aus 6 Charakteren zurück*/
     public LinkedList<CharakterModel> getCurrentGroup()
     {
         return this.currentGroup;

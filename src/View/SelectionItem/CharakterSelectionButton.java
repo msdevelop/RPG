@@ -13,7 +13,7 @@ public class CharakterSelectionButton extends JPanel
     private Image btnImage, btnImageActive;
     private boolean isInMouseFocus = false;
 
-    /*Buttons der CharakterSelectionView
+    /**Buttons der CharakterSelectionView
     * Namen nach dem Muster btn_funktion
     * fügt MouseListener hinzu(CharakterSelectionController)
     * lädt ButtonBilder für Anzeige im MouseFocus und Default*/
@@ -36,7 +36,7 @@ public class CharakterSelectionButton extends JPanel
         }
     }
 
-    /*Zeichnet den Button in den Container
+    /**Zeichnet den Button in den Container
     * wenn sich der Button im MouseFocus befindet (isInMouseFocus = true) wird das _active.png gezeichnet*/
     public void paintComponent(Graphics button)
     {
@@ -48,7 +48,7 @@ public class CharakterSelectionButton extends JPanel
             button.drawImage(this.btnImageActive, 0, 0, this);
     }
 
-    /*setzt isInMouseFocus(boolean) auf den übergebenen Wert
+    /**setzt isInMouseFocus(boolean) auf den übergebenen Wert
     * führt in paintComponent() zur Anzeige eines anderen ButtonBildes
     * this.repaint()*/
     public void setIntMouseFocus(boolean paramBool)

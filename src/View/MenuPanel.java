@@ -1,7 +1,6 @@
 package View;
 
 import Controller.MenuController;
-import Interface.ScreenResolution;
 import View.SelectionItem.MenuSelectionItem;
 
 import javax.imageio.ImageIO;
@@ -10,19 +9,16 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class MenuPanel extends JPanel implements ScreenResolution
+public class MenuPanel extends JPanel
 {
     private Image menuBg;
-    private int screenWidth, screenHeight;
 
     /**Erzeugt MenuSelectionItems für jeden Menüpunkt
-    * lädt Hintergrundbild für Hauptmenü*/
+     * lädt Hintergrundbild für Hauptmenü*/
     public MenuPanel(MenuController paramMenuController)
     {
-        this.screenWidth = ScreenResolution.screenWidth;
-        this.screenHeight = ScreenResolution.screenHeight;
         this.setLayout(null);
-        this.setBounds(0, 0, this.screenWidth, this.screenHeight);
+        this.setBounds(0, 0, 1920, 1080);
         this.add(new MenuSelectionItem(792, 457, paramMenuController, "neuesSpiel"));
         this.add(new MenuSelectionItem(788, 543, paramMenuController, "spielLaden"));
         this.add(new MenuSelectionItem(788, 630, paramMenuController, "beenden"));
@@ -42,6 +38,6 @@ public class MenuPanel extends JPanel implements ScreenResolution
     public void paintComponent(Graphics menuView)
     {
         super.paintComponent(menuView);
-        menuView.drawImage(menuBg, 0, 0, this.screenWidth, this.screenHeight, this);
+        menuView.drawImage(menuBg, 0, 0, this);
     }
 }

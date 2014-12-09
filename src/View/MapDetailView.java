@@ -1,7 +1,6 @@
 package View;
 
 import Controller.MapController;
-import Interface.ScreenResolution;
 import Model.DetailKartenModel;
 import Model.KoordinatenModel;
 import View.SelectionItem.DetailSelectionItem;
@@ -13,23 +12,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class MapDetailView extends JPanel implements ScreenResolution
+public class MapDetailView extends JPanel
 {
     private Image detailMap, placeholderDetail;
     private boolean isMissionSelected = false;
     private MapController mapController;
-    private int screenWidth, screenHeight;
 
     /**Lädt Platzhalterbild der MapDetailView*/
     public MapDetailView(MapController paramMapController)
     {
-        this.screenWidth = ScreenResolution.screenWidth;
-        this.screenHeight = ScreenResolution.screenHeight;
-
         this.mapController = paramMapController;
 
         this.setLayout(null);
-        this.setBounds(this.calculateXPos(811), 0, this.calculateXPos(1109), this.calculateYPos(1057));
+        this.setBounds(811, 0, 1109, 1057);
 
         try
         {
@@ -44,21 +39,21 @@ public class MapDetailView extends JPanel implements ScreenResolution
     }
 
     /**Zeichnet das Platzhalterbild
-    * Wenn eine Mission ausgewählt wurde (isMissionSelected = true) wird die entsprechende DetailMap gezeichnet*/
+     * Wenn eine Mission ausgewählt wurde (isMissionSelected = true) wird die entsprechende DetailMap gezeichnet*/
     public void paintComponent(Graphics detailMap)
     {
         super.paintComponent(detailMap);
         if(this.isMissionSelected)
-            detailMap.drawImage(this.detailMap, 0, 0, this.calculateXPos(1109), this.calculateYPos(1057), this);
+            detailMap.drawImage(this.detailMap, 0, 0, this);
         else
-            detailMap.drawImage(this.placeholderDetail, 0, 0, this.calculateXPos(1109), this.calculateYPos(1057), this);
+            detailMap.drawImage(this.placeholderDetail, 0, 0, this);
     }
 
     /**Liest die angeforderte DetailMap [currentDetailMap(DetailKartenModel)] aus dem DataManager aus -> DataManager.getDetailKarte()
-    * lädt das Bild der currentDetailMap
-    * fügt für jedes Koordinatenpaar aus der koordinatenModelList der currentDetailMap ein DetailSelectionIem zur View hinzu
-    * setzt isMissionSelected auf true
-    * this.repaint()*/
+     * lädt das Bild der currentDetailMap
+     * fügt für jedes Koordinatenpaar aus der koordinatenModelList der currentDetailMap ein DetailSelectionIem zur View hinzu
+     * setzt isMissionSelected auf true
+     * this.repaint()*/
     public void selectMission(String paramMapName)
     {
         DetailKartenModel currentDetailMap = this.mapController.getGameFrameController().getDataManager().getDetailKarte(paramMapName);
@@ -82,17 +77,5 @@ public class MapDetailView extends JPanel implements ScreenResolution
         }
         this.isMissionSelected = true;
         this.repaint();
-    }
-
-    /**Berechnet die relative x-Position abhängig von der Bildschirmauflösung*/
-    private int calculateXPos(int paramX)
-    {
-        return ((paramX * this.screenWidth) / 1920);
-    }
-
-    /**Berechnet die relative y-Position abhängig von der Bildschirmauflösung*/
-    private int calculateYPos(int paramY)
-    {
-        return ((paramY * this.screenHeight) / 1080);
     }
 }

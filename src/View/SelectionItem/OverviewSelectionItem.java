@@ -1,7 +1,6 @@
 package View.SelectionItem;
 
 import Controller.MapController;
-import Interface.ScreenResolution;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,11 +8,10 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class OverviewSelectionItem extends JPanel implements ScreenResolution
+public class OverviewSelectionItem extends JPanel
 {
     private Image selectionImg_100, selectionImg_50;
     private boolean isInMouseFocus = false;
-    private int screenWidth, screenHeight;
 
     /**SelectionItem für Missionen in der MapOverview
     * Namen nach dem Muster overview_kartenabschnitt
@@ -21,12 +19,10 @@ public class OverviewSelectionItem extends JPanel implements ScreenResolution
     * lädt Bilder für Anzeige im MouseFocus und Default*/
     public OverviewSelectionItem(String paramName, int paramXPos, int paramYPos, MapController paramMapController)
     {
-        this.screenWidth = ScreenResolution.screenWidth;
-        this.screenHeight = ScreenResolution.screenHeight;
         this.setLayout(null);
         this.setName(paramName);
         this.setOpaque(false);
-        this.setBounds(this.calculateXPos(paramXPos), this.calculateYPos(paramYPos), this.calculateXPos(200), this.calculateXPos(200));
+        this.setBounds(paramXPos, paramYPos, 200, 200);
         this.addMouseListener(paramMapController);
 
         try
@@ -48,10 +44,10 @@ public class OverviewSelectionItem extends JPanel implements ScreenResolution
 
         if(this.isInMouseFocus)
         {
-            selectionItem.drawImage(this.selectionImg_100, 0, 0, this.calculateXPos(200), this.calculateXPos(200), this);
+            selectionItem.drawImage(this.selectionImg_100, 0, 0, 200, 200, this);
         }
         else
-            selectionItem.drawImage(this.selectionImg_50, 0, 0, this.calculateXPos(200), this.calculateXPos(200), this);
+            selectionItem.drawImage(this.selectionImg_50, 0, 0, 200, 200, this);
     }
 
     /**setzt isInMouseFocus(boolean) auf den übergebenen Wert
@@ -61,17 +57,5 @@ public class OverviewSelectionItem extends JPanel implements ScreenResolution
     {
         this.isInMouseFocus = paramBool;
         this.repaint();
-    }
-
-    /**Berechnet die relative x-Position abhängig von der Bildschirmauflösung*/
-    private int calculateXPos(int paramX)
-    {
-        return ((paramX * this.screenWidth) / 1920);
-    }
-
-    /**Berechnet die relative y-Position abhängig von der Bildschirmauflösung*/
-    private int calculateYPos(int paramY)
-    {
-        return ((paramY * this.screenHeight) / 1080);
     }
 }

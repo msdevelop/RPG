@@ -1,6 +1,7 @@
 package View.SelectionItem;
 
 import Controller.CharakterSelectionController;
+import Interface.ScreenResolution;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -8,10 +9,11 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class CharakterSelectionButton extends JPanel
+public class CharakterSelectionButton extends JPanel implements ScreenResolution
 {
     private Image btnImage, btnImageActive;
     private boolean isInMouseFocus = false;
+    private int screenWidth, screenHeight;
 
     /**Buttons der CharakterSelectionView
     * Namen nach dem Muster btn_funktion
@@ -19,11 +21,13 @@ public class CharakterSelectionButton extends JPanel
     * lädt ButtonBilder für Anzeige im MouseFocus und Default*/
     public CharakterSelectionButton(String paramName, int paramXPos, int paramYPos, CharakterSelectionController paramCharakterSelectionController)
     {
+        this.screenWidth = ScreenResolution.screenWidth;
+        this.screenHeight = ScreenResolution.screenHeight;
         this.setName("btn_" + paramName);
         this.setLayout(null);
         this.setOpaque(false);
         this.setVisible(true);
-        this.setBounds(paramXPos, paramYPos, 280, 60);
+        this.setBounds(this.calculateXPos(paramXPos), this.calculateYPos(paramYPos), this.calculateXPos(280), this.calculateYPos(60));
         this.addMouseListener(paramCharakterSelectionController);
         try
         {
@@ -42,10 +46,22 @@ public class CharakterSelectionButton extends JPanel
     {
         super.paintComponent(button);
 
-        button.drawImage(this.btnImage, 0, 0, this);
+        button.drawImage(this.btnImage, 0, 0, this.calculateXPos(280), this.calculateYPos(60), this);
 
         if(this.isInMouseFocus)
-            button.drawImage(this.btnImageActive, 0, 0, this);
+            button.drawImage(this.btnImageActive, 0, 0, this.calculateXPos(280), this.calculateYPos(60), this);
+    }
+
+    /**Berechnet die relative x-Position abhängig von der Bildschirmauflösung*/
+    private int calculateXPos(int paramX)
+    {
+        return ((paramX * this.screenWidth) / 1920);
+    }
+
+    /**Berechnet die relative y-Position abhängig von der Bildschirmauflösung*/
+    private int calculateYPos(int paramY)
+    {
+        return ((paramY * this.screenHeight) / 1080);
     }
 
     /**setzt isInMouseFocus(boolean) auf den übergebenen Wert

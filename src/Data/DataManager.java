@@ -13,7 +13,7 @@ public class DataManager
 
     /**Lädt Treiberklasse
     * baut die Verbindung zur angegebenen Datenbank auf
-    * -> errorMessage + exit(0) sonst*/
+    * -> errorMessage + exit(-1) sonst*/
     public DataManager()
     {
         try
@@ -36,6 +36,44 @@ public class DataManager
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                     "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
                     "\nVerbindung zur Datenbank konnte nicht hergestellt werden!", "Fehler beim Laden der Datenbank", JOptionPane.ERROR_MESSAGE);
+            this.closeConnection();
+        }
+    }
+
+    /**Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder Absturz)
+     * Schließt die Datenbankverbindung (falls vorhanden) um commit der Daten zu gewährleisten*/
+    public void closeConnection()
+    {
+        try
+        {
+            if(this.commonCon != null)
+                this.commonCon.close();
+            if(this.levelCon != null)
+                this.levelCon.close();
+            System.exit(-1);
+        }
+        catch(SQLException sqlE)
+        {
+            JOptionPane.showMessageDialog(null, "SQLException\nFFehler beim Schließen der connection!\nDataManager.closeConnection()" +
+                            "\nMessage: " + sqlE.getMessage() + "\nErrorCode: " + sqlE.getErrorCode() + "\nSQLState: " + sqlE.getSQLState(), "Schließen einer connection fehlgeschlagen",
+                    JOptionPane.ERROR_MESSAGE);
+            System.exit(-1);
+        }
+    }
+
+    /**Fügt den übergebenen Benutzernamen der Datenbanktabelle 'user' hinzu (status = false)
+     * Das Datenfeld 'status <boolean>'  gibt an ob der Beutzer die CharakterSelektion bereits abgeschlossen hat (true) oder nicht (false = default)*/
+    public void addUser(String paramUsername)
+    {
+        try(Statement stmt = this.commonCon.createStatement())
+        {
+            stmt.executeQuery("INSERT INTO user(name, status) VALUES('" + paramUsername + "', false)");
+        }
+        catch(SQLException sqlE)
+        {
+            JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
+                    "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
+                    "\nFehler beim Hinzufügen von Benutzer!\nDataManager.isValidUsername()", "Fehler beim Schreiben der Datenbank", JOptionPane.ERROR_MESSAGE);
             this.closeConnection();
         }
     }
@@ -64,61 +102,17 @@ public class DataManager
         {
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                     "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
-                    "\nFehler beim Prüfen oder Hinzufügen von Benutzer!\nDataManager.isValidUsername()\nINFO: Methode ruft DataManager.addUser() auf (throws SQLException)",
-                    "Fehler beim Lesen/Schreiben der Datenbank", JOptionPane.ERROR_MESSAGE);
+                    "\nFehler beim Prüfen von Benutzer!\nDataManager.isValidUsername()", "Fehler beim Lesen der Datenbank", JOptionPane.ERROR_MESSAGE);
             this.closeConnection();
         }
         return false;
     }
 
-    /**Fügt den übergebenen Benutzernamen der Datenbanktabelle 'user' hinzu (status = false)
-    * Das Datenfeld 'status <boolean>'  gibt an ob der Beutzer die CharakterSelektion bereits abgeschlossen hat (true) oder nicht (false = default)*/
-    public void addUser(String paramUsername) throws SQLException
-    {
-        Statement stmt = this.commonCon.createStatement();
-        stmt.executeQuery("INSERT INTO user(name, status) VALUES('" + paramUsername + "', false)");
-        stmt.close();
-    }
-
-    /**Prüft ob die angeforderte DetailMap bereits aus der DB ausgelesen und in der Liste detailKartenModelList gespeichert wurde -> return DetailKartenModel
-    * Sonst: liest den Datensatz der angeforderten DetailMap aus der Datenbanktabelle 'detailMap' aus und erzeugt ein neues DetaiKartenModel aus den ausgelesenen Daten
-    * fügt das neue DetailKartenModel der detailKartenModelList hinzu
-    * -> return DetailKartenModel*/
-    public DetailKartenModel getDetailKarte(String paramMapName)
-    {
-        for(DetailKartenModel tmpDetailKartenModel : this.detailKartenModelList)
-        {
-            if(tmpDetailKartenModel.getName().equals(paramMapName))
-                return tmpDetailKartenModel;
-        }
-
-        DetailKartenModel tmpModel = null;
-        try(PreparedStatement pstmt = this.commonCon.prepareStatement("SELECT * FROM detailMap WHERE (name = ?)"))
-        {
-            pstmt.setString(1, paramMapName);
-            try(ResultSet detMapResult = pstmt.executeQuery())
-            {
-                detMapResult.next();
-                tmpModel = new DetailKartenModel(paramMapName, detMapResult.getString(2), this.trimPosition(detMapResult.getString(3)));
-                this.detailKartenModelList.add(tmpModel);
-            }
-        }
-        catch(SQLException sqlE)
-        {
-            JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
-                            "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
-                            "\nFehler beim Auslesen von DetailKarte\nDataManager.getDetailKarte()",
-                            "Fehler beim Lesen der Datenbank", JOptionPane.ERROR_MESSAGE);
-            this.closeConnection();
-        }
-        return tmpModel;
-    }
-
     /**Wird von getDetailKarte aufgerufen um die Liste der x,y - Positionen aus der Datenbank in einzelne Koordinatenpaare aufzuteilen
-    * x und y Position sind durch (,) getrennt, Koordinatenpaare durch (\n)
-    * erzeugt aus einem Koordinatenpaar (x,y) ein KoordinatenModel
-    * speichert alle KoordinatenModels in einer koordinatenModelList
-    * -> return koordinatenModelList*/
+     * x und y Position sind durch (,) getrennt, Koordinatenpaare durch (\n)
+     * erzeugt aus einem Koordinatenpaar (x,y) ein KoordinatenModel
+     * speichert alle KoordinatenModels in einer koordinatenModelList
+     * -> return koordinatenModelList*/
     public LinkedList<KoordinatenModel> trimPosition(String paramPos)
     {
         LinkedList<KoordinatenModel> koordinatenModelList = new LinkedList<>();
@@ -151,6 +145,38 @@ public class DataManager
             koordinatenModelList.add(new KoordinatenModel(Integer.parseInt(xPos.toString()), Integer.parseInt(yPos.toString())));
         }
         return koordinatenModelList;
+    }
+
+    /**Prüft ob die angeforderte DetailMap bereits aus der DB ausgelesen und in der Liste detailKartenModelList gespeichert wurde -> return DetailKartenModel
+    * Sonst: liest den Datensatz der angeforderten DetailMap aus der Datenbanktabelle 'detailMap' aus und erzeugt ein neues DetaiKartenModel aus den ausgelesenen Daten
+    * fügt das neue DetailKartenModel der detailKartenModelList hinzu
+    * -> return DetailKartenModel*/
+    public DetailKartenModel getDetailKarte(String paramMapName)
+    {
+        for(DetailKartenModel tmpDetailKartenModel : this.detailKartenModelList)
+            if(tmpDetailKartenModel.getName().equals(paramMapName))
+                return tmpDetailKartenModel;
+
+        DetailKartenModel tmpModel = null;
+        try(PreparedStatement pstmt = this.commonCon.prepareStatement("SELECT * FROM detailMap WHERE (name = ?)"))
+        {
+            pstmt.setString(1, paramMapName);
+            try(ResultSet detMapResult = pstmt.executeQuery())
+            {
+                detMapResult.next();
+                tmpModel = new DetailKartenModel(paramMapName, detMapResult.getString(2), this.trimPosition(detMapResult.getString(3)));
+                this.detailKartenModelList.add(tmpModel);
+            }
+        }
+        catch(SQLException sqlE)
+        {
+            JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
+                            "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
+                            "\nFehler beim Auslesen von DetailKarte\nDataManager.getDetailKarte()",
+                            "Fehler beim Lesen der Datenbank", JOptionPane.ERROR_MESSAGE);
+            this.closeConnection();
+        }
+        return tmpModel;
     }
 
     /**Liest alle Charaktere aus der Datenbanktabelle 'charakterRaw' aus
@@ -203,10 +229,8 @@ public class DataManager
                     " OR charID = " + paramChIDCol[1] + " OR charID = " + paramChIDCol[2] + " OR charID = " + paramChIDCol[3] +
                     " OR charID = " + paramChIDCol[4] + " OR charID = " + paramChIDCol[5] + ") WITH DATA");
             for(int i = 0; i < 6; i++)
-            {
                 stmt.executeQuery("UPDATE " + paramUser + "_charakter SET namensliste = '" + paramChNameCol[i] + "' WHERE charID = " + paramChIDCol[i]);
-            }
-            stmt.executeQuery("UPDATE user SET status = true WHERE name = '" + paramUser + '\'');
+            stmt.executeQuery("UPDATE user SET status = true WHERE name = '" + paramUser + "'");
         }
         catch(SQLException sqlE)
         {
@@ -257,28 +281,5 @@ public class DataManager
             this.closeConnection();
         }
         return null;
-    }
-
-    /**Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder Absturz)
-    * Schließt die Datenbankverbindung (falls vorhanden) um COMMIT der Daten zu gewährleisten*/
-    public void closeConnection()
-    {
-        try
-        {
-            if(this.commonCon != null)
-                this.commonCon.close();
-            if(this.levelCon != null)
-                this.levelCon.close();
-            System.exit(0);
-
-        }
-        catch(SQLException sqlE)
-        {
-            JOptionPane.showMessageDialog(null, "SQLException\nFFehler beim Schließen der connection!\nDataManager.closeConnection()" +
-                    "\nMessage: " + sqlE.getMessage() + "\nErrorCode: " + sqlE.getErrorCode() + "\nSQLState: " + sqlE.getSQLState(), "Schließen einer connection fehlgeschlagen",
-                    JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-
-        }
     }
 }

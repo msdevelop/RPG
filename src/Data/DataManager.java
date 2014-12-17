@@ -50,7 +50,7 @@ public class DataManager
                 this.commonCon.close();
             if(this.levelCon != null)
                 this.levelCon.close();
-            System.exit(-1);
+            System.exit(0);
         }
         catch(SQLException sqlE)
         {

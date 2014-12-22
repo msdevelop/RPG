@@ -11,21 +11,9 @@ public class DataManager
     private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<>();
     private Connection commonCon, levelCon;
 
-    /**Lädt Treiberklasse
-    * baut die Verbindung zur angegebenen Datenbank auf
-    * -> errorMessage + exit(-1) sonst*/
+    /**Stellt die Verbindung zu den Datenbanken her*/
     public DataManager()
     {
-        try
-        {
-            Class.forName("org.hsqldb.jdbcDriver");
-        }
-        catch(ClassNotFoundException cnfE)
-        {
-            JOptionPane.showMessageDialog(null, "ErrorMessage: " + cnfE.getMessage() + "\nExceptionType: ClassNotFoundException" +
-                    "\nTreiberklasse konnte nicht geladen werden!", "Fehler beim Laden der Datenbank", JOptionPane.ERROR_MESSAGE);
-            this.closeConnection();
-        }
         try
         {
             this.commonCon = DriverManager.getConnection("jdbc:hsqldb:file:data\\hsql\\common\\db;ifexists=true;shutdown=true", "root", "");
@@ -40,7 +28,7 @@ public class DataManager
         }
     }
 
-    /**Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder Absturz)
+    /**Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder unhandledException)
      * Schließt die Datenbankverbindung (falls vorhanden) um commit der Daten zu gewährleisten*/
     public void closeConnection()
     {
@@ -67,7 +55,7 @@ public class DataManager
     {
         try(Statement stmt = this.commonCon.createStatement())
         {
-            stmt.executeQuery("INSERT INTO user(name, status) VALUES('" + paramUsername + "', false)");
+            stmt.executeUpdate("INSERT INTO user(name, status) VALUES('" + paramUsername + "', false)");
         }
         catch(SQLException sqlE)
         {
@@ -83,11 +71,9 @@ public class DataManager
     * SQLException -> return false*/
     public boolean isValidUsername(String paramUsername)
     {
-        try(PreparedStatement pstmt = this.commonCon.prepareStatement("SELECT * FROM user WHERE (name = ?)"))
+        try(Statement stmt = this.commonCon.createStatement())
         {
-            pstmt.setString(1, paramUsername);
-
-            try(ResultSet userResult = pstmt.executeQuery())
+            try(ResultSet userResult = stmt.executeQuery("SELECT * FROM user WHERE (name = '" + paramUsername + "')"))
             {
                 if(userResult.next())
                     return false;
@@ -158,10 +144,9 @@ public class DataManager
                 return tmpDetailKartenModel;
 
         DetailKartenModel tmpModel = null;
-        try(PreparedStatement pstmt = this.commonCon.prepareStatement("SELECT * FROM detailMap WHERE (name = ?)"))
+        try(Statement stmt = this.commonCon.createStatement())
         {
-            pstmt.setString(1, paramMapName);
-            try(ResultSet detMapResult = pstmt.executeQuery())
+            try(ResultSet detMapResult = stmt.executeQuery("SELECT * FROM detailMap WHERE (name = '" + paramMapName + "')"))
             {
                 detMapResult.next();
                 tmpModel = new DetailKartenModel(paramMapName, detMapResult.getString(2), this.trimPosition(detMapResult.getString(3)));
@@ -225,15 +210,28 @@ public class DataManager
     {
         try(Statement stmt = this.commonCon.createStatement())
         {
-            stmt.executeQuery("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramChIDCol[0] +
+            this.commonCon.setAutoCommit(false);
+            stmt.executeUpdate("CREATE TABLE " + paramUser + "_charakter AS (SELECT * FROM charakterraw WHERE charID = " + paramChIDCol[0] +
                     " OR charID = " + paramChIDCol[1] + " OR charID = " + paramChIDCol[2] + " OR charID = " + paramChIDCol[3] +
                     " OR charID = " + paramChIDCol[4] + " OR charID = " + paramChIDCol[5] + ") WITH DATA");
             for(int i = 0; i < 6; i++)
-                stmt.executeQuery("UPDATE " + paramUser + "_charakter SET namensliste = '" + paramChNameCol[i] + "' WHERE charID = " + paramChIDCol[i]);
-            stmt.executeQuery("UPDATE user SET status = true WHERE name = '" + paramUser + "'");
+                stmt.executeUpdate("UPDATE " + paramUser + "_charakter SET namensliste = '" + paramChNameCol[i] + "' WHERE charID = " + paramChIDCol[i]);
+            stmt.executeUpdate("UPDATE user SET status = true WHERE name = '" + paramUser + "'");
+            this.commonCon.commit();
+            this.commonCon.setAutoCommit(true);
         }
         catch(SQLException sqlE)
         {
+            try
+            {
+                this.commonCon.rollback();
+            }
+            catch(SQLException e)
+            {
+                JOptionPane.showMessageDialog(null, "SQLState: " + e.getSQLState() + "\nErrorCode: " + e.getErrorCode() +
+                        "\nErrorMessage: " + e.getMessage() + "\nSQLException\nFehler beim rollback von commonCon in DataManager.createNewCharTableForUser()",
+                        "Fehler beim rollback", JOptionPane.ERROR_MESSAGE);
+            }
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                     "\nErrorMessage: " + sqlE.getMessage() + "\nSQLException\nFehler beim erzeugen von DBTable " + paramUser + "_charakter\nDataManager.createNewCharTableForUser()",
                     "Fehler beim Erstellen von Datenbanktabelle", JOptionPane.ERROR_MESSAGE);
@@ -247,9 +245,9 @@ public class DataManager
     * -> kein ExceptionHandling => Level MUSS vorhanden sein*/
     public MaterialModel[][] loadLevel(String paramLevelName)
     {
-        try(PreparedStatement stmt = this.levelCon.prepareStatement("SELECT * FROM " + paramLevelName))
+        try(Statement stmt = this.levelCon.createStatement())
         {
-            try(ResultSet levelResult = stmt.executeQuery())
+            try(ResultSet levelResult = stmt.executeQuery("SELECT * FROM " + paramLevelName))
             {
                 try(PreparedStatement pstmt = this.levelCon.prepareStatement("SELECT materialName FROM materialAllocation WHERE (materialID = ?)"))
                 {

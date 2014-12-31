@@ -51,7 +51,7 @@ public class DataManager
 
     /**Fügt den übergebenen Benutzernamen der Datenbanktabelle 'user' hinzu (status = false)
      * Das Datenfeld 'status <boolean>'  gibt an ob der Beutzer die CharakterSelektion bereits abgeschlossen hat (true) oder nicht (false = default)*/
-    public void addUser(String paramUsername)
+    private void addUser(String paramUsername)
     {
         try(Statement stmt = this.commonCon.createStatement())
         {
@@ -99,7 +99,7 @@ public class DataManager
      * erzeugt aus einem Koordinatenpaar (x,y) ein KoordinatenModel
      * speichert alle KoordinatenModels in einer koordinatenModelList
      * -> return koordinatenModelList*/
-    public LinkedList<KoordinatenModel> trimPosition(String paramPos)
+    private LinkedList<KoordinatenModel> trimPosition(String paramPos)
     {
         LinkedList<KoordinatenModel> koordinatenModelList = new LinkedList<>();
         int k = 0;

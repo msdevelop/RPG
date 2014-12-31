@@ -4,7 +4,6 @@ import Data.DataManager;
 import Model.CharakterModel;
 import View.GameFrame;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -16,7 +15,7 @@ public class GameFrameController implements ActionListener
     private MapController mapController;
     private DataManager dataManager;
     private CharakterSelectionController charakterSelectionController;
-    private String username = "", currentUser;
+    private String currentUser;
     private LinkedList<CharakterModel> currentGroup;
     private LevelViewController levelViewController;
 
@@ -32,44 +31,17 @@ public class GameFrameController implements ActionListener
         this.gameFrame.requestFocus();
     }
 
-    /**Wird aufgerufen wenn im Menü der Punkt "Neues Spiel" gewählt wird
-     * Benutzer wird zur Eingabe eines Benutzernamens aufgefordert -> JOptionPane
-     * Führende und angehängte Leerzeichen werden abgeschnitten -> String.trim()
-     * Länge des Benutzernamens muss zwischen 4 und 15 Zeichen liegen und muss den Pattern [a-z] [A-Z] [0-9] [ _ ] in beliebiger Reihenfolge entsprechen (keine führenden/angehämgten Leer- bzw Sonderzeichen)
-     * Es wird geprüft ob der Benutzername bereits vergeben ist ->this.validateUsername()
-     * Fehlermeldungen via JOptionPane*/
-    public void initiateCharakterSelection()
+    /**Wird von MenuController.requestUsername() nach gültiger Eingabe eines Benutzernamen aufgerufen
+     * MenuView wird entfernt und die MenuBar(View) hinzugefügt -> gameFrame.addMenuBar()
+     * Die Charakterselektion wird initialisiert -> new CharakterSelectionController*/
+    public void initiateCharakterSelection(String paramUsername)
     {
-        try
-        {
-            this.username = JOptionPane.showInputDialog(null, "Bitte geben Sie einen Benutzername ein.", "Benutzername Eingeben", JOptionPane.QUESTION_MESSAGE);
-
-            if((this.username.length() < 4) || (this.username.length() > 15) || (! (this.username.matches("\\p{Alpha}\\w*"))))
-            {
-                JOptionPane.showMessageDialog(null, "Ungültiger Benutzername!\n" +
-                        "      - Gültige Zeichen: [a-z] [A-Z] [0-9] [ _ ]\n" +
-                        "      - mindestens 4 maximal 15 Zeichen\n" +
-                        "      - keine Leerzeichen\n" +
-                        "      - keine führenden Zahlen oder Sonderzeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
-            }
-            else if(! this.validateUsername())
-            {
-                JOptionPane.showMessageDialog(null, "Benutzername bereits vergeben!", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
-            }
-        /**Wenn der Benutzername gültig ist wird das MenuPanel(View) entfernt und die MenuBar(View) hinzugefügt -> gameFrame.addMenuBar()
-         * Die Charakterselektion wird initialisiert -> new CharakterSelectionController*/
-            else
-            {
-                this.currentUser = username;
-                this.menuController.getMenuPanel().setVisible(false);
-                this.gameFrame.remove(this.menuController.getMenuPanel());
-                this.gameFrame.addMenuBar();
-                this.charakterSelectionController = new CharakterSelectionController(this);
-                this.gameFrame.getContentPane().add(this.charakterSelectionController.getCharakterSelectionView());
-            }
-        }
-        catch(NullPointerException e)
-        {}
+        this.currentUser = paramUsername;
+        this.menuController.getMenuView().setVisible(false);
+        this.gameFrame.remove(this.menuController.getMenuView());
+        this.gameFrame.addMenuBar();
+        this.charakterSelectionController = new CharakterSelectionController(this);
+        this.gameFrame.getContentPane().add(this.charakterSelectionController.getCharakterSelectionView());
     }
 
     /**Wird aufgerufen wenn die Charakterauswahl beendet ist
@@ -85,19 +57,6 @@ public class GameFrameController implements ActionListener
         this.mapController = new MapController(this);
         this.gameFrame.getContentPane().add(this.mapController.getMapOverview());
         this.gameFrame.getContentPane().add(this.mapController.getMapDetailView());
-    }
-
-    /**currently not ín use*/
-    public void loadGame()
-    {
-    }
-
-    /**Übergibt den eingegebenen Benutzernamen an den DataManager um zu überprüfen ob er bereits vergeben ist
-     * return true -> Beutzername ist gültig und wurde der Datenbanktabelle 'user' hinzugefügt
-     * return false -> Benutzername ist bereits vergeben*/
-    private boolean validateUsername()
-    {
-        return this.dataManager.isValidUsername(this.username);
     }
 
     @Override

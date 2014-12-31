@@ -9,13 +9,13 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class MenuPanel extends JPanel
+public class MenuView extends JPanel
 {
     private Image menuBg;
 
     /**Erzeugt MenuSelectionItems für jeden Menüpunkt
      * lädt Hintergrundbild für Hauptmenü*/
-    public MenuPanel(MenuController paramMenuController)
+    public MenuView(MenuController paramMenuController)
     {
         this.setLayout(null);
         this.setBounds(0, 0, 1920, 1080);
@@ -29,7 +29,7 @@ public class MenuPanel extends JPanel
         }
         catch(IOException e)
         {
-            System.err.println("IOException\nFehler beim Laden von Hintergrundbild\nMenuPanel.constructor()");
+            System.err.println("IOException\nFehler beim Laden von Hintergrundbild\nMenuView.constructor()");
         }
 
         setVisible(true);

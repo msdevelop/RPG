@@ -25,7 +25,7 @@ public class DataManager
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                     "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
                     "\nVerbindung zur Datenbank konnte nicht hergestellt werden!", "Fehler beim Laden der Datenbank", JOptionPane.ERROR_MESSAGE);
-            this.closeConnection();
+            this.closeConnection(-1);
         }
     }
 
@@ -39,8 +39,13 @@ public class DataManager
     }
 
     /**Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder unhandledException)
-     * Schließt die Datenbankverbindung (falls vorhanden) um commit der Daten zu gewährleisten*/
-    public void closeConnection()
+     * Schließt die Datenbankverbindung (falls vorhanden) um commit der Daten zu gewährleisten
+     * ErrorState:
+     * -> NoError:               0
+     * -> SQLException:         -2
+     * -> IOException:          -3
+     * -> CustomImageException: -3*/
+    public void closeConnection(int paramErrorState)
     {
         try
         {
@@ -48,14 +53,14 @@ public class DataManager
                 this.commonCon.close();
             if(this.levelCon != null)
                 this.levelCon.close();
-            System.exit(0);
+            System.exit(paramErrorState);
         }
         catch(SQLException sqlE)
         {
             JOptionPane.showMessageDialog(null, "SQLException\nFFehler beim Schließen der connection!\nDataManager.closeConnection()" +
                             "\nMessage: " + sqlE.getMessage() + "\nErrorCode: " + sqlE.getErrorCode() + "\nSQLState: " + sqlE.getSQLState(), "Schließen einer connection fehlgeschlagen",
                     JOptionPane.ERROR_MESSAGE);
-            System.exit(-1);
+            System.exit(-2);
         }
     }
 
@@ -72,7 +77,7 @@ public class DataManager
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                     "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
                     "\nFehler beim Hinzufügen von Benutzer!\nDataManager.isValidUsername()", "Fehler beim Schreiben der Datenbank", JOptionPane.ERROR_MESSAGE);
-            this.closeConnection();
+            this.closeConnection(-2);
         }
     }
 
@@ -99,7 +104,7 @@ public class DataManager
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                     "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
                     "\nFehler beim Prüfen von Benutzer!\nDataManager.isValidUsername()", "Fehler beim Lesen der Datenbank", JOptionPane.ERROR_MESSAGE);
-            this.closeConnection();
+            this.closeConnection(-2);
         }
         return false;
     }
@@ -169,7 +174,7 @@ public class DataManager
                             "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
                             "\nFehler beim Auslesen von DetailKarte\nDataManager.getDetailKarte()",
                             "Fehler beim Lesen der Datenbank", JOptionPane.ERROR_MESSAGE);
-            this.closeConnection();
+            this.closeConnection(-2);
         }
         return tmpModel;
     }
@@ -207,7 +212,7 @@ public class DataManager
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                             "\nErrorMessage: " + sqlE.getMessage() + "\nSQLException\nFehler beim Auslesen von Charakter\nDataManager.getCharaktersRaw()",
                             "Fehler beim Auslesen der Datenbank",JOptionPane.ERROR_MESSAGE);
-            this.closeConnection();
+            this.closeConnection(-2);
         }
         return charakterModelList;
     }
@@ -245,7 +250,7 @@ public class DataManager
             JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
                     "\nErrorMessage: " + sqlE.getMessage() + "\nSQLException\nFehler beim erzeugen von DBTable " + paramUser + "_charakter\nDataManager.createNewCharTableForUser()",
                     "Fehler beim Erstellen von Datenbanktabelle", JOptionPane.ERROR_MESSAGE);
-            this.closeConnection();
+            this.closeConnection(-2);
         }
     }
 
@@ -286,7 +291,7 @@ public class DataManager
             JOptionPane.showMessageDialog(null, "SQLException\nFehler beim Laden des Levels!\nDataManager.loadLevel()" +
                     "\nMessage: " + sqlE.getMessage() + "\nErrorCode: " + sqlE.getErrorCode() + "\nSQLState: " + sqlE.getSQLState(), "Laden von Level fehlgeschlagen",
                     JOptionPane.ERROR_MESSAGE);
-            this.closeConnection();
+            this.closeConnection(-2);
         }
         return null;
     }

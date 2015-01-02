@@ -38,7 +38,7 @@ public class MapController implements MouseListener
     {
         JOptionPane.showMessageDialog(null, "ErrorMessage: " + tmpImageException.getMessage() + "\nExceptionType: IOException",
                 "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
-        this.gameFrameController.getDataManager().closeConnection();
+        this.gameFrameController.getDataManager().closeConnection(-3);
     }
 
     @Override

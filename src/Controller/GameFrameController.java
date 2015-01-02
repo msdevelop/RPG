@@ -50,7 +50,7 @@ public class GameFrameController implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         if(e.getActionCommand().equals("beenden"))
-            this.dataManager.closeConnection();
+            this.dataManager.closeConnection(0);
     }
 
     /**initialisiert den LevelViewController*/

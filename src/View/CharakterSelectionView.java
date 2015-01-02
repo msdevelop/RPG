@@ -119,7 +119,7 @@ public class CharakterSelectionView extends JPanel
                 {
                     JOptionPane.showMessageDialog(null, "ErrorMessage: Fehler beim Laden von Charakterbildern!\nCharakterSelectionView.paintComponent()" +
                                     "\nExceptionType: IOException", "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
-                    this.charakterSelectionController.getGameFrameController().getDataManager().closeConnection();
+                    this.charakterSelectionController.getGameFrameController().getDataManager().closeConnection(-3);
                 }
             }
         }

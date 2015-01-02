@@ -26,7 +26,7 @@ public class MenuController implements MouseListener
         {
             JOptionPane.showMessageDialog(null, "ErrorMessage: " + ciE.getMessage() + "\nExceptionType: IOException",
                     "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
-            this.gameFrameController.getDataManager().closeConnection();
+            this.gameFrameController.getDataManager().closeConnection(-3);
         }
         this.gameFrameController.getGameFrame().getContentPane().add(this.menuView);
     }
@@ -74,7 +74,7 @@ public class MenuController implements MouseListener
         else if(e.getComponent().getName().equals("spielLaden"))
             this.loadGame();
         else if(e.getComponent().getName().equals("beenden"))
-            this.gameFrameController.getDataManager().closeConnection();
+            this.gameFrameController.getDataManager().closeConnection(0);
     }
 
     @Override

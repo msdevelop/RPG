@@ -76,7 +76,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     {
         JOptionPane.showMessageDialog(null, "ErrorMessage: " + tmpImageException.getMessage() + "\nExceptionType: IOException",
                 "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
-        this.gameFrameController.getDataManager().closeConnection();
+        this.gameFrameController.getDataManager().closeConnection(-3);
     }
 
     /**fügt previous einen MouseListener hinzu und setzt Border auf null -> wenn previous != null

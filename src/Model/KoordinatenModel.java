@@ -2,12 +2,12 @@ package Model;
 
 public class KoordinatenModel
 {
-    int xPosition, yPosition;
+    private int xPosition, yPosition;
 
     public KoordinatenModel(int newX, int newY)
     {
-        xPosition = newX;
-        yPosition = newY;
+        this.xPosition = newX;
+        this.yPosition = newY;
     }
 
     public int getxPosition()

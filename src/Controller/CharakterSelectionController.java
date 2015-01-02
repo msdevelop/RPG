@@ -1,5 +1,6 @@
 package Controller;
 
+import Exceptions.CustomImageException;
 import Model.CharakterModel;
 import View.CharakterSelectionView;
 import View.SelectionItem.CharakterSelectionButton;
@@ -32,7 +33,16 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     {
         this.gameFrameController = paramGameFrameController;
         this.charakterModelList = this.gameFrameController.getDataManager().getCharaktersRaw();
-        this.charakterSelectionView = new CharakterSelectionView(this);
+
+        try
+        {
+            this.charakterSelectionView = new CharakterSelectionView(this);
+        }
+        catch(CustomImageException e)
+        {
+            this.handleCustomImageException(e);
+        }
+        this.gameFrameController.getGameFrame().getContentPane().add(this.charakterSelectionView);
 
         int j = 0;
         for(int i = 0; i < this.charakterModelList.size(); i++)
@@ -40,21 +50,125 @@ public class CharakterSelectionController implements MouseListener, ActionListen
             if(i % 2 == 0 && i != 0)
                 j++;
 
-            this.charakterSelectionView.add(new CharakterSelectionItem(this.charakterModelList.get(i).getUrl(), (476 + (i % 2) * 74), (363 + j * 67), this.charakterModelList.get(i).getCharID(), this));
+            try
+            {
+                this.charakterSelectionView.add(new CharakterSelectionItem(this.charakterModelList.get(i).getUrl(), (476 + (i % 2) * 74), (363 + j * 67), this.charakterModelList.get(i).getCharID(), this));
+            }
+            catch(CustomImageException e)
+            {
+                this.handleCustomImageException(e);
+            }
         }
 
-        this.charakterSelectionView.add(new CharakterSelectionButton("hinzufuegen", 1150, 730, this));
-        this.charakterSelectionView.add(new CharakterSelectionButton("fertig", 1150, 815, this));
-        this.charakterSelectionView.add(new CharakterSelectionButton("remove", 1450, 815, this));
+        try
+        {
+            this.charakterSelectionView.add(new CharakterSelectionButton("hinzufuegen", 1150, 730, this));
+            this.charakterSelectionView.add(new CharakterSelectionButton("fertig", 1150, 815, this));
+            this.charakterSelectionView.add(new CharakterSelectionButton("remove", 1450, 815, this));
+        }
+        catch(CustomImageException e)
+        {
+            this.handleCustomImageException(e);
+        }
+    }
+
+    private void handleCustomImageException(CustomImageException tmpImageException)
+    {
+        JOptionPane.showMessageDialog(null, "ErrorMessage: " + tmpImageException.getMessage() + "\nExceptionType: IOException",
+                "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
+        this.gameFrameController.getDataManager().closeConnection();
+    }
+
+    /**fügt previous einen MouseListener hinzu und setzt Border auf null -> wenn previous != null
+     * entfernt MouseListener von current*/
+    private void switchMouseListenerOnCharakterSelectionItem()
+    {
+        if(this.previousCharakterSelectionItem != null)
+        {
+            this.previousCharakterSelectionItem.addMouseListener(this);
+            this.previousCharakterSelectionItem.setBorder(null);
+        }
+        this.currentCharakterSelectionItem.removeMouseListener(this);
+    }
+
+    /**speichert den derzeit ausgewählten Charakter -> currentCharakter(CharakterModel)
+     * übergibt currentCharakter an charakterSelectionView.synchronizeProperties() um Charakterwerte in der CharakterSelectionView anzuzeigen*/
+    private void forwardCharakter(int paramID)
+    {
+        this.currentCharakter = this.charakterModelList.get(paramID);
+        this.charakterSelectionView.synchronizeCharProperties(this.currentCharakter);
+    }
+
+    /**Fügt den derzeit ausgewählten Charakter der Gruppe hinzu
+     * prüft ob der eingegebene Charaktername nicht länger als 15 Zeichen ist -> Fehler sonst (JOptionPange)
+     * setzt die Border des ausgewählten CharakterSelectionItem auf null -> this.currentCharakterSelectionItem.setBorder()
+     * fügt currentCharakterSelectionItem einer Liste mit CharakterSelectionItems der sich in der Gruppe befindenden Charaktere hinzu
+     * current und previous (CharakterSelectionItem) werden auf null gesetzt
+     * der Name des ausgewählten Charakters wird mit Namen aus dem TextField der CharakterSelectionView gesetzt -> currentCharakter.setName()
+     * currentCharakter wird der Liste mit ausgewählten Charakteren hinzugefüt (Gruppe) -> this.groupSelectionList.add()
+     * fügt das Bild des Charakters der Gruppenauswahl hinzu -> this.charakterSelectionView.addSelectedCharakterImage()
+     * setzt isCharSelected(boolean) der CharakterSelectionView auf false damit keine Charakterwerte mehr in der View angezeigt werden*/
+    private void addCharakterToGroupSelection()
+    {
+        String tmpName = this.charakterSelectionView.getNameFromTextfield();
+        if((tmpName.length() >= 2) && (tmpName.length() < 15))
+        {
+            this.currentCharakterSelectionItem.setBorder(null);
+            this.selectedCharakterItems.add(this.currentCharakterSelectionItem);
+            this.currentCharakterSelectionItem = null;
+            this.previousCharakterSelectionItem = null;
+            this.currentCharakter.setName(this.charakterSelectionView.getNameFromTextfield());
+            this.groupSelectionList.add(this.currentCharakter);
+            this.charakterSelectionView.addSelectedCharakterImage(this.currentCharakter.getUrl());
+            this.charakterSelectionView.setIsCharSelected(false);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Charaktername zu kurz oder zu lang!\nMindestens 2 maximal 15 Zeichen.", "Fehler beim Hinzufügen!", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    /**entfernt den zuletzt hinzugefügten Charakter aus this.groupSelectionList
+     * entfernt das Bild des Charakters aus der Gruppenauswahl -> this.charakterSelectionView.removeSelectedCharakterImage()
+     * entfernt das CharakterSelectionItem des aus der Liste entfernten Charakters aus der Liste der ausgewählten Charaktere -> this.selectedCHarakterItems.removeLast()
+     * fügt dem CharakterSelectionItem des soeben aus der Gruppe entfernten Charakters einen MouseListener hinzu -> tmpItem.addMouseListener()*/
+    private void removeLastFromGroupSelection()
+    {
+        this.groupSelectionList.removeLast();
+        this.charakterSelectionView.removeSelectedCharakterImage();
+        CharakterSelectionItem tmpItem = this.selectedCharakterItems.removeLast();
+        tmpItem.addMouseListener(this);
+    }
+
+    /**Beendet die erfolgreiche Charakterauswahl
+     * speichert die charID's der Charaktere aus der Gruppe -> int[] charIDCollection
+     * speichert die Namen der Charaktere aus der Gruppe -> String[] charNameCollection
+     * übergibt die beiden Arrays und den Namen des currentUsers an den DataManager -> DataManager.createNewCharTableForUser()
+     * übergibt die finale Gruppe und ruft die MapSelection auf -> GameFrameController.initiateMapSelection()*/
+    private void finalizeCharakterSelection()
+    {
+        int[] charIDCollection = new int[6];
+        String[] charNameCollection = new String[6];
+        for(int i = 0; i < this.groupSelectionList.size(); i++)
+        {
+            charIDCollection[i] = groupSelectionList.get(i).getCharID();
+            charNameCollection[i] = groupSelectionList.get(i).getName();
+        }
+        this.gameFrameController.getDataManager().createNewCharTableForUser(this.gameFrameController.getCurrentUser(), charIDCollection, charNameCollection);
+        this.charakterSelectionView.setVisible(false);
+        this.gameFrameController.getGameFrame().getContentPane().remove(this.charakterSelectionView);
+        this.gameFrameController.initiateMapSelection(this.groupSelectionList);
     }
 
     @Override
     public void mouseClicked(MouseEvent e)
     {
+        String tmpComponentName = e.getComponent().getName();
+
         /**MouseClicked für CharakterSelectionItems*/
-        if(e.getComponent().getName().startsWith("charakter"))
+        if(tmpComponentName.startsWith("charakter"))
         {
-            /*Speichert das aktuell(current) und das zuvor(previous) ausgewählte CharakterSelectionItem
+            /**Speichert das aktuell(current) und das zuvor(previous) ausgewählte CharakterSelectionItem
             * deaktiviert den MouseListener von current und aktiviert den MouseListener von previous -> this.switchMouseListenerOnCharakterSelectionItem()
             * übergibt current an CharakterSelectionView -> this.forwardCharakter()*/
             this.previousCharakterSelectionItem = this.currentCharakterSelectionItem;
@@ -63,9 +177,9 @@ public class CharakterSelectionController implements MouseListener, ActionListen
             this.forwardCharakter(Integer.parseInt(this.currentCharakterSelectionItem.getName().substring(10)));
         }
         /**MouseClicked für CharakterSelectionButtons*/
-        else if(e.getComponent().getName().startsWith("btn"))
+        else if(tmpComponentName.startsWith("btn"))
         {
-            if(e.getComponent().getName().endsWith("hinzufuegen"))
+            if(tmpComponentName.endsWith("hinzufuegen"))
             {
                 /**Bereitet das Hinzufügen des ausgewählten Charakters zur Gruppe vor
                 * prüft ob ein Charakter ausgewählt ist
@@ -79,7 +193,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
                         JOptionPane.showMessageDialog(null, "Ihre Gruppe ist voll!", "Gruppe ist voll", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-            else if(e.getComponent().getName().endsWith("remove"))
+            else if(tmpComponentName.endsWith("remove"))
             {
                 /**Bereitet das Entfernen des zuletzt der Gruppe hinzugefügten Charakters vor
                 * Prüft ob Gruppe nicht leer
@@ -87,7 +201,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
                 if(this.groupSelectionList.size() > 0)
                     this.removeLastFromGroupSelection();
             }
-            else if(e.getComponent().getName().endsWith("fertig"))
+            else if(tmpComponentName.endsWith("fertig"))
             {
                 /**Beendet die Gruppenauswahl -> this.finalizeCharakterSelection(), wenn
                 * Gruppe 6 Charaktere enthält -> Fehler sonst (JOptionPane)
@@ -154,92 +268,13 @@ public class CharakterSelectionController implements MouseListener, ActionListen
             this.charakterSelectionView.selectRandomName();
     }
 
-    /**speichert den derzeit ausgewählten Charakter -> currentCharakter(CharakterModel)
-    * übergibt currentCharakter an charakterSelectionView.synchronizeProperties() um Charakterwerte in der CharakterSelectionView anzuzeigen*/
-    private void forwardCharakter(int paramID)
+    /**Gibt den aktuellen GameFrameController zurück*/
+    public GameFrameController getGameFrameController()
     {
-        this.currentCharakter = this.charakterModelList.get(paramID);
-        this.charakterSelectionView.synchronizeCharProperties(this.currentCharakter);
+        return this.gameFrameController;
     }
 
-    /**fügt previous einen MouseListener hinzu und setzt Border auf null -> wenn previous != null
-    * entfernt MouseListener von current*/
-    private void switchMouseListenerOnCharakterSelectionItem()
-    {
-        if(this.previousCharakterSelectionItem != null)
-        {
-            this.previousCharakterSelectionItem.addMouseListener(this);
-            this.previousCharakterSelectionItem.setBorder(null);
-        }
-        this.currentCharakterSelectionItem.removeMouseListener(this);
-    }
-
-    /**Fügt den derzeit ausgewählten Charakter der Gruppe hinzu
-    * prüft ob der eingegebene Charaktername nicht länger als 15 Zeichen ist -> Fehler sonst (JOptionPange)
-    * setzt die Border des ausgewählten CharakterSelectionItem auf null -> this.currentCharakterSelectionItem.setBorder()
-    * fügt currentCharakterSelectionItem einer Liste mit CharakterSelectionItems der sich in der Gruppe befindenden Charaktere hinzu
-    * current und previous (CharakterSelectionItem) werden auf null gesetzt
-    * der Name des ausgewählten Charakters wird mit Namen aus dem TextField der CharakterSelectionView gesetzt -> currentCharakter.setName()
-    * currentCharakter wird der Liste mit ausgewählten Charakteren hinzugefüt (Gruppe) -> this.groupSelectionList.add()
-    * fügt das Bild des Charakters der Gruppenauswahl hinzu -> this.charakterSelectionView.addSelectedCharakterImage()
-    * setzt isCharSelected(boolean) der CharakterSelectionView auf false damit keine Charakterwerte mehr in der View angezeigt werden*/
-    private void addCharakterToGroupSelection()
-    {
-        String tmpName = this.charakterSelectionView.getNameFromTextfield();
-        if((tmpName.length() >= 2) && (tmpName.length() < 15))
-        {
-            this.currentCharakterSelectionItem.setBorder(null);
-            this.selectedCharakterItems.add(this.currentCharakterSelectionItem);
-            this.currentCharakterSelectionItem = null;
-            this.previousCharakterSelectionItem = null;
-            this.currentCharakter.setName(this.charakterSelectionView.getNameFromTextfield());
-            this.groupSelectionList.add(this.currentCharakter);
-            this.charakterSelectionView.addSelectedCharakterImage(this.currentCharakter.getUrl());
-            this.charakterSelectionView.setIsCharSelected(false);
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Charaktername zu kurz oder zu lang!\nMindestens 2 maximal 15 Zeichen.", "Fehler beim Hinzufügen!", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
-    /**entfernt den zuletzt hinzugefügten Charakter aus this.groupSelectionList
-    * entfernt das Bild des Charakters aus der Gruppenauswahl -> this.charakterSelectionView.removeSelectedCharakterImage()
-    * entfernt das CharakterSelectionItem des aus der Liste entfernten Charakters aus der Liste der ausgewählten Charaktere -> this.selectedCHarakterItems.removeLast()
-    * fügt dem CharakterSelectionItem des soeben aus der Gruppe entfernten Charakters einen MouseListener hinzu -> tmpItem.addMouseListener()*/
-    private void removeLastFromGroupSelection()
-    {
-        this.groupSelectionList.removeLast();
-        this.charakterSelectionView.removeSelectedCharakterImage();
-        CharakterSelectionItem tmpItem = this.selectedCharakterItems.removeLast();
-        tmpItem.addMouseListener(this);
-    }
-
-    /**Beendet die erfolgreiche Charakterauswahl
-    * speichert die charID's der Charaktere aus der Gruppe -> int[] charIDCollection
-    * speichert die Namen der Charaktere aus der Gruppe -> String[] charNameCollection
-    * übergibt die beiden Arrays und den Namen des currentUsers an den DataManager -> DataManager.createNewCharTableForUser()
-    * übergibt die finale Gruppe und ruft die MapSelection auf-> GameFrameController.initiateMapSelection()*/
-    private void finalizeCharakterSelection()
-    {
-        int[] charIDCollection = new int[6];
-        String[] charNameCollection = new String[6];
-        for(int i = 0; i < this.groupSelectionList.size(); i++)
-        {
-            charIDCollection[i] = groupSelectionList.get(i).getCharID();
-            charNameCollection[i] = groupSelectionList.get(i).getName();
-        }
-        this.gameFrameController.getDataManager().createNewCharTableForUser(this.gameFrameController.getCurrentUser(), charIDCollection, charNameCollection);
-        this.gameFrameController.initiateMapSelection(this.groupSelectionList);
-    }
-
-    /**Gibt die aktuelle CharakterSelectionView zurück*/
-    public CharakterSelectionView getCharakterSelectionView()
-    {
-        return this.charakterSelectionView;
-    }
-
-    @Override /*not in use*/
+    @Override /**not in use*/
     public void mousePressed(MouseEvent e)
     {
 

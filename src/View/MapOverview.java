@@ -1,6 +1,7 @@
 package View;
 
 import Controller.MapController;
+import Exceptions.CustomImageException;
 import View.SelectionItem.OverviewSelectionItem;
 
 import javax.imageio.ImageIO;
@@ -15,7 +16,7 @@ public class MapOverview extends JPanel
     private Image mapImage;
 
     /**Lädt Hintergrundbild der MapOverview*/
-    public MapOverview(MapController paramMapController)
+    public MapOverview(MapController paramMapController) throws CustomImageException
     {
         this.mapController = paramMapController;
 
@@ -28,7 +29,7 @@ public class MapOverview extends JPanel
         }
         catch(IOException e)
         {
-            System.err.println("IOException\nFehler beim Laden von Hintergrundbild\nMapOverview.constructor()");
+            throw new CustomImageException("Fehler beim Laden von Hintergrundbild!\nMapOverview.constructor()");
         }
 
         this.enableView();
@@ -51,7 +52,7 @@ public class MapOverview extends JPanel
 
     /**Fügt OverviewSelectionItems zur View hinzu
      * Namen nach dem Muster overview_kartenabschnitt*/
-    private void enableView()
+    private void enableView() throws CustomImageException
     {
         this.add(new OverviewSelectionItem("overview_gareth", 340, 477, this.mapController));
         this.add(new OverviewSelectionItem("overview_gerasim", 420, 258, this.mapController));

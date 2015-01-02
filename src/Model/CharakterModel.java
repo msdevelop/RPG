@@ -85,7 +85,7 @@ public class CharakterModel
         return this.name;
     }
 
-    public String getKlasse()
+    public String getCharakterKlasse()
     {
         return this.klasse;
     }

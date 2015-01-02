@@ -8,11 +8,12 @@ import java.util.LinkedList;
 
 public class DataManager
 {
+    private static DataManager currentDataManager = null;
     private LinkedList<DetailKartenModel> detailKartenModelList = new LinkedList<>();
     private Connection commonCon, levelCon;
 
     /**Stellt die Verbindung zu den Datenbanken her*/
-    public DataManager()
+    private DataManager()
     {
         try
         {
@@ -26,6 +27,15 @@ public class DataManager
                     "\nVerbindung zur Datenbank konnte nicht hergestellt werden!", "Fehler beim Laden der Datenbank", JOptionPane.ERROR_MESSAGE);
             this.closeConnection();
         }
+    }
+
+    /**Gibt das aktuelle DataManager Objekt zurück
+     * Erzeugt neuen DataManager wenn currentDataManager == null*/
+    public static DataManager getInstance()
+    {
+        if(currentDataManager == null)
+            currentDataManager = new DataManager();
+        return currentDataManager;
     }
 
     /**Wird immer dann aufgerufen wenn das Programm geschlossen wird (außer ALT+F4 oder unhandledException)

@@ -1,5 +1,6 @@
 package Controller;
 
+import Exceptions.CustomImageException;
 import View.*;
 import View.SelectionItem.MenuSelectionItem;
 
@@ -17,16 +18,17 @@ public class MenuController implements MouseListener
     public MenuController(GameFrameController paramGameFrameController)
     {
         this.gameFrameController = paramGameFrameController;
-        this.menuView = new MenuView(this);
+        try
+        {
+            this.menuView = new MenuView(this);
+        }
+        catch(CustomImageException ciE)
+        {
+            JOptionPane.showMessageDialog(null, "ErrorMessage: " + ciE.getMessage() + "\nExceptionType: IOException",
+                    "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
+            this.gameFrameController.getDataManager().closeConnection();
+        }
         this.gameFrameController.getGameFrame().getContentPane().add(this.menuView);
-    }
-
-    /**Übergibt den eingegebenen Benutzernamen an den DataManager um zu überprüfen ob er bereits vergeben ist
-     * return true -> Beutzername ist gültig und wurde der Datenbanktabelle 'user' hinzugefügt
-     * return false -> Benutzername ist bereits vergeben*/
-    private boolean validateUsername(String paramUsername)
-    {
-        return this.gameFrameController.getDataManager().isValidUsername(paramUsername);
     }
 
     /**Wird aufgerufen wenn im Menü der Punkt "Neues Spiel" gewählt wird
@@ -46,10 +48,14 @@ public class MenuController implements MouseListener
                         "      - keine Leerzeichen\n" +
                         "      - keine führenden Zahlen oder Sonderzeichen", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
 
-            else if(! this.validateUsername(tmpUsername))
+            else if(!(this.gameFrameController.getDataManager().isValidUsername(tmpUsername)))
                 JOptionPane.showMessageDialog(null, "Benutzername bereits vergeben!", "Fehler beim Erstellen des Benutzers", JOptionPane.WARNING_MESSAGE);
             else
+            {
+                this.menuView.setVisible(false);
+                this.gameFrameController.getGameFrame().getContentPane().remove(this.menuView);
                 this.gameFrameController.initiateCharakterSelection(tmpUsername);
+            }
         }
         catch(NullPointerException e)
         {}
@@ -85,18 +91,12 @@ public class MenuController implements MouseListener
         tmpItem.setInMouseFocus(false);
     }
 
-    /**Gibt aktuelle MenuView zurück*/
-    public MenuView getMenuView()
-    {
-        return this.menuView;
-    }
-
-    @Override /*not in user*/
+    @Override /**not in use*/
     public void mousePressed(MouseEvent e)
     {
     }
 
-    @Override /**not in user*/
+    @Override /**not in use*/
     public void mouseReleased(MouseEvent e)
     {
 

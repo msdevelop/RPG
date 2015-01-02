@@ -1,5 +1,6 @@
 package Controller;
 
+import Exceptions.CustomImageException;
 import View.*;
 import View.SelectionItem.DetailSelectionItem;
 import View.SelectionItem.OverviewSelectionItem;
@@ -20,8 +21,24 @@ public class MapController implements MouseListener
     public MapController(GameFrameController paramGameFrameController)
     {
         this.gameFrameController = paramGameFrameController;
-        this.mapOverview = new MapOverview(this);
-        this.mapDetailView = new MapDetailView(this);
+        try
+        {
+            this.mapOverview = new MapOverview(this);
+            this.mapDetailView = new MapDetailView(this);
+        }
+        catch(CustomImageException e)
+        {
+            this.handleCustomImageException(e);
+        }
+        this.gameFrameController.getGameFrame().getContentPane().add(this.mapOverview);
+        this.gameFrameController.getGameFrame().getContentPane().add(this.mapDetailView);
+    }
+
+    private void handleCustomImageException(CustomImageException tmpImageException)
+    {
+        JOptionPane.showMessageDialog(null, "ErrorMessage: " + tmpImageException.getMessage() + "\nExceptionType: IOException",
+                "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
+        this.gameFrameController.getDataManager().closeConnection();
     }
 
     @Override
@@ -31,12 +48,25 @@ public class MapController implements MouseListener
         {
             /**Gibt den Namen der in der View ausgewählten Karte an die MapDetailView weiter um den Kartenausschnitt anzuzeigen
             * entfernt alle OverviewSelectionItems von der MapOverview*/
-            this.mapDetailView.selectMission("detail_" + e.getComponent().getName().substring(9));
+            try
+            {
+                this.mapDetailView.selectMission("detail_" + e.getComponent().getName().substring(9));
+            }
+            catch(CustomImageException ciE)
+            {
+                this.handleCustomImageException(ciE);
+            }
             this.mapOverview.disableView();
         }
         /**MouseClicked für DetailSelectionItem(SelectionItem)*/
         else if(e.getComponent().getName().startsWith("detail"))
+        {
+            this.mapOverview.setVisible(false);
+            this.mapDetailView.setVisible(false);
+            this.gameFrameController.getGameFrame().getContentPane().remove(this.mapOverview);
+            this.gameFrameController.getGameFrame().getContentPane().remove(this.mapDetailView);
             this.gameFrameController.initiateLevel(e.getComponent().getName().substring(7));
+        }
     }
 
     @Override
@@ -71,19 +101,6 @@ public class MapController implements MouseListener
             DetailSelectionItem tmpDetailItem = (DetailSelectionItem) e.getComponent();
             tmpDetailItem.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
         }
-    }
-
-
-    /**Gibt aktuelle MapOverview(View) zurück*/
-    public MapOverview getMapOverview()
-    {
-        return this.mapOverview;
-    }
-
-    /**Gibt aktuelle MapDetailView(View) zurück*/
-    public MapDetailView getMapDetailView()
-    {
-        return this.mapDetailView;
     }
 
     /**Gibt aktuellen GameFrameController zurück*/

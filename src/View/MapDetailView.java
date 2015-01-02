@@ -1,6 +1,7 @@
 package View;
 
 import Controller.MapController;
+import Exceptions.CustomImageException;
 import Model.DetailKartenModel;
 import Model.KoordinatenModel;
 import View.SelectionItem.DetailSelectionItem;
@@ -19,7 +20,7 @@ public class MapDetailView extends JPanel
     private MapController mapController;
 
     /**Lädt Platzhalterbild der MapDetailView*/
-    public MapDetailView(MapController paramMapController)
+    public MapDetailView(MapController paramMapController) throws CustomImageException
     {
         this.mapController = paramMapController;
 
@@ -32,7 +33,7 @@ public class MapDetailView extends JPanel
         }
         catch(IOException e)
         {
-            System.err.println("IOException\nFehler beim Laden von Hintergrundbild\nMapDetailView.constructor()");
+            throw new CustomImageException("Fehler beim Laden von Hintergrundbild!\nMapDetailView.constructor()");
         }
 
         this.setVisible(true);
@@ -54,7 +55,7 @@ public class MapDetailView extends JPanel
      * fügt für jedes Koordinatenpaar aus der koordinatenModelList der currentDetailMap ein DetailSelectionIem zur View hinzu
      * setzt isMissionSelected auf true
      * this.repaint()*/
-    public void selectMission(String paramMapName)
+    public void selectMission(String paramMapName) throws CustomImageException
     {
         DetailKartenModel currentDetailMap = this.mapController.getGameFrameController().getDataManager().getDetailKarte(paramMapName);
         LinkedList<KoordinatenModel> koordinatenModelList = currentDetailMap.getKoordinatenModelList();
@@ -65,7 +66,7 @@ public class MapDetailView extends JPanel
         }
         catch(IOException e)
         {
-            System.err.println("IOException\nFehler beim Laden von detailMap\nMapDetailView.selectMission()");
+            throw new CustomImageException("Fehler beim Laden von detailMap\nMapDetailView.selectMission()");
         }
 
         for(int i = 0; i < koordinatenModelList.size(); i++)

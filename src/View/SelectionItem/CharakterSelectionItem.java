@@ -1,6 +1,7 @@
 package View.SelectionItem;
 
 import Controller.CharakterSelectionController;
+import Exceptions.CustomImageException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,7 +17,7 @@ public class CharakterSelectionItem extends JPanel
      * Namen nach dem Muster charakter_charID
      * fügt MouseListener hinzu (CharakterSelectionController)
      * lädt Charakterbild*/
-    public CharakterSelectionItem(String paramUrl, int paramXPos, int paramYPos, int paramID, CharakterSelectionController paramCharakterSelectionController)
+    public CharakterSelectionItem(String paramUrl, int paramXPos, int paramYPos, int paramID, CharakterSelectionController paramCharakterSelectionController) throws CustomImageException
     {
         this.setOpaque(false);
         this.setName("charakter_" + paramID);
@@ -29,7 +30,7 @@ public class CharakterSelectionItem extends JPanel
         }
         catch(IOException e)
         {
-            System.err.println("IOExceptio\nFehler beim Laden von Charakterbild\nCharakterSelectionItem.constructor()");
+            throw new CustomImageException("Fehler beim Laden von Charakterbild!\nCharakterSelectionItem.constructor()");
         }
     }
 

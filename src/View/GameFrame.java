@@ -6,11 +6,8 @@ import javax.swing.*;
 
 public class GameFrame extends JFrame
 {
-    private GameFrameController gameFrameController;
-
-    public GameFrame(GameFrameController paramGameFrameController)
+    public GameFrame()
     {
-        this.gameFrameController = paramGameFrameController;
         this.setLayout(null);
         this.setUndecorated(true);
         this.setResizable(false);
@@ -18,7 +15,7 @@ public class GameFrame extends JFrame
     }
 
     /**Fügt dem aktuellen GameFrame eine MenuBar am oberen Bildschirmrand hinzu*/
-    public void addMenuBar()
+    public void addMenuBar(GameFrameController paramGameFrameController)
     {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -28,7 +25,7 @@ public class GameFrame extends JFrame
 
         JMenuItem itemBeenden = new JMenuItem("Beenden");
         menuSpiel.add(itemBeenden);
-        itemBeenden.addActionListener(this.gameFrameController);
+        itemBeenden.addActionListener(paramGameFrameController);
         itemBeenden.setActionCommand("beenden");
 
         JMenu menuCharakter = new JMenu("Charakter");

@@ -1,6 +1,7 @@
 package View.SelectionItem;
 
 import Controller.CharakterSelectionController;
+import Exceptions.CustomImageException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class CharakterSelectionButton extends JPanel
      * Namen nach dem Muster btn_funktion
      * fügt MouseListener hinzu(CharakterSelectionController)
      * lädt ButtonBilder für Anzeige im MouseFocus und Default*/
-    public CharakterSelectionButton(String paramName, int paramXPos, int paramYPos, CharakterSelectionController paramCharakterSelectionController)
+    public CharakterSelectionButton(String paramName, int paramXPos, int paramYPos, CharakterSelectionController paramCharakterSelectionController) throws CustomImageException
     {
         this.setName("btn_" + paramName);
         this.setLayout(null);
@@ -32,7 +33,7 @@ public class CharakterSelectionButton extends JPanel
         }
         catch(IOException e)
         {
-            System.err.println("IOException\nFehler beim Laden von Buttons\nCharakterSelectionButton.constructor()");
+            throw new CustomImageException("Fehler beim Laden von Button images!\nCharakterSelectionButton.constructor()");
         }
     }
 

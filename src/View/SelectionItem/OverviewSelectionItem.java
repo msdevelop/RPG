@@ -1,6 +1,7 @@
 package View.SelectionItem;
 
 import Controller.MapController;
+import Exceptions.CustomImageException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class OverviewSelectionItem extends JPanel
     * Namen nach dem Muster overview_kartenabschnitt
     * fügt MouseListener hinzu (MapController)
     * lädt Bilder für Anzeige im MouseFocus und Default*/
-    public OverviewSelectionItem(String paramName, int paramXPos, int paramYPos, MapController paramMapController)
+    public OverviewSelectionItem(String paramName, int paramXPos, int paramYPos, MapController paramMapController) throws CustomImageException
     {
         this.setLayout(null);
         this.setName(paramName);
@@ -32,7 +33,7 @@ public class OverviewSelectionItem extends JPanel
         }
         catch(IOException e)
         {
-            System.err.println("IOException\nFehler beim Laden von overviewSelectionItem_xxx.png\nOvervieSelectionItem.constructor()");
+            throw new CustomImageException("Fehler beim Laden von overViewSelectionItem image!\nOvervieSelectionItem.constructor()");
         }
     }
 

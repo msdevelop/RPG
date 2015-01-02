@@ -1,6 +1,7 @@
 package View.SelectionItem;
 
 import Controller.MenuController;
+import Exceptions.CustomImageException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class MenuSelectionItem extends JPanel
      * Namen nach Funktion
      * fügt MouseListener hinzu (MenuController)
      * lädt Bild*/
-    public MenuSelectionItem(int paramXPos, int paramYPos, MenuController paramMenuController, String paramName)
+    public MenuSelectionItem(int paramXPos, int paramYPos, MenuController paramMenuController, String paramName) throws CustomImageException
     {
         this.setLayout(null);
         this.setName(paramName);
@@ -30,7 +31,7 @@ public class MenuSelectionItem extends JPanel
         }
         catch(IOException e)
         {
-            System.err.println("IOException\nFehler beim Laden von MenuSelectionItem.png\nMenuSelectionItem.constructor()");
+            throw new CustomImageException("Fehler beim Laden von MenuSelectionItem.png\n" + "MenuSelectionItem.constructor()");
         }
     }
 

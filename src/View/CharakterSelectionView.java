@@ -1,6 +1,7 @@
 package View;
 
 import Controller.CharakterSelectionController;
+import Exceptions.CustomImageException;
 import Model.CharakterModel;
 
 import javax.imageio.ImageIO;
@@ -14,6 +15,7 @@ import java.util.Random;
 
 public class CharakterSelectionView extends JPanel
 {
+    CharakterSelectionController charakterSelectionController;
     private Image bgImage;
     private JTextField txtfName;
     private boolean isCharSelected = false;
@@ -28,15 +30,16 @@ public class CharakterSelectionView extends JPanel
     /**liest das Hintergrundbild ein -> this.bgImage
      * erzeugt ein JTextField zur Eingabe des Charakternamens
      * erzeugt einen JButton zur Randomisierung des Charakternamens*/
-    public CharakterSelectionView(CharakterSelectionController paramController)
+    public CharakterSelectionView(CharakterSelectionController paramCharakterSelectionController) throws CustomImageException
     {
+        this.charakterSelectionController = paramCharakterSelectionController;
         try
         {
             this.bgImage = ImageIO.read(new File("data//img//charSelection//charSelection.png"));
         }
         catch(IOException e)
         {
-            System.err.println("IOException\nFehler beim Laden von Hintergrundbild\n CharakterSelectionView.constructor()");
+            throw new CustomImageException("Fehler beim Laden von Hintergrundbild\nCharakterSelectionView.constructor()");
         }
 
         this.txtfName = new JTextField();
@@ -50,7 +53,7 @@ public class CharakterSelectionView extends JPanel
         JButton btnRandomName = new JButton();
         btnRandomName.setIcon(new ImageIcon("data//img//charSelection//button//random.png"));
         btnRandomName.setBounds(405, 252, 42, 42);
-        btnRandomName.addActionListener(paramController);
+        btnRandomName.addActionListener(paramCharakterSelectionController);
         this.add(btnRandomName);
 
         this.setLayout(null);
@@ -114,7 +117,9 @@ public class CharakterSelectionView extends JPanel
                 }
                 catch(IOException e)
                 {
-                    System.err.println("IOException\nFehler beim Laden von Charakterbildern\nCharakterSelectionView.paintComponent()");
+                    JOptionPane.showMessageDialog(null, "ErrorMessage: Fehler beim Laden von Charakterbildern!\nCharakterSelectionView.paintComponent()" +
+                                    "\nExceptionType: IOException", "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
+                    this.charakterSelectionController.getGameFrameController().getDataManager().closeConnection();
                 }
             }
         }
@@ -126,7 +131,7 @@ public class CharakterSelectionView extends JPanel
      * this.repaint()*/
     public void synchronizeCharProperties(CharakterModel paramModel)
     {
-        this.klasse = paramModel.getKlasse();
+        this.klasse = paramModel.getCharakterKlasse();
         this.mut = String.valueOf(paramModel.getMut());
         this.klugheit = String.valueOf(paramModel.getKlugheit());
         this.intuition = String.valueOf(paramModel.getIntuition());
@@ -181,7 +186,7 @@ public class CharakterSelectionView extends JPanel
         }
         catch(NullPointerException e)
         {
-            System.err.println("NullPointerException\nFehler beim Generieren von randomNumber\nCharakterSelectionView.selectRandomName");
+            System.err.println("NullPointerException\nFehler beim Generieren von randomNumber\nCharakterSelectionView.selectRandomName()");
         }
     }
 

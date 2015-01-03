@@ -1,7 +1,7 @@
 package View;
 
 import Controller.MenuController;
-import Exceptions.CustomImageException;
+import CustomExceptions.CustomImageException;
 import View.SelectionItem.MenuSelectionItem;
 
 import javax.imageio.ImageIO;

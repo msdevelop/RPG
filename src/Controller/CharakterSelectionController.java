@@ -1,6 +1,6 @@
 package Controller;
 
-import Exceptions.CustomImageException;
+import CustomExceptions.CustomImageException;
 import Model.CharakterModel;
 import View.CharakterSelectionView;
 import View.SelectionItem.CharakterSelectionButton;
@@ -25,10 +25,12 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     private CharakterSelectionItem previousCharakterSelectionItem = null;
     private LinkedList<CharakterSelectionItem> selectedCharakterItems = new LinkedList<>();
 
-    /**Initialisiert die CharakterSelectionView
-    * speichert in 'charakterModelList' alle aus der Datenbanktabelle 'charakterraw' ausgelesenen Charaktere als CharakterModel(Model) (Aufruf DataManager.getCharaktersRaw())
-    * erzeugt für jeden Charakter in 'charakterModelList' ein CharakterSelectionItem(SelectionItem)
-    * erzeugt notwendige CharakterSelectionButton(SelectionItem)*/
+    /**
+     * Initialisiert die CharakterSelectionView
+     * speichert in 'charakterModelList' alle aus der Datenbanktabelle 'charakterraw' ausgelesenen Charaktere als CharakterModel(Model) -> DataManager.getCharaktersRaw()
+     * erzeugt für jeden Charakter in 'charakterModelList' ein CharakterSelectionItem(SelectionItem)
+     * erzeugt notwendige CharakterSelectionButton(SelectionItem)
+     */
     public CharakterSelectionController(GameFrameController paramGameFrameController)
     {
         this.gameFrameController = paramGameFrameController;
@@ -37,50 +39,30 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         try
         {
             this.charakterSelectionView = new CharakterSelectionView(this);
-        }
-        catch(CustomImageException e)
-        {
-            this.handleCustomImageException(e);
-        }
-        this.gameFrameController.getGameFrame().getContentPane().add(this.charakterSelectionView);
+            this.gameFrameController.getGameFrame().getContentPane().add(this.charakterSelectionView);
 
-        int j = 0;
-        for(int i = 0; i < this.charakterModelList.size(); i++)
-        {
-            if(i % 2 == 0 && i != 0)
-                j++;
-
-            try
+            int j = 0;
+            for(int i = 0; i < this.charakterModelList.size(); i++)
             {
+                if(i % 2 == 0 && i != 0)
+                    j++;
+
                 this.charakterSelectionView.add(new CharakterSelectionItem(this.charakterModelList.get(i).getUrl(), (476 + (i % 2) * 74), (363 + j * 67), this.charakterModelList.get(i).getCharID(), this));
             }
-            catch(CustomImageException e)
-            {
-                this.handleCustomImageException(e);
-            }
-        }
-
-        try
-        {
             this.charakterSelectionView.add(new CharakterSelectionButton("hinzufuegen", 1150, 730, this));
             this.charakterSelectionView.add(new CharakterSelectionButton("fertig", 1150, 815, this));
             this.charakterSelectionView.add(new CharakterSelectionButton("remove", 1450, 815, this));
         }
         catch(CustomImageException e)
         {
-            this.handleCustomImageException(e);
+            this.gameFrameController.handleCustomImageException(e);
         }
     }
 
-    private void handleCustomImageException(CustomImageException tmpImageException)
-    {
-        JOptionPane.showMessageDialog(null, "ErrorMessage: " + tmpImageException.getMessage() + "\nExceptionType: IOException",
-                "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
-        this.gameFrameController.getDataManager().closeConnection(-3);
-    }
-
-    /**fügt previous einen MouseListener hinzu und setzt Border auf null -> wenn previous != null
-     * entfernt MouseListener von current*/
+    /**
+     * fügt previous einen MouseListener hinzu und setzt Border auf null -> wenn previous != null
+     * entfernt MouseListener von current
+     */
     private void switchMouseListenerOnCharakterSelectionItem()
     {
         if(this.previousCharakterSelectionItem != null)
@@ -91,15 +73,18 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         this.currentCharakterSelectionItem.removeMouseListener(this);
     }
 
-    /**speichert den derzeit ausgewählten Charakter -> currentCharakter(CharakterModel)
-     * übergibt currentCharakter an charakterSelectionView.synchronizeProperties() um Charakterwerte in der CharakterSelectionView anzuzeigen*/
+    /**
+     * speichert den derzeit ausgewählten Charakter -> currentCharakter(CharakterModel)
+     * übergibt currentCharakter an charakterSelectionView.synchronizeProperties() um Charakterwerte in der CharakterSelectionView anzuzeigen
+     */
     private void forwardCharakter(int paramID)
     {
         this.currentCharakter = this.charakterModelList.get(paramID);
         this.charakterSelectionView.synchronizeCharProperties(this.currentCharakter);
     }
 
-    /**Fügt den derzeit ausgewählten Charakter der Gruppe hinzu
+    /**
+     * Fügt den derzeit ausgewählten Charakter der Gruppe hinzu
      * prüft ob der eingegebene Charaktername nicht länger als 15 Zeichen ist -> Fehler sonst (JOptionPange)
      * setzt die Border des ausgewählten CharakterSelectionItem auf null -> this.currentCharakterSelectionItem.setBorder()
      * fügt currentCharakterSelectionItem einer Liste mit CharakterSelectionItems der sich in der Gruppe befindenden Charaktere hinzu
@@ -107,7 +92,8 @@ public class CharakterSelectionController implements MouseListener, ActionListen
      * der Name des ausgewählten Charakters wird mit Namen aus dem TextField der CharakterSelectionView gesetzt -> currentCharakter.setName()
      * currentCharakter wird der Liste mit ausgewählten Charakteren hinzugefüt (Gruppe) -> this.groupSelectionList.add()
      * fügt das Bild des Charakters der Gruppenauswahl hinzu -> this.charakterSelectionView.addSelectedCharakterImage()
-     * setzt isCharSelected(boolean) der CharakterSelectionView auf false damit keine Charakterwerte mehr in der View angezeigt werden*/
+     * setzt isCharSelected(boolean) der CharakterSelectionView auf false damit keine Charakterwerte mehr in der View angezeigt werden
+     */
     private void addCharakterToGroupSelection()
     {
         String tmpName = this.charakterSelectionView.getNameFromTextfield();
@@ -128,10 +114,12 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         }
     }
 
-    /**entfernt den zuletzt hinzugefügten Charakter aus this.groupSelectionList
+    /**
+     * entfernt den zuletzt hinzugefügten Charakter aus this.groupSelectionList
      * entfernt das Bild des Charakters aus der Gruppenauswahl -> this.charakterSelectionView.removeSelectedCharakterImage()
      * entfernt das CharakterSelectionItem des aus der Liste entfernten Charakters aus der Liste der ausgewählten Charaktere -> this.selectedCHarakterItems.removeLast()
-     * fügt dem CharakterSelectionItem des soeben aus der Gruppe entfernten Charakters einen MouseListener hinzu -> tmpItem.addMouseListener()*/
+     * fügt dem CharakterSelectionItem des soeben aus der Gruppe entfernten Charakters einen MouseListener hinzu -> tmpItem.addMouseListener()
+     */
     private void removeLastFromGroupSelection()
     {
         this.groupSelectionList.removeLast();
@@ -140,11 +128,13 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         tmpItem.addMouseListener(this);
     }
 
-    /**Beendet die erfolgreiche Charakterauswahl
+    /**
+     * Beendet die erfolgreiche Charakterauswahl
      * speichert die charID's der Charaktere aus der Gruppe -> int[] charIDCollection
      * speichert die Namen der Charaktere aus der Gruppe -> String[] charNameCollection
      * übergibt die beiden Arrays und den Namen des currentUsers an den DataManager -> DataManager.createNewCharTableForUser()
-     * übergibt die finale Gruppe und ruft die MapSelection auf -> GameFrameController.initiateMapSelection()*/
+     * übergibt die finale Gruppe und ruft die MapSelection auf -> GameFrameController.initiateMapSelection()
+     */
     private void finalizeCharakterSelection()
     {
         int[] charIDCollection = new int[6];
@@ -169,8 +159,8 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         if(tmpComponentName.startsWith("charakter"))
         {
             /**Speichert das aktuell(current) und das zuvor(previous) ausgewählte CharakterSelectionItem
-            * deaktiviert den MouseListener von current und aktiviert den MouseListener von previous -> this.switchMouseListenerOnCharakterSelectionItem()
-            * übergibt current an CharakterSelectionView -> this.forwardCharakter()*/
+             * deaktiviert den MouseListener von current und aktiviert den MouseListener von previous -> this.switchMouseListenerOnCharakterSelectionItem()
+             * übergibt current an CharakterSelectionView -> this.forwardCharakter()*/
             this.previousCharakterSelectionItem = this.currentCharakterSelectionItem;
             this.currentCharakterSelectionItem = (CharakterSelectionItem) e.getComponent();
             this.switchMouseListenerOnCharakterSelectionItem();
@@ -182,9 +172,9 @@ public class CharakterSelectionController implements MouseListener, ActionListen
             if(tmpComponentName.endsWith("hinzufuegen"))
             {
                 /**Bereitet das Hinzufügen des ausgewählten Charakters zur Gruppe vor
-                * prüft ob ein Charakter ausgewählt ist
-                * prüft ob die Anzahl der bereits ausgewählten Charaktere unter der Maximum (6) liegt -> Fehler sonst (JOptionPane)
-                * übergibt -> this.addCHarakterToGroupSelection()*/
+                 * prüft ob ein Charakter ausgewählt ist
+                 * prüft ob die Anzahl der bereits ausgewählten Charaktere unter der Maximum (6) liegt -> Fehler sonst (JOptionPane)
+                 * übergibt -> this.addCHarakterToGroupSelection()*/
                 if(this.charakterSelectionView.getIsCharSelected())
                 {
                     if(this.groupSelectionList.size() < 6)
@@ -196,16 +186,16 @@ public class CharakterSelectionController implements MouseListener, ActionListen
             else if(tmpComponentName.endsWith("remove"))
             {
                 /**Bereitet das Entfernen des zuletzt der Gruppe hinzugefügten Charakters vor
-                * Prüft ob Gruppe nicht leer
-                * übergibt -> this.removeLastFromGroupSelection()*/
+                 * Prüft ob Gruppe nicht leer
+                 * übergibt -> this.removeLastFromGroupSelection()*/
                 if(this.groupSelectionList.size() > 0)
                     this.removeLastFromGroupSelection();
             }
             else if(tmpComponentName.endsWith("fertig"))
             {
                 /**Beendet die Gruppenauswahl -> this.finalizeCharakterSelection(), wenn
-                * Gruppe 6 Charaktere enthält -> Fehler sonst (JOptionPane)
-                * Benutzerabfrage YES_OPTION ergbigt*/
+                 * Gruppe 6 Charaktere enthält -> Fehler sonst (JOptionPane)
+                 * Benutzerabfrage YES_OPTION ergbigt*/
                 if(this.groupSelectionList.size() == 6)
                 {
                     int userInputOption = JOptionPane.showConfirmDialog(null, "Ist ihre Gruppe fertiggestellt?", "Fortfahren?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -222,15 +212,15 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     public void mouseEntered(MouseEvent e)
     {
         /**MouseEntered für CharakterSelectionItems
-        * fügt BevelBorder hinzu*/
+         * fügt BevelBorder hinzu*/
         if(e.getComponent().getName().startsWith("charakter"))
         {
             CharakterSelectionItem tmpItem = (CharakterSelectionItem) e.getComponent();
             tmpItem.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
         }
         /**MouseEntered für CharakterSelectionButtons
-        * setzt den Wert 'isInMouseFocus(boolean)' von e.getComponent(CharakterSelectionButton) auf true
-        * OnMouseOverEffect -> neues Bild*/
+         * setzt den Wert 'isInMouseFocus(boolean)' von e.getComponent(CharakterSelectionButton) auf true
+         * OnMouseOverEffect -> neues Bild*/
         else if(e.getComponent().getName().startsWith("btn"))
         {
             CharakterSelectionButton tmpButton = (CharakterSelectionButton) e.getComponent();
@@ -242,15 +232,15 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     public void mouseExited(MouseEvent e)
     {
         /**MouseExited für CharakterSelectionItems
-        * setzt Border auf null*/
+         * setzt Border auf null*/
         if(e.getComponent().getName().startsWith("charakter"))
         {
             CharakterSelectionItem tmpItem = (CharakterSelectionItem) e.getComponent();
             tmpItem.setBorder(null);
         }
         /**MouseExited für CharakterSelectionButtons
-        * setzt den Wert 'isInMouseFocus(boolean)' von e.getComponent(CharakterSelectionButton) auf false
-        * OnMOuseExitedEffect -> neues Bild*/
+         * setzt den Wert 'isInMouseFocus(boolean)' von e.getComponent(CharakterSelectionButton) auf false
+         * OnMOuseExitedEffect -> neues Bild*/
         else if(e.getComponent().getName().startsWith("btn"))
         {
             CharakterSelectionButton tmpButton = (CharakterSelectionButton) e.getComponent();
@@ -259,29 +249,30 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     }
 
     @Override
-    /**ActionEvent für JButton Zufallsname*/
-    public void actionPerformed(ActionEvent e)
+    /**ActionEvent für JButton Zufallsname*/ public void actionPerformed(ActionEvent e)
     {
         /**Prüft ob ein Charakter ausgewählt ist
-        * übergibt -> this.charakterSelectionView.selectRandomName()*/
+         * übergibt -> this.charakterSelectionView.selectRandomName()*/
         if(this.charakterSelectionView.getIsCharSelected())
             this.charakterSelectionView.selectRandomName();
     }
 
-    /**Gibt den aktuellen GameFrameController zurück*/
+    /**
+     * Gibt den aktuellen GameFrameController zurück
+     */
     public GameFrameController getGameFrameController()
     {
         return this.gameFrameController;
     }
 
-    @Override /**not in use*/
-    public void mousePressed(MouseEvent e)
+    @Override
+    /**not in use*/ public void mousePressed(MouseEvent e)
     {
 
     }
 
-    @Override /**not in use*/
-    public void mouseReleased(MouseEvent e)
+    @Override
+    /**not in use*/ public void mouseReleased(MouseEvent e)
     {
 
     }

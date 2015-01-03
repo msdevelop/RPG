@@ -1,4 +1,4 @@
-package Exceptions;
+package CustomExceptions;
 
 public class CustomImageException extends Exception
 {

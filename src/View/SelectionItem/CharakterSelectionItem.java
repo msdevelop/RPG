@@ -1,7 +1,7 @@
 package View.SelectionItem;
 
 import Controller.CharakterSelectionController;
-import Exceptions.CustomImageException;
+import CustomExceptions.CustomImageException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

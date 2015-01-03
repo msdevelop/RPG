@@ -1,6 +1,6 @@
 package Controller;
 
-import Exceptions.CustomImageException;
+import CustomExceptions.CustomImageException;
 import View.*;
 import View.SelectionItem.MenuSelectionItem;
 
@@ -24,9 +24,7 @@ public class MenuController implements MouseListener
         }
         catch(CustomImageException ciE)
         {
-            JOptionPane.showMessageDialog(null, "ErrorMessage: " + ciE.getMessage() + "\nExceptionType: IOException",
-                    "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
-            this.gameFrameController.getDataManager().closeConnection(-3);
+            this.gameFrameController.handleCustomImageException(ciE);
         }
         this.gameFrameController.getGameFrame().getContentPane().add(this.menuView);
     }

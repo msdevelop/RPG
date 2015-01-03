@@ -1,7 +1,7 @@
 package View;
 
 import Controller.MapController;
-import Exceptions.CustomImageException;
+import CustomExceptions.CustomImageException;
 import Model.DetailKartenModel;
 import Model.KoordinatenModel;
 import View.SelectionItem.DetailSelectionItem;

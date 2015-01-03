@@ -1,9 +1,11 @@
 package Controller;
 
+import CustomExceptions.CustomImageException;
 import Data.DataManager;
 import Model.CharakterModel;
 import View.GameFrame;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -51,6 +53,12 @@ public class GameFrameController implements ActionListener
     {
         if(e.getActionCommand().equals("beenden"))
             this.dataManager.closeConnection(0);
+    }
+
+    public void handleCustomImageException(CustomImageException tmpImageException)
+    {
+        JOptionPane.showMessageDialog(null, "ErrorMessage: " + tmpImageException.getMessage() + "\nExceptionType: IOException", "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
+        this.dataManager.closeConnection(-3);
     }
 
     /**initialisiert den LevelViewController*/

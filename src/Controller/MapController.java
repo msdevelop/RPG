@@ -1,6 +1,6 @@
 package Controller;
 
-import Exceptions.CustomImageException;
+import CustomExceptions.CustomImageException;
 import View.*;
 import View.SelectionItem.DetailSelectionItem;
 import View.SelectionItem.OverviewSelectionItem;
@@ -28,17 +28,10 @@ public class MapController implements MouseListener
         }
         catch(CustomImageException e)
         {
-            this.handleCustomImageException(e);
+            this.gameFrameController.handleCustomImageException(e);
         }
         this.gameFrameController.getGameFrame().getContentPane().add(this.mapOverview);
         this.gameFrameController.getGameFrame().getContentPane().add(this.mapDetailView);
-    }
-
-    private void handleCustomImageException(CustomImageException tmpImageException)
-    {
-        JOptionPane.showMessageDialog(null, "ErrorMessage: " + tmpImageException.getMessage() + "\nExceptionType: IOException",
-                "Fehler beim Laden von Daten", JOptionPane.ERROR_MESSAGE);
-        this.gameFrameController.getDataManager().closeConnection(-3);
     }
 
     @Override
@@ -54,7 +47,7 @@ public class MapController implements MouseListener
             }
             catch(CustomImageException ciE)
             {
-                this.handleCustomImageException(ciE);
+                this.gameFrameController.handleCustomImageException(ciE);
             }
             this.mapOverview.disableView();
         }

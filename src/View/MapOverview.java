@@ -1,7 +1,7 @@
 package View;
 
 import Controller.MapController;
-import Exceptions.CustomImageException;
+import CustomExceptions.CustomImageException;
 import View.SelectionItem.OverviewSelectionItem;
 
 import javax.imageio.ImageIO;

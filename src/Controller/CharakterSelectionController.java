@@ -1,10 +1,12 @@
 package Controller;
 
 import CustomExceptions.CustomImageException;
+import Model.AttributeTooltipModel;
 import Model.CharakterModel;
 import View.CharakterSelectionView;
 import View.SelectionItem.CharakterSelectionButton;
 import View.SelectionItem.CharakterSelectionItem;
+import View.SelectionItem.TooltipSelectionItem;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -24,6 +26,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     private CharakterSelectionItem currentCharakterSelectionItem = null;
     private CharakterSelectionItem previousCharakterSelectionItem = null;
     private LinkedList<CharakterSelectionItem> selectedCharakterItems = new LinkedList<>();
+    private LinkedList<AttributeTooltipModel> attributeTooltipModelList = new LinkedList<>();
 
     /**
      * Initialisiert die CharakterSelectionView
@@ -57,6 +60,27 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         {
             this.gameFrameController.handleCustomImageException(e);
         }
+
+        this.addTooltipSelectionItems();
+    }
+
+    /**Fügt CharakterSelectionView TooltipSelectionItems hinzu*/
+    public void addTooltipSelectionItems()
+    {
+        this.attributeTooltipModelList = this.gameFrameController.getDataManager().getAttributeTooltips();
+
+        //TODO fehlende tooltips hinzufügen
+        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "0_lebenspkte", this));
+        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "1_astralpkte", this));
+        this.charakterSelectionView.add(new TooltipSelectionItem(100, 100, 50, 50, "2_mut", this));
+        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "3_klugheit", this));
+        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "4_intuition", this));
+        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "5_charisma", this));
+        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "6_fingerfertigkeit", this));
+        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "7_gewandheit", this));
+        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "8_koerperkraft", this));
+        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "9_aberglaube", this));
+        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "10_ausdauer", this));
     }
 
     /**
@@ -211,9 +235,11 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     @Override
     public void mouseEntered(MouseEvent e)
     {
+        String tmpComponentName = e.getComponent().getName();
+
         /**MouseEntered für CharakterSelectionItems
          * fügt BevelBorder hinzu*/
-        if(e.getComponent().getName().startsWith("charakter"))
+        if(tmpComponentName.startsWith("charakter"))
         {
             CharakterSelectionItem tmpItem = (CharakterSelectionItem) e.getComponent();
             tmpItem.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -221,12 +247,20 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         /**MouseEntered für CharakterSelectionButtons
          * setzt den Wert 'isInMouseFocus(boolean)' von e.getComponent(CharakterSelectionButton) auf true
          * OnMouseOverEffect -> neues Bild*/
-        else if(e.getComponent().getName().startsWith("btn"))
+        else if(tmpComponentName.startsWith("btn"))
         {
             CharakterSelectionButton tmpButton = (CharakterSelectionButton) e.getComponent();
             tmpButton.setIntMouseFocus(true);
         }
-    }
+        /**MouseEntered für TooltipSelectionItem
+         * zeigt Tooltipfenster an*/
+        else if(tmpComponentName.startsWith("tooltip"))
+        {
+            //TODO tooltipfenster anzeigen
+            System.out.println(this.attributeTooltipModelList.get(Integer.parseInt(tmpComponentName.substring(8, 9))).getTooltipText());
+        }
+
+     }
 
     @Override
     public void mouseExited(MouseEvent e)

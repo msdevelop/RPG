@@ -81,7 +81,7 @@ public class DataManager
         }
     }
 
-    /**Gleicht gegeben die Datenbanktabelle 'user' ab ob der übergebene Benutzername bereits vorhanden ist -> return false
+    /**Gleicht gegen die Datenbanktabelle 'user' ab ob der übergebene Benutzername bereits vorhanden ist -> return false
     * Ist der Benutzername gültig, wird er der Datenbanktabelle 'user' hinzugefügt -> this.addUser() -> return true
     * SQLException -> return false*/
     public boolean isValidUsername(String paramUsername)
@@ -107,6 +107,33 @@ public class DataManager
             this.closeConnection(-2);
         }
         return false;
+    }
+
+    /**Lies alle AttributeTooltips aus der Datenbank aus
+     * erzeugt für jeden Tooltip ein AttributeTooltipModel
+     * return -> attributeTooltipModelList*/
+    public LinkedList<AttributeTooltipModel> getAttributeTooltips()
+    {
+        LinkedList<AttributeTooltipModel> attributeTooltipModelList = new LinkedList<>();
+
+        try(Statement stmt = this.commonCon.createStatement())
+        {
+            try(ResultSet tooltipResult = stmt.executeQuery("SELECT * FROM AttributeTooltip"))
+            {
+                while(tooltipResult.next())
+                {
+                    attributeTooltipModelList.add(new AttributeTooltipModel(tooltipResult.getString(1), tooltipResult.getString(2)));
+                }
+            }
+        }
+        catch(SQLException sqlE)
+        {
+            JOptionPane.showMessageDialog(null, "SQLState: " + sqlE.getSQLState() + "\nErrorCode: " + sqlE.getErrorCode() +
+                    "\nErrorMessage: " + sqlE.getMessage() + "\nExceptionType: SQLException" +
+                    "\nFehler beim Laden von AttributeTooltips!\nDataManager.getAttributeTooltips()", "Fehler beim Lesen der Datenbank", JOptionPane.ERROR_MESSAGE);
+            this.closeConnection(-2);
+        }
+        return attributeTooltipModelList;
     }
 
     /**Wird von getDetailKarte aufgerufen um die Liste der x,y - Positionen aus der Datenbank in einzelne Koordinatenpaare aufzuteilen

@@ -249,7 +249,8 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     }
 
     @Override
-    /**ActionEvent für JButton Zufallsname*/ public void actionPerformed(ActionEvent e)
+    /**ActionEvent für JButton Zufallsname*/
+    public void actionPerformed(ActionEvent e)
     {
         /**Prüft ob ein Charakter ausgewählt ist
          * übergibt -> this.charakterSelectionView.selectRandomName()*/
@@ -266,13 +267,15 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     }
 
     @Override
-    /**not in use*/ public void mousePressed(MouseEvent e)
+    /**not in use*/
+    public void mousePressed(MouseEvent e)
     {
 
     }
 
     @Override
-    /**not in use*/ public void mouseReleased(MouseEvent e)
+    /**not in use*/
+    public void mouseReleased(MouseEvent e)
     {
 
     }

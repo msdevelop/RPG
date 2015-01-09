@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class CharakterSelectionView extends JPanel
 {
-    CharakterSelectionController charakterSelectionController;
+    private CharakterSelectionController charakterSelectionController;
     private Image bgImage;
     private JTextField txtfName;
     private boolean isCharSelected = false;
@@ -27,12 +27,13 @@ public class CharakterSelectionView extends JPanel
     private LinkedList<String> namensListe;
     private LinkedList<String> selectedCharakterImages = new LinkedList<>();
 
-    /**liest das Hintergrundbild ein -> this.bgImage
+    /**liest das Hintergrundbild ein
      * erzeugt ein JTextField zur Eingabe des Charakternamens
      * erzeugt einen JButton zur Randomisierung des Charakternamens*/
     public CharakterSelectionView(CharakterSelectionController paramCharakterSelectionController) throws CustomImageException
     {
         this.charakterSelectionController = paramCharakterSelectionController;
+
         try
         {
             this.bgImage = ImageIO.read(new File("data//img//charSelection//charSelection.png"));

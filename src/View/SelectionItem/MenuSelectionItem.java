@@ -31,8 +31,9 @@ public class MenuSelectionItem extends JPanel
         }
         catch(IOException e)
         {
-            throw new CustomImageException("Fehler beim Laden von MenuSelectionItem.png\n" + "MenuSelectionItem.constructor()");
+            throw new CustomImageException("Fehler beim Laden von MenuSelectionItem.png\nMenuSelectionItem.constructor()");
         }
+        this.setVisible(true);
     }
 
     /**Zeichnet Bild wenn isInMouseFocus = true*/

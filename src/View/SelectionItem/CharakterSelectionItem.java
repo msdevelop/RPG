@@ -32,6 +32,7 @@ public class CharakterSelectionItem extends JPanel
         {
             throw new CustomImageException("Fehler beim Laden von Charakterbild!\nCharakterSelectionItem.constructor()");
         }
+        this.setVisible(true);
     }
 
     public void paintComponent(Graphics charGraphic)

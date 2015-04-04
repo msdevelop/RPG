@@ -35,6 +35,7 @@ public class OverviewSelectionItem extends JPanel
         {
             throw new CustomImageException("Fehler beim Laden von overViewSelectionItem image!\nOvervieSelectionItem.constructor()");
         }
+        this.setVisible(true);
     }
 
     /**Zeichnet selectionImg_100 wenn sich die Component im MouseFocus befindet -> isInMouseFocus = true

@@ -23,9 +23,9 @@ public class CharakterSelectionButton extends JPanel
         this.setName("btn_" + paramName);
         this.setLayout(null);
         this.setOpaque(false);
-        this.setVisible(true);
         this.setBounds(paramXPos, paramYPos, 280, 60);
         this.addMouseListener(paramCharakterSelectionController);
+
         try
         {
             this.btnImage = ImageIO.read(new File("data//img//charSelection//button//btn_" + paramName + ".png"));
@@ -35,6 +35,7 @@ public class CharakterSelectionButton extends JPanel
         {
             throw new CustomImageException("Fehler beim Laden von Button images!\nCharakterSelectionButton.constructor()");
         }
+        this.setVisible(true);
     }
 
     /**Zeichnet den Button in den Container

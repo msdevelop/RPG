@@ -127,9 +127,7 @@ public class DataManager
         try(Statement stmt = this.commonCon.createStatement(); ResultSet tooltipResult = stmt.executeQuery("SELECT * FROM AttributeTooltip"))
         {
             while(tooltipResult.next())
-            {
-                attributeTooltipModelList.add(new AttributeTooltipModel(tooltipResult.getString(1), tooltipResult.getString(2)));
-            }
+                attributeTooltipModelList.add(new AttributeTooltipModel(tooltipResult.getString(2)));
         }
         catch(SQLException sqlE)
         {

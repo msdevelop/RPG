@@ -4,9 +4,11 @@ import CustomExceptions.CustomImageException;
 import Model.AttributeTooltipModel;
 import Model.CharakterModel;
 import View.CharakterSelectionView;
+import View.Overlay.AttributeTooltipOverlay;
 import View.SelectionItem.CharakterSelectionButton;
 import View.SelectionItem.CharakterSelectionItem;
 import View.SelectionItem.TooltipSelectionItem;
+import org.w3c.dom.Attr;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -27,6 +29,7 @@ public class CharakterSelectionController implements MouseListener, ActionListen
     private CharakterSelectionItem previousCharakterSelectionItem = null;
     private LinkedList<CharakterSelectionItem> selectedCharakterItems = new LinkedList<>();
     private LinkedList<AttributeTooltipModel> attributeTooltipModelList = new LinkedList<>();
+    private AttributeTooltipOverlay attributeTooltipOverlay;
 
     /**
      * Initialisiert die CharakterSelectionView
@@ -54,7 +57,10 @@ public class CharakterSelectionController implements MouseListener, ActionListen
             }
             this.charakterSelectionView.add(new CharakterSelectionButton("hinzufuegen", 1150, 730, this));
             this.charakterSelectionView.add(new CharakterSelectionButton("fertig", 1150, 815, this));
-            this.charakterSelectionView.add(new CharakterSelectionButton("remove", 1450, 815, this));
+            this.charakterSelectionView.add(new CharakterSelectionButton("remove", 1150, 900, this));
+
+            this.attributeTooltipOverlay = new AttributeTooltipOverlay();
+            this.charakterSelectionView.add(this.attributeTooltipOverlay);
         }
         catch(CustomImageException e)
         {
@@ -70,17 +76,17 @@ public class CharakterSelectionController implements MouseListener, ActionListen
         this.attributeTooltipModelList = this.gameFrameController.getDataManager().getAttributeTooltips();
 
         //TODO fehlende tooltips hinzufügen
-        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "0_lebenspkte", this));
+        //this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "0_lebenspkte", this));
         this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "1_astralpkte", this));
         this.charakterSelectionView.add(new TooltipSelectionItem(100, 100, 50, 50, "2_mut", this));
-        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "3_klugheit", this));
-        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "4_intuition", this));
-        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "5_charisma", this));
-        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "6_fingerfertigkeit", this));
-        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "7_gewandheit", this));
-        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "8_koerperkraft", this));
-        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "9_aberglaube", this));
-        this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "10_ausdauer", this));
+        //this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "3_klugheit", this));
+        //this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "4_intuition", this));
+        //this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "5_charisma", this));
+        //this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "6_fingerfertigkeit", this));
+        //this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "7_gewandheit", this));
+        //this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "8_koerperkraft", this));
+        //this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "9_aberglaube", this));
+        //this.charakterSelectionView.add(new TooltipSelectionItem(300, 300, 50, 50, "10_ausdauer", this));
     }
 
     /**
@@ -253,13 +259,9 @@ public class CharakterSelectionController implements MouseListener, ActionListen
             tmpButton.setIntMouseFocus(true);
         }
         /**MouseEntered für TooltipSelectionItem
-         * zeigt Tooltipfenster an*/
+         * zeigt Tooltip an*/
         else if(tmpComponentName.startsWith("tooltip"))
-        {
-            //TODO tooltipfenster anzeigen
-            System.out.println(this.attributeTooltipModelList.get(Integer.parseInt(tmpComponentName.substring(8, 9))).getTooltipText());
-        }
-
+            this.attributeTooltipOverlay.setTooltipString(this.attributeTooltipModelList.get(Integer.parseInt(tmpComponentName.substring(8, 9))).getTooltipText());
      }
 
     @Override

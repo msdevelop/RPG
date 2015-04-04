@@ -17,5 +17,6 @@ public class DetailSelectionItem extends JPanel
         this.setBounds(paramXPos, paramYPos, 106, 106);
         this.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
         this.addMouseListener(paramMapController);
+        this.setVisible(true);
     }
 }

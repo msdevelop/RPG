@@ -2,18 +2,11 @@ package Model;
 
 public class AttributeTooltipModel
 {
-    private String name, tooltipText;
+    private String tooltipText;
 
-    public AttributeTooltipModel(String paramName, String paramTooltipText)
+    public AttributeTooltipModel(String paramTooltipText)
     {
-        this.name = paramName;
         this.tooltipText = paramTooltipText;
-
-    }
-
-    public String getName()
-    {
-        return this.name;
     }
 
     public String getTooltipText()

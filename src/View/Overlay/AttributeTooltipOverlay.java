@@ -27,7 +27,7 @@ public class AttributeTooltipOverlay extends JPanel
         {
             throw new CustomImageException("Fehler beim Laden von tooltipOverlay.png\nAttributeTooltipOverlay.constructor()");
         }
-        this.setVisible(true);
+        this.setVisible(false);
     }
 
     public void paintComponent(Graphics tooltipOverlay)
@@ -40,7 +40,7 @@ public class AttributeTooltipOverlay extends JPanel
         this.drawMultilineString(tooltipOverlay);
     }
 
-    public void drawMultilineString(Graphics paramTooltipOverlay)
+    private void drawMultilineString(Graphics paramTooltipOverlay)
     {
         FontMetrics fm = paramTooltipOverlay.getFontMetrics();
         int xOffset = 10, yOffset = fm.getHeight();
@@ -70,6 +70,7 @@ public class AttributeTooltipOverlay extends JPanel
     public void setTooltipString(String paramTooltipString)
     {
         this.tooltipString = paramTooltipString;
+        this.setVisible(true);
         this.repaint();
     }
 }
